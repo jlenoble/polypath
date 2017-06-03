@@ -24,7 +24,9 @@
     "url": "https://github.com/jlenoble/polypath/issues"
   },
   "homepage": "https://github.com/jlenoble/polypath#readme",
-  "dependencies": {},
+  "dependencies": {
+    "polyton": "^0.5.0"
+  },
   "devDependencies": {
     "autoreload-gulp": "*",
     "babel-plugin-add-module-exports": "*",
