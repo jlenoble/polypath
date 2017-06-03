@@ -5,6 +5,7 @@ class Path {
   constructor (_path) {
     Object.defineProperty(this, 'path', {
       value: path.resolve(untildify(_path)),
+      enumerable: true,
     });
   }
 }
