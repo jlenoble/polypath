@@ -6,7 +6,10 @@ import {PolytonFactory} from 'polyton';
 const PolyPath = PolytonFactory(Path,
 ['literal'], [{unordered: true, unique: true}], {
   preprocess: function (args) {
-    return args.map(([arg]) => [path.resolve(untildify(arg))]);
+    return args.map(([_arg]) => {
+      const arg = _arg instanceof Path ? _arg.path : _arg;
+      return [path.resolve(untildify(arg))];
+    });
   },
   properties: {
     paths: {
