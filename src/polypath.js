@@ -4,7 +4,7 @@ import Path from './path';
 import {PolytonFactory} from 'polyton';
 
 const PolyPath = PolytonFactory(Path,
-['literal'], [{unordered: true}], {
+['literal'], [{unordered: true, unique: true}], {
   preprocess: function (args) {
     return args.map(([arg]) => [path.resolve(untildify(arg))]);
   },
