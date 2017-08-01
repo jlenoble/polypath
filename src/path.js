@@ -8,6 +8,11 @@ class Path {
       enumerable: true,
     });
   }
+
+  relative (_base) {
+    const base = _base instanceof Path ? _base.path : _base;
+    return path.relative(base || process.cwd(), this.path);
+  }
 }
 
 const proto = Path.prototype;

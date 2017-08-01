@@ -29,6 +29,10 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
     extnames () {
       return this.map(p => p.extname());
     },
+
+    relative (base) {
+      return this.map(p => p.relative(base));
+    },
   },
 });
 
