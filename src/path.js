@@ -9,9 +9,17 @@ class Path {
     });
   }
 
+  rebase (_base) {
+    const cwd = process.cwd();
+    const base = _base instanceof Path ? _base.path : _base || cwd;
+    const reldir = path.relative(cwd, base);
+    const relpath = path.relative(cwd, this.path);
+    return new Path(path.join(cwd, reldir, relpath));
+  }
+
   relative (_base) {
-    const base = _base instanceof Path ? _base.path : _base;
-    return path.relative(base || process.cwd(), this.path);
+    const base = _base instanceof Path ? _base.path : _base || process.cwd();
+    return path.relative(base, this.path);
   }
 }
 
