@@ -1,15 +1,6 @@
 ## Usage !heading
 
-```js
-import PolyPath from 'polypath';
-
-const p = new PolyPath('~', 'src', 'test.js');
-
-p.paths; // ['/home/me', '/home/me/projectdir/src', '/home/me/projectdir/test.js']
-p.basenames(); // ['me', 'src', 'test.js']
-p.dirnames(); // ['/home', '/home/me/projectdir', '/home/me/projectdir']
-p.extnames(); // ['', '', '.js']
-```
+#include "build/docs/examples/usage.test.md"
 
 ## License !heading
 

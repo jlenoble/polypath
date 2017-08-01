@@ -11,12 +11,18 @@ A polyton for paths
 ```js
 import PolyPath from 'polypath';
 
-const p = new PolyPath('~', 'src', 'test.js');
+const cwd = process.cwd(); // '/home/me'
+const p = new PolyPath('src', 'test.js');
 
-p.paths; // ['/home/me', '/home/me/projectdir/src', '/home/me/projectdir/test.js']
-p.basenames(); // ['me', 'src', 'test.js']
-p.dirnames(); // ['/home', '/home/me/projectdir', '/home/me/projectdir']
-p.extnames(); // ['', '', '.js']
+p.paths; // ['/home/me/src', '/home/me/test.js']
+p.basenames(); // ['src', 'test.js']);
+p.dirnames(); // ['/home/me', '/home/me']);
+p.extnames(); // ['', '.js']);
+
+p.relative(cwd); // ['src', 'test.js']);
+p.relative('test'); // ['../src', '../test.js']);
+
+p.rebase('build').paths; // ['/home/me/build/src', '/home/me/build/test.js']
 ```
 
 ## License
