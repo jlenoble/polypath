@@ -34,13 +34,13 @@ describe('Testing PolyPath', function () {
       path.join(cwd, 'src')
     );
 
-    expect(p1.relative()).to.eql(['src', 'test', 'gulp']);
-    expect(p2.relative()).to.eql(['src', 'test', 'gulp']);
+    expect(p1.relative()).to.eql(['gulp', 'src', 'test']);
+    expect(p2.relative()).to.eql(['gulp', 'src', 'test']);
 
-    expect(p1.relative(p1.at(0))).to.eql(['', '../test', '../gulp']);
-    expect(p2.relative(p1.at(0))).to.eql(['', '../test', '../gulp']);
+    expect(p1.relative(p1.at(0))).to.eql(['', '../src', '../test']);
+    expect(p2.relative(p1.at(0))).to.eql(['', '../src', '../test']);
 
-    expect(p1.relative(p1.at(2))).to.eql(['../src', '../test', '']);
-    expect(p2.relative(p1.at(2))).to.eql(['../src', '../test', '']);
+    expect(p1.relative(p1.at(2))).to.eql(['../gulp', '../src', '']);
+    expect(p2.relative(p1.at(2))).to.eql(['../gulp', '../src', '']);
   });
 });

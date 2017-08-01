@@ -16,18 +16,18 @@ describe('Testing PolyPath', function () {
   });
 
   it(`paths, basenames, dirnames and extnames properties`, function () {
-    const p = new PolyPath('~', '~/projects/keyfunc', '../src/muter.js');
+    const p = new PolyPath('~', '~/projects/keyfunc', '~/src/muter.js');
 
     expect(p.paths).to.eql([
       os.homedir(),
       path.join(os.homedir(), 'projects/keyfunc'),
-      path.join(process.cwd(), '../src/muter.js'),
+      path.join(os.homedir(), 'src/muter.js'),
     ]);
 
     expect(p.dirnames()).to.eql([
       path.dirname(os.homedir()),
       path.join(os.homedir(), 'projects'),
-      path.join(process.cwd(), '../src'),
+      path.join(os.homedir(), 'src'),
     ]);
 
     expect(p.basenames()).to.eql([
