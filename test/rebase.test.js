@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import os from 'os';
 import path from 'path';
 import Path from '../src/path';
-// import PolyPath from '../src/polypath';
+import PolyPath from '../src/polypath';
 
 describe('Testing Path', function () {
   it(`Testing rebase method`, function () {
@@ -28,3 +28,29 @@ describe('Testing Path', function () {
   });
 });
 
+describe('Testing PolyPath', function () {
+  it(`Testing rebase method`, function () {
+    const cwd = process.cwd();
+    const home = os.homedir();
+
+    const p = new PolyPath(
+      path.join(cwd, 'src'),
+      path.join(cwd, 'test'),
+      path.join(cwd, 'src/polypath.js')
+    );
+
+    expect(p.rebase().paths).to.eql(p.paths);
+
+    expect(p.rebase('build').paths).to.eql([
+      path.join(cwd, 'build/src'),
+      path.join(cwd, 'build/src/polypath.js'),
+      path.join(cwd, 'build/test'),
+    ]);
+
+    expect(p.rebase(home).paths).to.eql([
+      path.join(home, 'src'),
+      path.join(home, 'src/polypath.js'),
+      path.join(home, 'test'),
+    ]);
+  });
+});
