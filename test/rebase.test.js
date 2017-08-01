@@ -5,7 +5,7 @@ import Path from '../src/path';
 import PolyPath from '../src/polypath';
 
 describe('Testing Path', function () {
-  it(`Testing rebase method`, function () {
+  it(`Testing rebase method (one arg)`, function () {
     const cwd = process.cwd();
     const home = os.homedir();
 
@@ -26,10 +26,27 @@ describe('Testing Path', function () {
     expect(p2.rebase(home).path).to.equal(path.join(home, 'test'));
     expect(p3.rebase(home).path).to.equal(path.join(home, 'src/polypath.js'));
   });
+
+  it(`Testing rebase method (two args)`, function () {
+    const cwd = process.cwd();
+
+    const p1 = new Path('src/path.js');
+    const p2 = new Path('src/polypath.js');
+
+    expect(p1.rebase('build').path)
+      .to.equal(path.join(cwd, 'build/src/path.js'));
+    expect(p2.rebase('build').path)
+      .to.equal(path.join(cwd, 'build/src/polypath.js'));
+
+    expect(p1.rebase('src', 'build').path)
+      .to.equal(path.join(cwd, 'build/path.js'));
+    expect(p2.rebase('src', 'build').path)
+      .to.equal(path.join(cwd, 'build/polypath.js'));
+  });
 });
 
 describe('Testing PolyPath', function () {
-  it(`Testing rebase method`, function () {
+  it(`Testing rebase method (one arg)`, function () {
     const cwd = process.cwd();
     const home = os.homedir();
 
@@ -51,6 +68,25 @@ describe('Testing PolyPath', function () {
       path.join(home, 'src'),
       path.join(home, 'src/polypath.js'),
       path.join(home, 'test'),
+    ]);
+  });
+
+  it(`Testing rebase method (two args)`, function () {
+    const cwd = process.cwd();
+
+    const p = new PolyPath(
+      path.join(cwd, 'src/path.js'),
+      path.join(cwd, 'src/polypath.js')
+    );
+
+    expect(p.rebase('build').paths).to.eql([
+      path.join(cwd, 'build/src/path.js'),
+      path.join(cwd, 'build/src/polypath.js'),
+    ]);
+
+    expect(p.rebase('src', 'build').paths).to.eql([
+      path.join(cwd, 'build/path.js'),
+      path.join(cwd, 'build/polypath.js'),
     ]);
   });
 });

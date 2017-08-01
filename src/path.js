@@ -9,12 +9,21 @@ class Path {
     });
   }
 
-  rebase (_base) {
-    const cwd = process.cwd();
-    const base = _base instanceof Path ? _base.path : _base || cwd;
-    const reldir = path.relative(cwd, base);
-    const relpath = path.relative(cwd, this.path);
-    return new Path(path.join(cwd, reldir, relpath));
+  rebase (base1, base2) {
+    const defaultbase = process.cwd();
+
+    const _oldbase = base2 ? base1 : defaultbase;
+    const _newbase = base2 ? base2 : base1;
+
+    const oldbase = _oldbase instanceof Path ? _oldbase.path :
+      _oldbase || defaultbase;
+    const newbase = _newbase instanceof Path ? _newbase.path :
+      _newbase || defaultbase;
+
+    const reldir = path.relative(oldbase, newbase);
+    const relpath = path.relative(oldbase, this.path);
+
+    return new Path(path.join(oldbase, reldir, relpath));
   }
 
   relative (_base) {

@@ -32,8 +32,8 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
       return this.map(p => p.extname());
     },
 
-    rebase (base) {
-      return new PolyPath(...this.map(p => p.rebase(base)));
+    rebase (base1, base2) {
+      return new PolyPath(...this.map(p => p.rebase(base1, base2)));
     },
 
     relative (base) {
