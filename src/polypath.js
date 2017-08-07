@@ -12,7 +12,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
       const _args = _arg instanceof Path ? [_arg.path] :
         _arg instanceof PolyPath.BasePolyton ? _arg.paths : [_arg];
       return array.concat(_args.map(arg => [path.resolve(untildify(arg))]));
-    }, []).map(([file]) => file).sort();
+    }, []).map(([file]) => file);
 
     const globs = paths.filter(file => glob.hasMagic(file));
     const noglobs = paths.filter(file => !glob.hasMagic(file));
@@ -21,7 +21,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
       return !globs.some(gg => {
         return minimatch(g, gg);
       });
-    })).map(file => [file]);
+    })).sort().map(file => [file]);
   },
   properties: {
     paths: {
