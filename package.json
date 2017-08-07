@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/jlenoble/polypath#readme",
   "dependencies": {
+    "glob": "^7.1.2",
+    "minimatch": "^3.0.4",
     "polyton": "^0.5.1",
     "untildify": "^3.0.2"
   },

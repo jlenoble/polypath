@@ -2,17 +2,26 @@ import path from 'path';
 import untildify from 'untildify';
 import Path from './path';
 import {PolytonFactory} from 'polyton';
+import glob from 'glob';
+import minimatch from 'minimatch';
 
 const PolyPath = PolytonFactory(Path, ['literal'], [{
   unordered: true, unique: true}], {
   preprocess: function (args) {
-    return args.reduce((array, [_arg]) => {
+    const paths = args.reduce((array, [_arg]) => {
       const _args = _arg instanceof Path ? [_arg.path] :
         _arg instanceof PolyPath.BasePolyton ? _arg.paths : [_arg];
       return array.concat(_args.map(arg => [path.resolve(untildify(arg))]));
-    }, []).sort(([a1], [a2]) => {
-      return a1 < a2 ? -1 : a1 === a2 ? 0 : 1;
-    });
+    }, []).map(([file]) => file).sort();
+
+    const globs = paths.filter(file => glob.hasMagic(file));
+    const noglobs = paths.filter(file => !glob.hasMagic(file));
+
+    return globs.concat(noglobs.filter(g => {
+      return !globs.some(gg => {
+        return minimatch(g, gg);
+      });
+    })).map(file => [file]);
   },
   properties: {
     paths: {
