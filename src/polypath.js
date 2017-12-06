@@ -2,6 +2,7 @@ import path from 'path';
 import untildify from 'untildify';
 import Path from './path';
 import {PolytonFactory} from 'polyton';
+import {toArray, toArrayOfArrays} from 'argu';
 import glob from 'glob';
 import minimatch from 'minimatch';
 
@@ -86,9 +87,9 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
 });
 
 const rebase = (files, base1, base2) => new PolyPath(
-  ...(Array.isArray(files) ? files : [files])).rebase(base1, base2).paths;
-const resolve = files => new PolyPath(
-  ...(Array.isArray(files) ? files : [files])).resolve();
+  ...toArray(files)).rebase(base1, base2).paths;
+const resolve = (...files) => new PolyPath(...toArrayOfArrays(...files))
+  .resolve();
 
 export default PolyPath;
 export {Path, rebase, resolve};
