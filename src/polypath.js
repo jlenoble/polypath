@@ -85,5 +85,10 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
   },
 });
 
+const rebase = (files, base1, base2) => new PolyPath(
+  ...(Array.isArray(files) ? files : [files])).rebase(base1, base2).paths;
+const resolve = files => new PolyPath(
+  ...(Array.isArray(files) ? files : [files])).resolve();
+
 export default PolyPath;
-export {Path};
+export {Path, rebase, resolve};
