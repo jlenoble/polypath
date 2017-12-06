@@ -69,6 +69,19 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
     relative (base) {
       return this.map(p => p.relative(base));
     },
+
+    resolve () {
+      return Promise.all(this.map(p => p.resolve())).then(files => {
+        let last;
+        return files.reduce((array, files) => {
+          return array.concat(files);
+        }, []).sort().filter(file => {
+          const keep = last !== file;
+          last = file;
+          return keep;
+        });
+      });
+    },
   },
 });
 

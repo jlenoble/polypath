@@ -1,4 +1,5 @@
 import path from 'path';
+import glob from 'glob';
 import untildify from 'untildify';
 
 class Path {
@@ -29,6 +30,17 @@ class Path {
   relative (_base) {
     const base = _base instanceof Path ? _base.path : _base || process.cwd();
     return path.relative(base, this.path);
+  }
+
+  resolve () {
+    return new Promise((resolve, reject) => {
+      glob(this.path, (err, files) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(files);
+      });
+    });
   }
 }
 
