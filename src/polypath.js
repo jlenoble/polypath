@@ -8,20 +8,41 @@ import minimatch from 'minimatch';
 const PolyPath = PolytonFactory(Path, ['literal'], [{
   unordered: true, unique: true}], {
   preprocess: function (args) {
+    // Extract all paths from args
     const paths = args.reduce((array, [_arg]) => {
       const _args = _arg instanceof Path ? [_arg.path] :
         _arg instanceof PolyPath.BasePolyton ? _arg.paths : [_arg];
       return array.concat(_args.map(arg => [path.resolve(untildify(arg))]));
     }, []).map(([file]) => file);
 
-    const globs = paths.filter(file => glob.hasMagic(file));
-    const noglobs = paths.filter(file => !glob.hasMagic(file));
+    // Distinguish between plain paths and patterns
+    let globs = paths.filter(file => glob.hasMagic(file));
 
-    return globs.concat(noglobs.filter(g => {
-      return !globs.some(gg => {
-        return minimatch(g, gg);
-      });
-    })).sort().map(file => [file]);
+    // Remove plain paths matched by any present pattern
+    if (paths.length !== globs.length) {
+      const noglobs = paths.filter(file => !glob.hasMagic(file));
+
+      globs = globs.concat(noglobs.filter(g => {
+        return !globs.some(gg => {
+          return minimatch(g, gg);
+        });
+      }));
+    }
+
+    // Merge a/*b into a/**/*b when both found
+    if (globs.length > 1) {
+      const globstars = globs.filter(g => g.includes('**/'));
+      const noglobstars = globs.filter(g => !g.includes('**/'));
+
+      globs = globstars.concat(noglobstars.filter(g => {
+        return !globstars.some(gg => {
+          return gg.split('**/').join('') === g;
+        });
+      }));
+    }
+
+    // Order to ensure unicity
+    return globs.sort().map(file => [file]);
   },
   properties: {
     paths: {
