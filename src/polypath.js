@@ -88,8 +88,29 @@ const PolyPath = PolytonFactory(Path, ['literal'], [{
 
 const rebase = (files, base1, base2) => new PolyPath(
   ...toArray(files)).rebase(base1, base2).paths;
+
 const resolve = (...files) => new PolyPath(...toArrayOfArrays(...files))
   .resolve();
 
+const split = (...glb) => {
+  const glob = glb.map(g => toArray(g)).reduce((a1, a2) => a1.concat(a2), []);
+  return [
+    glob.filter(g => !g.match(/^!/)),
+    glob.filter(g => g.match(/^!/)).map(g => g.substring(1)),
+  ];
+};
+
+const filter = ([allFiles, dropFiles]) => allFiles.filter(
+  file => !dropFiles.some(f => file === f));
+
+const rebaseGlob = (glb, base1, base2) => {
+  const [f1, f2] = split(glb)
+    .map(g => g.length && rebase(g, base1, base2) || []);
+  return f1.concat(f2.map(f => '!' + f));
+};
+
+const resolveGlob = (...glb) => Promise.all(split(...glb)
+  .map(g => g.length && resolve(g) || Promise.resolve(g))).then(filter);
+
 export default PolyPath;
-export {Path, rebase, resolve};
+export {Path, rebaseGlob, resolveGlob};
