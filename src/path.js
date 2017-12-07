@@ -14,7 +14,7 @@ class Path {
     const defaultbase = process.cwd();
 
     const _oldbase = base2 ? base1 : defaultbase;
-    const _newbase = base2 ? base2 : base1;
+    const _newbase = base2 || base1;
 
     const oldbase = _oldbase instanceof Path ? _oldbase.path :
       _oldbase || defaultbase;
