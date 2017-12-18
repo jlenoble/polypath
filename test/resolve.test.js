@@ -5,7 +5,7 @@ import PolyPath from '../src/polypath';
 
 describe('Testing resolve method', function () {
   it(`Resolving with Path`, function () {
-    const p = new Path('src/**/*.js');
+    const p = new Path('src/*.js');
 
     return p.resolve().then(files => {
       expect(files).to.eql(['path.js', 'polypath.js'].map(f => {
@@ -15,7 +15,7 @@ describe('Testing resolve method', function () {
   });
 
   it(`Resolving with PolyPath`, function () {
-    const p = new PolyPath('src/**/*.js', 'gulpfile.babel.js');
+    const p = new PolyPath('src/*.js', 'gulpfile.babel.js');
 
     return p.resolve().then(files => {
       expect(files).to.eql(['gulpfile.babel.js', 'src/path.js',
