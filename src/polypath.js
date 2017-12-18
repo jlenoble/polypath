@@ -6,8 +6,10 @@ import {toArray, toArrayOfArrays} from 'argu';
 import glob from 'glob';
 import minimatch from 'minimatch';
 
-const PolyPath = PolytonFactory(Path, ['literal'], [{
-  unordered: true, unique: true}], {
+const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
+  unordered: true,
+  unique: true,
+
   preprocess: function (args) {
     // Extract all paths from args
     const paths = args.reduce((array, [_arg]) => {
