@@ -1,23 +1,40 @@
-import path from 'path';
-import untildify from 'untildify';
 import Path from './path';
 import {PolytonFactory} from 'polyton';
-import {toArray, toArrayOfArrays} from 'argu';
 import glob from 'glob';
 import minimatch from 'minimatch';
+import path from 'path';
+import untildify from 'untildify';
 
-const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
+const PolyPath = PolytonFactory(Path, ['literal'], {
+  customArgs: [
+    [String, {
+      convert (arg) {
+        return path.resolve(untildify(arg));
+      },
+    }],
+  ],
+}, {
   unordered: true,
   unique: true,
 
-  preprocess: function (args) {
-    // Extract all paths from args
-    const paths = args.reduce((array, [_arg]) => {
-      const _args = _arg instanceof Path ? [_arg.path] :
-        _arg instanceof PolyPath.BasePolyton ? _arg.paths : [_arg];
-      return array.concat(_args.map(arg => [path.resolve(untildify(arg))]));
-    }, []).map(([file]) => file);
+  spread (arg) {
+    return arg.paths;
+  },
 
+  customArgs: [
+    [Path, {
+      convert (arg) {
+        return arg.path;
+      },
+    }],
+    [String, {
+      convert (arg) {
+        return path.resolve(untildify(arg));
+      },
+    }],
+  ],
+
+  preprocess: function (paths) {
     // Distinguish between plain paths and patterns
     let globs = paths.filter(file => glob.hasMagic(file));
 
@@ -32,7 +49,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
       }));
     }
 
-    // Merge a/*b into a/**/*b when both found
+    // Merge a/*b into a/**/*b when both are found
     if (globs.length > 1) {
       const globstars = globs.filter(g => g.includes('**/'));
       const noglobstars = globs.filter(g => !g.includes('**/'));
@@ -45,8 +62,9 @@ const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
     }
 
     // Order to ensure unicity
-    return globs.sort().map(file => [file]);
+    return globs.sort();
   },
+
   properties: {
     paths: {
       get () {
@@ -54,6 +72,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
       },
     },
   },
+
   extend: {
     basenames () {
       return this.map(p => p.basename());
@@ -88,14 +107,13 @@ const PolyPath = PolytonFactory(Path, ['literal'], undefined, {
   },
 });
 
-const rebase = (files, base1, base2) => new PolyPath(
-  ...toArray(files)).rebase(base1, base2).paths;
+const rebase = (files, base1, base2) => new PolyPath(...files)
+  .rebase(base1, base2).paths;
 
-const resolve = (...files) => new PolyPath(...toArrayOfArrays(...files))
-  .resolve();
+const resolve = files => new PolyPath(...files).resolve();
 
 const split = (...glb) => {
-  const glob = glb.map(g => toArray(g)).reduce((a1, a2) => a1.concat(a2), []);
+  const glob = glb.reduce((a1, a2) => a1.concat(a2), []);
   return [
     glob.filter(g => !g.match(/^!/)),
     glob.filter(g => g.match(/^!/)).map(g => g.substring(1)),
