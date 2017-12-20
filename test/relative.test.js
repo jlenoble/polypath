@@ -37,10 +37,10 @@ describe('Testing PolyPath', function () {
     expect(p1.relative()).to.eql(['gulp', 'src', 'test']);
     expect(p2.relative()).to.eql(['gulp', 'src', 'test']);
 
-    expect(p1.relative(p1.get('src'))).to.eql(['', '../src', '../test']);
-    expect(p2.relative(p1.get('src'))).to.eql(['', '../src', '../test']);
+    expect(p1.relative(p1.get('gulp'))).to.eql(['', '../src', '../test']);
+    expect(p2.relative(p1.get('gulp'))).to.eql(['', '../src', '../test']);
 
-    expect(p1.relative(p1.get('gulp'))).to.eql(['../gulp', '../src', '']);
-    expect(p2.relative(p1.get('gulp'))).to.eql(['../gulp', '../src', '']);
+    expect(p1.relative(p1.get('test'))).to.eql(['../gulp', '../src', '']);
+    expect(p2.relative(p1.get('test'))).to.eql(['../gulp', '../src', '']);
   });
 });
