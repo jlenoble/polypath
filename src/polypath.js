@@ -1,15 +1,13 @@
-import Path from './path';
+import Path, {absolute} from './path';
 import {PolytonFactory} from 'polyton';
 import glob from 'glob';
 import minimatch from 'minimatch';
-import path from 'path';
-import untildify from 'untildify';
 
 const PolyPath = PolytonFactory(Path, ['literal'], {
   customArgs: [
     [String, {
       convert (arg) {
-        return path.resolve(untildify(arg));
+        return absolute(arg);
       },
     }],
   ],
@@ -29,7 +27,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], {
     }],
     [String, {
       convert (arg) {
-        return path.resolve(untildify(arg));
+        return absolute(arg);
       },
     }],
   ],

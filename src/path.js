@@ -2,10 +2,23 @@ import path from 'path';
 import glob from 'glob';
 import untildify from 'untildify';
 
-class Path {
+export const absolute = arg => {
+  switch (arg[0]) {
+  case '/':
+    return arg;
+  case '~':
+    return untildify(arg);
+  case '!':
+    return '!' + absolute(arg.substring(1));
+  default:
+    return path.resolve(arg);
+  }
+};
+
+export default class Path {
   constructor (_path) {
     Object.defineProperty(this, 'path', {
-      value: path.resolve(untildify(_path)),
+      value: absolute(_path),
       enumerable: true,
     });
   }
@@ -51,5 +64,3 @@ const proto = Path.prototype;
     return path[key](this.path);
   };
 });
-
-export default Path;
