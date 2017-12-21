@@ -1,4 +1,5 @@
 import path from 'path';
+import glob from 'glob';
 import untildify from 'untildify';
 import minimatch from 'minimatch';
 
@@ -29,6 +30,14 @@ export default class Absolute {
     });
   }
 
+  isEmpty () {
+    return !this[_path].length;
+  }
+
+  hasMagic () {
+    return this[_path].some(abs => abs.hasMagic());
+  }
+
   covers (path) {
     return this[_path].some(abs => abs.covers(path));
   }
@@ -37,18 +46,44 @@ export default class Absolute {
     return this[_path].every(abs => abs.isCoveredBy(path));
   }
 
+  indexOf (path) {
+    return this[_path].findIndex(abs => abs.path === absolute(path));
+  }
+
   add (path) {
+    // Returns true if path was adopted (superseded some, or was distinct)
     const len = this[_path].length;
     this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
     if (this[_path].length !== len) {
       this[_path].push(new SingleAbsolute(path));
-      return;
+      return true;
     }
 
     if (!this.covers(path)) {
       this[_path].push(new SingleAbsolute(path));
+      return true;
     }
+
+    return false;
+  }
+
+  remove (path) {
+    // Return false if path can be discarded (cancels out with something)
+    const index = this.indexOf(path);
+
+    if (index !== -1) {
+      this[_path].splice(index, 1);
+      return false;
+    }
+
+    this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
+
+    if (!this.hasMagic()) {
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -57,6 +92,10 @@ class SingleAbsolute {
     Object.defineProperty(this, 'path', {
       value: absolute(path),
     });
+  }
+
+  hasMagic () {
+    return glob.hasMagic(this.path);
   }
 
   covers (path) {
