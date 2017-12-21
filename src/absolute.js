@@ -15,40 +15,39 @@ export const absolute = arg => {
   }
 };
 
+const _path = Symbol();
+
 export default class Absolute {
   constructor (paths) {
-    Object.defineProperty(this, '_path', {
-      value: Array.isArray(paths) ? paths.map(
-        path => new SingleAbsolute(path)) : [new SingleAbsolute(paths)],
-      writable: true,
-    });
+    this[_path] = Array.isArray(paths) ? paths.map(
+      path => new SingleAbsolute(path)) : [new SingleAbsolute(paths)];
 
     Object.defineProperty(this, 'path', {
       get () {
-        return this._path.map(abs => abs.path).sort();
+        return this[_path].map(abs => abs.path).sort();
       },
     });
   }
 
   covers (path) {
-    return this._path.some(abs => abs.covers(path));
+    return this[_path].some(abs => abs.covers(path));
   }
 
   isCoveredBy (path) {
-    return this._path.every(abs => abs.isCoveredBy(path));
+    return this[_path].every(abs => abs.isCoveredBy(path));
   }
 
   add (path) {
-    const len = this._path.length;
-    this._path = this._path.filter(abs => !abs.isCoveredBy(path));
+    const len = this[_path].length;
+    this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
-    if (this._path.length !== len) {
-      this._path.push(new SingleAbsolute(path));
+    if (this[_path].length !== len) {
+      this[_path].push(new SingleAbsolute(path));
       return;
     }
 
     if (!this.covers(path)) {
-      this._path.push(new SingleAbsolute(path));
+      this[_path].push(new SingleAbsolute(path));
     }
   }
 }
@@ -65,7 +64,6 @@ class SingleAbsolute {
   }
 
   isCoveredBy (path) {
-    const abs = new Absolute(path);
-    return abs.covers(this.path);
+    return new Absolute(path).covers(this.path);
   }
 }
