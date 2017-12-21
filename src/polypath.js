@@ -1,4 +1,5 @@
-import Path, {absolute} from './path';
+import {absolute} from './absolute';
+import Path from './path';
 import Globber from './globber';
 import {PolytonFactory} from 'polyton';
 

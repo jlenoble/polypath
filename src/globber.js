@@ -1,6 +1,6 @@
 import glob from 'glob';
 import minimatch from 'minimatch';
-import {absolute} from './path';
+import {absolute} from './absolute';
 
 const _contains = (s1, s2, split) => {
   switch (split) {
