@@ -28,14 +28,14 @@ describe('Testing package functions', function () {
       f => path.join(process.cwd(), f));
 
     return Promise.all([
-      resolveGlob('src/*.js'),
-      resolveGlob(['src/*.js']),
+      resolveGlob('src/*path.js'),
+      resolveGlob(['src/*path.js']),
       resolveGlob('.babelrc'),
-      resolveGlob(['src/*.js', '.babelrc']),
-      resolveGlob('src/*.js', '.babelrc'),
-      resolveGlob(['src/*.js'], ['.babelrc']),
-      resolveGlob(['src/*.js'], '.babelrc'),
-      resolveGlob('src/*.js', ['.babelrc']),
+      resolveGlob(['src/*path.js', '.babelrc']),
+      resolveGlob('src/*path.js', '.babelrc'),
+      resolveGlob(['src/*path.js'], ['.babelrc']),
+      resolveGlob(['src/*path.js'], '.babelrc'),
+      resolveGlob('src/*path.js', ['.babelrc']),
     ]).then(files => {
       expect(files).to.eql([
         ['path.js', 'polypath.js'].map(f => path.join(process.cwd(), 'src', f)),

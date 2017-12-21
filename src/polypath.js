@@ -1,7 +1,6 @@
 import Path, {absolute} from './path';
+import Globber from './globber';
 import {PolytonFactory} from 'polyton';
-import glob from 'glob';
-import minimatch from 'minimatch';
 
 const PolyPath = PolytonFactory(Path, ['literal'], {
   customArgs: [
@@ -33,34 +32,7 @@ const PolyPath = PolytonFactory(Path, ['literal'], {
   ],
 
   preprocess: function (paths) {
-    // Distinguish between plain paths and patterns
-    let globs = paths.filter(file => glob.hasMagic(file));
-
-    // Remove plain paths matched by any present pattern
-    if (paths.length !== globs.length) {
-      const noglobs = paths.filter(file => !glob.hasMagic(file));
-
-      globs = globs.concat(noglobs.filter(g => {
-        return !globs.some(gg => {
-          return minimatch(g, gg);
-        });
-      }));
-    }
-
-    // Merge a/*b into a/**/*b when both are found
-    if (globs.length > 1) {
-      const globstars = globs.filter(g => g.includes('**/'));
-      const noglobstars = globs.filter(g => !g.includes('**/'));
-
-      globs = globstars.concat(noglobstars.filter(g => {
-        return !globstars.some(gg => {
-          return gg.split('**/').join('') === g;
-        });
-      }));
-    }
-
-    // Order to ensure unicity
-    return globs.sort();
+    return new Globber(...paths).glob;
   },
 
   properties: {
