@@ -32,9 +32,17 @@ export default class Absolute {
     this[_path] = Array.isArray(paths) ? paths.map(
       path => new SingleAbsolute(path)) : [new SingleAbsolute(paths)];
 
-    Object.defineProperty(this, 'path', {
-      get () {
-        return this[_path].map(abs => abs.path).sort();
+    Object.defineProperties(this, {
+      path: {
+        get () {
+          return this[_path].map(abs => abs.path).sort();
+        },
+      },
+
+      length: {
+        get () {
+          return this[_path].length;
+        },
       },
     });
   }
@@ -60,20 +68,29 @@ export default class Absolute {
   }
 
   add (path) {
+    // Return true if adopts path
+    if (path instanceof (Absolute)) {
+      throw new Error('toto');
+      return;
+    }
+
     const len = this[_path].length;
     this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
     if (this[_path].length !== len) {
       if (this[_path].length > 0) {
         this[_path].push(new SingleAbsolute(path));
+        return true;
       }
-      return;
+      return false;
     }
 
     if (!this.covers(path)) {
       this[_path].push(new SingleAbsolute(path));
-      return;
+      return true;
     }
+
+    return false;
   }
 
   remove (path) {
