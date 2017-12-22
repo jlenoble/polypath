@@ -4,6 +4,24 @@
 
 ## Convenience function `rebaseGlob` !heading
 
+`reduceGlob(glob)` attempts to provide a unique representation for any glob.
+
+```js
+import {rebaseGlob} from 'polypath';
+
+reduceGlob(['a', 'b']); // ['cwd/a', 'cwd/b']
+reduceGlob(['b', 'a']); // ['cwd/a', 'cwd/b']
+reduceGlob(['*', 'a']); // ['cwd/*']
+reduceGlob(['*', '!a']); // ['cwd/*', '!cwd/a']
+reduceGlob(['**', '*']); // ['cwd/*']
+reduceGlob(['**/*', '*']); // ['cwd/**/*']
+reduceGlob(['**/*', '!*']); // ['cwd/**/*', '!cwd/*']
+
+reduceGlob(['a', '!a', 'b*', '**/c', '!c', '!**/b*']); // ['cwd/**/c', '!cwd/c']
+```
+
+## Convenience function `rebaseGlob` !heading
+
 `rebaseGlob(glob, base1[, base2])` rebaseGlobs `glob` to `base1` if no `base2` is provided, or from `base1` to `base2` otherwise.
 
 ```js
