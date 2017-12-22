@@ -45,8 +45,14 @@ export default class Globber {
 
   _addAtPos (path, negate, pos) {
     const abs = this._glob[pos];
+    const status = abs.getAcceptStatus(path);
 
-    if (abs.add(path)) {
+    if (status.includes('filter')) {
+      abs.filterOutElementsCoveredBy(path);
+    }
+
+    if (status.includes('adopt')) {
+      abs.add(path);
       return true;
     }
 

@@ -55,81 +55,68 @@ export default class Absolute {
     return this[_path].some(abs => abs.hasMagic());
   }
 
-  covers (path) {
-    return this[_path].some(abs => abs.covers(path));
+  covers (path, strict = false) {
+    return this[_path].some(abs => abs.covers(path, strict));
   }
 
-  isCoveredBy (path) {
-    return this[_path].every(abs => abs.isCoveredBy(path));
+  isCoveredBy (path, strict = false) {
+    return this[_path].every(abs => abs.isCoveredBy(path, strict));
+  }
+
+  hasElementsCoveredBy (path, strict = false) {
+    return this[_path].some(abs => abs.isCoveredBy(path, strict));
+  }
+
+  mayNotBeDroppable (path) {
+    return this[_path].some(abs => abs.mayNotBeDroppable(path));
   }
 
   indexOf (path) {
     return this[_path].findIndex(abs => abs.path === absolute(path));
   }
 
-  add (path) {
-    // Return true if adopts path
-    if (path instanceof (Absolute)) {
-      throw new Error('toto');
-      return;
-    }
-
-    const len = this[_path].length;
-    this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
-
-    if (this[_path].length !== len) {
-      if (this[_path].length > 0) {
-        this[_path].push(new SingleAbsolute(path));
-        return true;
+  getAcceptStatus (path) {
+    if (this.hasElementsCoveredBy(path)) {
+      if (this.hasElementsCoveredBy(path, true)) {
+        return 'filter&adopt';
       }
-      return false;
+
+      return 'filter';
     }
 
-    if (!this.covers(path)) {
+    if (this.covers(path)) {
+      return 'drop';
+    }
+
+    return 'adopt';
+  }
+
+  filterOutElementsCoveredBy (path) {
+    this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
+  }
+
+  add (path) {
+    if (this[_path].length > 0) {
       this[_path].push(new SingleAbsolute(path));
-      return true;
     }
-
-    return false;
   }
 
   remove (path) {
     // Return false if path can be discarded (cancels out with something)
-    this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
+    this.filterOutElementsCoveredBy(path);
 
     if (this.covers(path)) {
       return true;
     }
 
-    const dirs = split(absolute(path));
-    const magicIndex = dirs.findIndex(dir => glob.hasMagic(dir));
-
-    return this[_path].some(abs => {
-      if (magicIndex !== -1 && abs.magicIndex !== -1) {
-        if (magicIndex !== abs.magicIndex) {
-          return false;
-        }
-
-        const dirs0 = split(abs.path);
-        const last = dirs0.length - 1;
-
-        for (let i = 0; i < last; i++) {
-          if (dirs[i] !== dirs0[i]) {
-            return false;
-          }
-        }
-
-        return dirs[last] !== dirs0[last]; // basename, not dirname
-      }
-
-      return false;
-    });
+    return this.mayNotBeDroppable(path);
   }
 }
 
 class SingleAbsolute {
   constructor (_path) {
     const path = absolute(_path);
+    const dirs = split(path);
 
     Object.defineProperties(this, {
       path: {
@@ -137,7 +124,11 @@ class SingleAbsolute {
       },
 
       magicIndex: {
-        value: split(path).findIndex(dir => glob.hasMagic(dir)),
+        value: dirs.findIndex(dir => glob.hasMagic(dir)),
+      },
+
+      dirs: {
+        value: dirs,
       },
     });
   }
@@ -146,12 +137,55 @@ class SingleAbsolute {
     return glob.hasMagic(this.path);
   }
 
-  covers (path) {
-    return minimatch(absolute(path), this.path);
+  covers (_path, strict = false) {
+    const path = absolute(_path);
+
+    let yes = minimatch(path, this.path);
+
+    if (yes && strict) {
+      yes = !minimatch(this.path, path);
+    }
+
+    return yes;
   }
 
-  isCoveredBy (path) {
-    return new Absolute(path).covers(this.path);
+  isCoveredBy (path, strict = false) {
+    return new Absolute(path).covers(this.path, strict);
+  }
+
+  mayNotBeDroppable (path) {
+    // Use this when removing covered globs.
+
+    // In remove mode, explicit path is dropped.
+    // If it has patterns, it is still dropped if this.path doesn't have any.
+    // But if both have patterns, they might at some point overlap.
+    if (this.magicIndex === -1 || !glob.hasMagic(path)) {
+      return false;
+    }
+
+    // Then it depends on what dirs they share
+    const dirs = split(absolute(path));
+    const magicIndex = dirs.findIndex(dir => glob.hasMagic(dir));
+
+    // If pattern indices are different, then the (non-)overlap is obvious
+    // and minimatch's answer in 'covers' method is enough
+    if (magicIndex !== this.magicIndex) {
+      return false;
+    }
+
+    const dirs0 = this.dirs;
+    const last = dirs0.length - 1;
+
+    // minimatch has answered false, but it was due only to basenames.
+    // Check all dirs up to magic. They have no pattern, so it's obvious
+    for (let i = 0; i < last; i++) {
+      if (dirs[i] !== dirs0[i]) {
+        return false;
+      }
+    }
+
+    // Path is fully shared up to magic, may not drop if not identical
+    return dirs[last] !== dirs0[last];
   }
 }
 
