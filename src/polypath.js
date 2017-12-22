@@ -64,16 +64,10 @@ const PolyPath = PolytonFactory(Path, ['literal'], {
     },
 
     resolve () {
-      return Promise.all(this.map(p => p.resolve())).then(files => {
-        let last;
-        return files.reduce((array, files) => {
-          return array.concat(files);
-        }, []).sort().filter(file => {
-          const keep = last !== file;
-          last = file;
-          return keep;
-        });
-      });
+      return Promise.all(this.map(p => p.resolve())).then(
+        files => new Globber(...files.reduce((f1, f2) => {
+          return f1.concat(f2);
+        })).glob);
     },
   },
 });

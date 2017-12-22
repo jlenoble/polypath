@@ -31,4 +31,13 @@ describe('Testing resolve method', function () {
         .map(f => path.join(process.cwd(), f)));
     });
   });
+
+  it(`Resolving with PolyPath - negation`, function () {
+    const p = new PolyPath('src/*path.js', '!src/poly*.js');
+
+    return p.resolve().then(files => {
+      expect(files).to.eql(['src/path.js']
+        .map(f => path.join(process.cwd(), f)));
+    });
+  });
 });

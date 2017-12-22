@@ -89,4 +89,48 @@ describe('Testing PolyPath', function () {
       path.join(cwd, 'build/polypath.js'),
     ]);
   });
+
+  it(`Testing rebase method (one arg - negation)`, function () {
+    const cwd = process.cwd();
+    const home = os.homedir();
+
+    const p = new PolyPath(
+      'src/*.js',
+      'test/*.js',
+      '!src/polypath.js'
+    );
+
+    expect(p.rebase().paths).to.eql(p.paths);
+
+    expect(p.rebase('build').paths).to.eql([
+      path.join(cwd, 'build/src/*.js'),
+      path.join(cwd, 'build/test/*.js'),
+      '!' + path.join(cwd, 'build/src/polypath.js'),
+    ]);
+
+    expect(p.rebase(home).paths).to.eql([
+      path.join(home, 'src/*.js'),
+      path.join(home, 'test/*.js'),
+      '!' + path.join(home, 'src/polypath.js'),
+    ]);
+  });
+
+  it(`Testing rebase method (two args - negation)`, function () {
+    const cwd = process.cwd();
+
+    const p = new PolyPath(
+      path.join(cwd, 'src/*path.js'),
+      '!' + path.join(cwd, 'src/polypath.js')
+    );
+
+    expect(p.rebase('build').paths).to.eql([
+      path.join(cwd, 'build/src/*path.js'),
+      '!' + path.join(cwd, 'build/src/polypath.js'),
+    ]);
+
+    expect(p.rebase('src', 'build').paths).to.eql([
+      path.join(cwd, 'build/*path.js'),
+      '!' + path.join(cwd, 'build/polypath.js'),
+    ]);
+  });
 });
