@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import PolyPath from '../src/polypath';
+import path from 'path';
+import PolyPath, {reduceGlob} from '../src/polypath';
 
 describe('Testing PolyPath', function () {
   const polypaths = {
@@ -59,12 +60,19 @@ describe('Testing PolyPath', function () {
   Object.keys(polypaths).forEach(key => {
     const paths0 = key.split(',');
     const paths = polypaths[key].split(',');
+    const abspaths = paths.map(p => p[0] === '!' ?
+      '!' + path.join(process.cwd(), p.substring(1)) :
+      path.join(process.cwd(), p));
 
     it(`${JSON.stringify(paths0)} yields ${JSON.stringify(paths)}`,
       function () {
-        const relPaths = new PolyPath(...paths0).relative(process.cwd());
+        const poly = new PolyPath(...paths0);
+        const relPaths = poly.relative(process.cwd());
+
         expect(relPaths).to.eql(paths);
-        expect(new PolyPath(...paths0)).to.equal(new PolyPath(...paths)); // :)!
+        expect(reduceGlob(...paths0)).to.eql(abspaths);
+        expect(reduceGlob(...paths)).to.eql(abspaths);
+        expect(poly).to.equal(new PolyPath(...paths)); // :)!
       });
   });
 });

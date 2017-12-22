@@ -97,5 +97,7 @@ const rebaseGlob = (glb, base1, base2) => {
 const resolveGlob = (...glb) => Promise.all(split(...glb)
   .map(g => g.length && resolve(g) || Promise.resolve(g))).then(filter);
 
+const reduceGlob = (...glb) => new PolyPath(...glb).paths;
+
 export default PolyPath;
-export {Path, rebaseGlob, resolveGlob};
+export {Path, rebaseGlob, resolveGlob, reduceGlob};
