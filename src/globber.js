@@ -30,11 +30,11 @@ export default class Globber {
     paths.forEach(path => this.add(path));
   }
 
-  add (_path) {
-    const pos = this._glob.length - 1;
-    const negate = _path[0] === '!';
-
-    const path = (negate ? _path.substring(1) : _path).replace(/\*\*$/, '*');
+  add (_path, _negate, _pos) {
+    const pos = _pos || this._glob.length - 1;
+    const negate = _negate || _path[0] === '!';
+    const path = _negate && _path ||
+      (negate ? _path.substring(1) : _path).replace(/\*\*$/, '*');
 
     if (this._ReturnIfHandledEgdeCase(path, negate, pos)) {
       return;
@@ -45,7 +45,7 @@ export default class Globber {
 
   _addAtPos (path, negate, pos) {
     const abs = this._glob[pos];
-    const status = abs.getAcceptStatus(path);
+    const status = abs.getStatus(path);
 
     if (status.includes('filter')) {
       abs.filterOutElementsCoveredBy(path);
@@ -105,7 +105,7 @@ export default class Globber {
         this._glob.pop();
       }
 
-      this.add(negate ? '!' + path : path, pos - 1);
+      this.add(path, negate, pos - 1);
 
       return this._mergeLeftAndRight(path, negate, pos);
     }

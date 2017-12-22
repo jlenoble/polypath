@@ -75,20 +75,23 @@ export default class Absolute {
     return this[_path].findIndex(abs => abs.path === absolute(path));
   }
 
-  getAcceptStatus (path) {
-    if (this.hasElementsCoveredBy(path)) {
-      if (this.hasElementsCoveredBy(path, true)) {
-        return 'filter&adopt';
+  getStatus (path, previousStatus) {
+    switch (previousStatus) {
+    default:
+      if (this.hasElementsCoveredBy(path)) {
+        if (this.hasElementsCoveredBy(path, true)) {
+          return 'filter&adopt';
+        }
+
+        return 'filter';
       }
 
-      return 'filter';
-    }
+      if (this.covers(path)) {
+        return 'drop';
+      }
 
-    if (this.covers(path)) {
-      return 'drop';
+      return 'adopt';
     }
-
-    return 'adopt';
   }
 
   filterOutElementsCoveredBy (path) {
