@@ -79,11 +79,15 @@ export default class Absolute {
 
     this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
-    if (!this.hasMagic()) {
-      return false;
+    if (this.covers(path)) {
+      return true;
     }
 
-    return true;
+    if (this.hasMagic() && glob.hasMagic(path)) {
+      return true;
+    }
+
+    return false;
   }
 }
 

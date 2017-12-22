@@ -65,6 +65,6 @@ const proto = Path.prototype;
 
 ['dirname', 'basename', 'extname'].forEach(key => {
   proto[key] = function () {
-    return path[key](this.path);
+    return path[key](this._path);
   };
 });
