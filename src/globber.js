@@ -33,10 +33,19 @@ export default class Globber {
   add (_path, _negate, _pos) {
     const pos = _pos || this._glob.length - 1;
     const negate = _negate || _path[0] === '!';
-    const path = _negate && _path ||
+    const path = _negate !== undefined && _path ||
       (negate ? _path.substring(1) : _path).replace(/\*\*$/, '*');
 
-    if (this._ReturnIfHandledEgdeCase(path, negate, pos)) {
+    const glob = this._glob;
+    const abs = glob[pos];
+
+    if (!abs) {
+      glob.push(blank);
+      return this.add(path, negate, pos + 1);
+    }
+
+    if (abs === blank && !negate) {
+      glob[pos] = new Absolute(path);
       return;
     }
 
@@ -77,26 +86,6 @@ export default class Globber {
     }
 
     this._addAgainIfEmpty(path, negate, pos);
-  }
-
-  _ReturnIfHandledEgdeCase (path, negate, pos) {
-    if (pos < 0 && this._glob.length === 0) {
-      if (!negate) {
-        this._glob.push(new Absolute(path));
-      } else {
-        this._glob.push(blank);
-      }
-      return true;
-    }
-
-    if (pos === 0 && this._glob[0] === blank) {
-      if (!negate) {
-        this._glob[0] = new Absolute(path);
-      }
-      return true;
-    }
-
-    return false;
   }
 
   _addAgainIfEmpty (path, negate, pos) {
