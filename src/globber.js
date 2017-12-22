@@ -7,16 +7,11 @@ export default class Globber {
       enumerable: true,
     });
 
-    Object.defineProperty(this, '_negate', {
-      value: _path[0] === '!',
-      enumerable: true,
-    });
-
     Object.defineProperty(this, 'glob', {
       get () {
         return this._glob.map((abs, i) => {
-          const negate = i % 2 ? !this._negate : this._negate;
-          return negate ? abs.path.map(e => '!' + e) : abs.path;
+          const negate = !(i % 2);
+          return negate ? abs.path : abs.path.map(e => '!' + e);
         }).reduce((a1, a2) => {
           return a1.concat(a2);
         }, []);
@@ -25,7 +20,7 @@ export default class Globber {
 
     Object.defineProperty(this, 'negate', {
       get () {
-        return this._glob.length % 2 ? this._negate : !this._negate;
+        return !(this._glob.length % 2);
       },
     });
 
