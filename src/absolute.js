@@ -3,17 +3,26 @@ import glob from 'glob';
 import untildify from 'untildify';
 import minimatch from 'minimatch';
 
-export const absolute = arg => {
+export const absolute = _arg => {
+  const arg = _arg.trim();
+
   switch (arg[0]) {
   case '/':
     return arg;
+
   case '~':
     return untildify(arg);
+
   case '!':
     return '!' + absolute(arg.substring(1));
+
   default:
     return path.resolve(arg);
   }
+};
+
+const split = str => {
+  return str.replace(/([^\\])\//g, '$1\u000B').split('\u000B');
 };
 
 const _path = Symbol();
@@ -51,50 +60,68 @@ export default class Absolute {
   }
 
   add (path) {
-    // Returns true if path was adopted (superseded some, or was distinct)
     const len = this[_path].length;
     this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
     if (this[_path].length !== len) {
-      this[_path].push(new SingleAbsolute(path));
-      return true;
+      if (this[_path].length > 0) {
+        this[_path].push(new SingleAbsolute(path));
+      }
+      return;
     }
 
     if (!this.covers(path)) {
       this[_path].push(new SingleAbsolute(path));
-      return true;
+      return;
     }
-
-    return false;
   }
 
   remove (path) {
     // Return false if path can be discarded (cancels out with something)
-    const index = this.indexOf(path);
-
-    if (index !== -1) {
-      this[_path].splice(index, 1);
-      return false;
-    }
-
     this[_path] = this[_path].filter(abs => !abs.isCoveredBy(path));
 
     if (this.covers(path)) {
       return true;
     }
 
-    if (this.hasMagic() && glob.hasMagic(path)) {
-      return true;
-    }
+    const dirs = split(absolute(path));
+    const magicIndex = dirs.findIndex(dir => glob.hasMagic(dir));
 
-    return false;
+    return this[_path].some(abs => {
+      if (magicIndex !== -1 && abs.magicIndex !== -1) {
+        if (magicIndex !== abs.magicIndex) {
+          return false;
+        }
+
+        const dirs0 = split(abs.path);
+        const last = dirs0.length - 1;
+
+        for (let i = 0; i < last; i++) {
+          if (dirs[i] !== dirs0[i]) {
+            return false;
+          }
+        }
+
+        return dirs[last] !== dirs0[last]; // basename, not dirname
+      }
+
+      return false;
+    });
   }
 }
 
 class SingleAbsolute {
-  constructor (path) {
-    Object.defineProperty(this, 'path', {
-      value: absolute(path),
+  constructor (_path) {
+    const path = absolute(_path);
+
+    Object.defineProperties(this, {
+      path: {
+        value: path,
+      },
+
+      magicIndex: {
+        value: split(path).findIndex(dir => glob.hasMagic(dir)),
+      },
     });
   }
 
@@ -110,3 +137,5 @@ class SingleAbsolute {
     return new Absolute(path).covers(this.path);
   }
 }
+
+export const blank = new Absolute('');

@@ -88,7 +88,7 @@ describe('Testing Globber', function () {
     it(`'src/*.js' add '!src/*.js'`, function () {
       const glb = new Globber('src/*.js');
       glb.add('!src/*.js');
-      expect(glb.glob).to.eql([]);
+      expect(glb.glob).to.eql(['']);
     });
 
     it(`'src/*.js' add '!src/*.js', 'src/*.js'`, function () {

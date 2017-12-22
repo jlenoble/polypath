@@ -57,18 +57,18 @@ describe('Testing PolyPath', function () {
       '!' + path.join(cwd, 'gulp/*.js'),
     );
 
-    expect(p1.relative()).to.eql(['src/*.js', 'test/*.js', '!gulp/*.js']);
-    expect(p2.relative()).to.eql(['src/*.js', 'test/*.js', '!gulp/*.js']);
+    expect(p1.relative()).to.eql(['src/*.js', 'test/*.js']);
+    expect(p2.relative()).to.eql(['src/*.js', 'test/*.js']);
 
     expect(p1.relative(p1.get('gulp'))).to.eql(
-      ['../src/*.js', '../test/*.js', '!*.js']);
+      ['../src/*.js', '../test/*.js']);
     expect(p2.relative(p1.get('gulp'))).to.eql(
-      ['../src/*.js', '../test/*.js', '!*.js']);
+      ['../src/*.js', '../test/*.js']);
 
     expect(p1.relative(p1.get('test'))).to.eql(
-      ['../src/*.js', '*.js', '!../gulp/*.js']);
+      ['../src/*.js', '*.js']);
     expect(p2.relative(p1.get('test'))).to.eql(
-      ['../src/*.js', '*.js', '!../gulp/*.js']);
+      ['../src/*.js', '*.js']);
   });
 
   it(`Testing relative method - negation - dir pattern`, function () {
