@@ -74,17 +74,21 @@ export default class Globber {
 
   _removeAtPos (path, negate, pos) {
     const abs = this._glob[pos];
+    let status;
 
     abs.filterOutElementsCoveredBy(path);
 
     if (abs.covers(path) || abs.mayNotBeDroppable(path)) {
-      if (!this._addAgainIfEmpty(path, negate, pos)) {
-        this._glob.push(new Absolute(path));
-        return;
-      }
+      this._glob.push(new Absolute(path));
+      return;
     }
 
-    this._addAgainIfEmpty(path, negate, pos);
+    status = abs.getStatus(path, 'removed');
+
+    if (status === 'empty') {
+      this._glob.pop();
+      this.add(path, negate, pos - 1);
+    }
   }
 
   _addOrRemove (path, negate, pos) {
@@ -93,19 +97,6 @@ export default class Globber {
     } else {
       this._removeAtPos(path, negate, pos);
     }
-  }
-
-  _addAgainIfEmpty (path, negate, pos) {
-    if (this._glob[pos].isEmpty() && pos > -1) {
-      if (pos === this._glob.length - 1) {
-        this._glob.pop();
-      }
-
-      this.add(path, negate, pos - 1);
-
-      return this._mergeLeftAndRight(path, negate, pos);
-    }
-    return false;
   }
 
   _mergeLeftAndRight (path, negate, pos) {

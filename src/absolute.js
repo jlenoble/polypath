@@ -92,7 +92,7 @@ export default class Absolute {
 
       return 'adopt';
 
-    case 'added':
+    case 'added': case 'removed':
       if (this.isEmpty()) {
         return 'empty';
       }
