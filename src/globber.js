@@ -62,20 +62,20 @@ export default class Globber {
 
     if (status.includes('adopt')) {
       abs.add(path);
-      return true;
     }
 
-    return false;
+    this._addAgainIfEmpty(path, negate, pos);
   }
 
   _removeAtPos (path, negate, pos) {
     if (this._glob[pos].remove(path)) {
       if (!this._addAgainIfEmpty(path, negate, pos)) {
         this._glob.push(new Absolute(path));
-        return true;
+        return;
       }
     }
-    return false;
+
+    this._addAgainIfEmpty(path, negate, pos);
   }
 
   _addOrRemove (path, negate, pos) {
@@ -84,8 +84,6 @@ export default class Globber {
     } else {
       this._removeAtPos(path, negate, pos);
     }
-
-    this._addAgainIfEmpty(path, negate, pos);
   }
 
   _addAgainIfEmpty (path, negate, pos) {
