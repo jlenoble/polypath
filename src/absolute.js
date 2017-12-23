@@ -75,9 +75,9 @@ export default class Absolute {
     return this[_path].findIndex(abs => abs.path === absolute(path));
   }
 
-  getStatus (path, previousStatus) {
-    switch (previousStatus) {
-    default:
+  getStatus (path, status) {
+    switch (status) {
+    case 'add':
       if (this.hasElementsCoveredBy(path)) {
         if (this.hasElementsCoveredBy(path, true)) {
           return 'filter&adopt';
@@ -91,6 +91,15 @@ export default class Absolute {
       }
 
       return 'adopt';
+
+    case 'added':
+      if (this.isEmpty()) {
+        return 'empty';
+      }
+      break;
+
+    default:
+      throw new Error(`Undefined status ${status}`);
     }
   }
 

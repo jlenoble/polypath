@@ -54,7 +54,7 @@ export default class Globber {
 
   _addAtPos (path, negate, pos) {
     const abs = this._glob[pos];
-    const status = abs.getStatus(path);
+    let status = abs.getStatus(path, 'add');
 
     if (status.includes('filter')) {
       abs.filterOutElementsCoveredBy(path);
@@ -64,7 +64,12 @@ export default class Globber {
       abs.add(path);
     }
 
-    this._addAgainIfEmpty(path, negate, pos);
+    status = abs.getStatus(path, 'added');
+
+    if (status === 'empty') {
+      this._glob.pop();
+      this.add(path, negate, pos - 1);
+    }
   }
 
   _removeAtPos (path, negate, pos) {
