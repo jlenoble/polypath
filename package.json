@@ -47,6 +47,7 @@
     "gulp-sourcemaps": "^2.6.1",
     "gulp-wrap": "*",
     "markdown-include": "*",
+    "muter": "^0.6.0",
     "plumb-gulp": "*"
   },
   "peerDependencies": {}
