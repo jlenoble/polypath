@@ -98,6 +98,12 @@ export default class Absolute {
       }
       break;
 
+    case 'filtered':
+      if (this.covers(path) || this.mayNotBeDroppable(path)) {
+        return 'keep';
+      }
+      break;
+
     default:
       throw new Error(`Undefined status ${status}`);
     }

@@ -61,7 +61,15 @@ export default class Globber {
     }
 
     if (status.includes('adopt')) {
-      abs.add(path);
+      if (pos > 0) {
+        status = this._glob[pos - 1].getStatus(path, 'add');
+      }
+
+      if (status.includes('filter') && pos > 0) {
+        this._removeAtPos(path, negate, pos - 1);
+      } else {
+        abs.add(path);
+      }
     }
 
     status = abs.getStatus(path, 'added');
@@ -78,7 +86,9 @@ export default class Globber {
 
     abs.filterOutElementsCoveredBy(path);
 
-    if (abs.covers(path) || abs.mayNotBeDroppable(path)) {
+    status = abs.getStatus(path, 'filtered');
+
+    if (status === 'keep') {
       this._glob.push(new Absolute(path));
       return;
     }
