@@ -1,0 +1,43 @@
+import {error} from 'explanation';
+
+export default class Chunks {
+  constructor (chunk) {
+    if (typeof chunk !== 'string' || !/^\w+(,\w+)*$/.test(chunk)) {
+      error({
+        message: 'Not plain chunks',
+        explain: [
+          ['You attempted to initialize a Chunks object with:', chunk],
+          'But expected \'chunk(,chunk)*`\'',
+        ],
+      });
+    }
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: chunk,
+        enumerable: true,
+      },
+    });
+  }
+}
+
+export class StarChunks {
+  constructor (chunk) {
+    if (!/^\w*(\*\w*)+(,\w*(\*\w*)+)*$/.test(chunk)) {
+      error({
+        message: 'Not star chunks',
+        explain: [
+          ['You attempted to initialize a StarChunks object with:', chunk],
+          'But expected \'starchunk(,starchunk)*`\'',
+        ],
+      });
+    }
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: chunk,
+        enumerable: true,
+      },
+    });
+  }
+}
