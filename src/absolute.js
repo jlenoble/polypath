@@ -112,17 +112,6 @@ export default class Absolute {
       this[_path].push(new SingleAbsolute(path));
     }
   }
-
-  remove (path) {
-    // Return false if path can be discarded (cancels out with something)
-    this.filterOutElementsCoveredBy(path);
-
-    if (this.covers(path)) {
-      return true;
-    }
-
-    return this.mayNotBeDroppable(path);
-  }
 }
 
 class SingleAbsolute {

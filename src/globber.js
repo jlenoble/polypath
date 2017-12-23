@@ -73,7 +73,11 @@ export default class Globber {
   }
 
   _removeAtPos (path, negate, pos) {
-    if (this._glob[pos].remove(path)) {
+    const abs = this._glob[pos];
+
+    abs.filterOutElementsCoveredBy(path);
+
+    if (abs.covers(path) || abs.mayNotBeDroppable(path)) {
       if (!this._addAgainIfEmpty(path, negate, pos)) {
         this._glob.push(new Absolute(path));
         return;
