@@ -4,7 +4,7 @@ export default class Chunk {
   constructor (chunk) {
     if (typeof chunk !== 'string' || !/^\w+$/.test(chunk)) {
       error({
-        message: 'Not a plain chunk',
+        message: 'Not a word chunk',
         explain: [
           ['You attempted to initialize a Chunk object with:', chunk],
           'But the initialization argument must be a plain string',

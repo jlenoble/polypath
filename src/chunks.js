@@ -4,7 +4,7 @@ export default class Chunks {
   constructor (chunk) {
     if (typeof chunk !== 'string' || !/^\w+(,\w+)*$/.test(chunk)) {
       error({
-        message: 'Not plain chunks',
+        message: 'Not word chunks',
         explain: [
           ['You attempted to initialize a Chunks object with:', chunk],
           'But expected \'chunk(,chunk)*`\'',
