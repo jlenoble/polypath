@@ -79,7 +79,7 @@ export default function add (Type1, Type2, implementation, options) {
     } catch (e) {
       if (new RegExp(`Cannot read property.*add:${Type2.name}.*of undefined`)
         .test(e.message)) {
-        const _p2 = Object.getPrototypeOf(a).name || typeof a;
+        const _p2 = a && a.constructor.name || typeof a;
 
         error({
           message: `${Type1.name} cannot add with ${_p2}`,

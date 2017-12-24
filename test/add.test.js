@@ -50,7 +50,7 @@ describe(`'add' function`, function () {
       const t1 = new Type1('a');
       const t2 = 'b';
 
-      expect(() => t1.add(t2)).to.throw('Type1 cannot add with string');
+      expect(() => t1.add(t2)).to.throw('Type1 cannot add with String');
     }));
   });
 
