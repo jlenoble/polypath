@@ -5,7 +5,7 @@ import Muter, {muted} from 'muter';
 
 const muter = Muter(console);
 
-describe('A BaseChunk instance', function () {
+describe('A Chunk instance', function () {
   it('encapsulates a word string', function () {
     expect(new Chunk('a').chunk).to.equal('a');
     expect(new Chunk('abc').chunk).to.equal('abc');
