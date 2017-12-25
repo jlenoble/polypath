@@ -159,7 +159,7 @@ describe(`'add' function`, function () {
 
     it('throws if both types are the same as before', muted(muter, function () {
       expect(() => add(this.Type1, this.Type2, function () {}))
-        .to.throw('Type1::add(Type2) already implemented');
+        .to.throw('Both types are already coupled');
     }));
 
     it('throws if 1st type is different but with same name as before',
@@ -167,7 +167,7 @@ describe(`'add' function`, function () {
         function Type1 () {};
 
         expect(() => add(Type1, this.Type2, function () {}))
-          .to.throw(`Same 'type' symbol, but different type`);
+          .to.throw(`Symbols share name, but are different`);
       }));
 
     it('throws if 2nd type is different but with same name as before',

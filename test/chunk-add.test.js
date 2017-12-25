@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Chunk, Chunks} from '../src/index';
+import {Chunk, StarChunk, Chunks} from '../src/index';
 
 // import Muter, {muted} from 'muter';
 // import Muter, {captured as muted} from 'muter';
@@ -21,5 +21,11 @@ describe('Adding Chunk', function () {
 
     expect(c1.chunk).to.equal('a,b');
     expect(c2.chunk).to.equal('abc,xyz');
+  });
+
+  it('with matched StarChunk yields same StarChunk', function () {
+    expect(new Chunk('a').add(new StarChunk('a*')).chunk).to.equal('a*');
+    expect(new Chunk('abc').add(new StarChunk('*ab*c')).chunk)
+      .to.equal('*ab*c');
   });
 });

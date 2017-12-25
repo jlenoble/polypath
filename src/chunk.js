@@ -38,6 +38,10 @@ export class StarChunk {
         value: chunk,
         enumerable: true,
       },
+
+      regex: {
+        value: new RegExp(chunk.replace('*', '\\w*')),
+      },
     });
   }
 }
