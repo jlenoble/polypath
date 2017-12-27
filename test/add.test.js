@@ -1,7 +1,7 @@
 /* eslint-disable no-invalid-this */
 import {expect} from 'chai';
 
-import add from '../src/add';
+import {add} from '../src/methods';
 
 import Chunk from '../src/chunk';
 import Chunks from '../src/chunks';

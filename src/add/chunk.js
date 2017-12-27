@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import add from '../add';
+import {add} from '../methods';
 import Chunk, {StarChunk} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 
