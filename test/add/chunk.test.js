@@ -41,7 +41,7 @@ describe('Adding Chunk', function () {
   });
 
   it('with an overlapping Chunks yields same Chunks', function () {
-    const c1 = new Chunk('a').add(new Chunks('a,b'));
+    const c1 = new Chunk('a').add(new Chunks('b,a'));
     const c2 = new Chunk('abc').add(new Chunks('x,y,abc,z'));
 
     expect(c1).to.be.instanceof(Chunks);

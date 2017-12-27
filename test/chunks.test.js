@@ -8,7 +8,8 @@ const muter = Muter(console);
 describe('A Chunks instance', function () {
   it('encapsulates chunks', function () {
     expect(new Chunks('a').chunk).to.equal('a');
-    expect(new Chunks('abc').chunk).to.equal('abc');
+    expect(new Chunks('a,b,c').chunk).to.equal('a,b,c');
+    expect(new Chunks('b,a,c').chunk).to.equal('a,b,c');
   });
 
   it('throws on anything but a string', muted(muter, function () {

@@ -16,7 +16,7 @@ export default class Chunks {
 
     Object.defineProperties(this, {
       chunk: {
-        value: Array.from(set).join(','),
+        value: Array.from(set).sort().join(','),
         enumerable: true,
       },
     });
