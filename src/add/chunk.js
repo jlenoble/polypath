@@ -12,3 +12,7 @@ add(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk) ? obj:
     new Chunks(this.chunk + ',' + obj.chunk);
 });
+
+add(Chunk, Chunks, function (obj) {
+  return new Chunks(this.chunk + ',' + obj.chunk);
+});

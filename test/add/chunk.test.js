@@ -28,4 +28,26 @@ describe('Adding Chunk', function () {
     expect(new Chunk('abc').add(new StarChunk('*ab*c')).chunk)
       .to.equal('*ab*c');
   });
+
+  it('with a Chunks yields a Chunks', function () {
+    const c1 = new Chunk('a').add(new Chunks('b'));
+    const c2 = new Chunk('abc').add(new Chunks('x,y,z'));
+
+    expect(c1).to.be.instanceof(Chunks);
+    expect(c2).to.be.instanceof(Chunks);
+
+    expect(c1.chunk).to.equal('a,b');
+    expect(c2.chunk).to.equal('abc,x,y,z');
+  });
+
+  it('with an overlapping Chunks yields same Chunks', function () {
+    const c1 = new Chunk('a').add(new Chunks('a,b'));
+    const c2 = new Chunk('abc').add(new Chunks('x,y,abc,z'));
+
+    expect(c1).to.be.instanceof(Chunks);
+    expect(c2).to.be.instanceof(Chunks);
+
+    expect(c1.chunk).to.equal('a,b');
+    expect(c2.chunk).to.equal('abc,x,y,z');
+  });
 });

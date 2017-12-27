@@ -12,9 +12,11 @@ export default class Chunks {
       });
     }
 
+    const set = new Set(chunk.split(','));
+
     Object.defineProperties(this, {
       chunk: {
-        value: chunk,
+        value: Array.from(set).join(','),
         enumerable: true,
       },
     });
