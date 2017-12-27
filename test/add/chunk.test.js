@@ -66,7 +66,7 @@ describe('Adding Chunk', function () {
     expect(c2).to.be.instanceof(MixedChunks);
 
     expect(c1.chunk).to.equal('a,b*');
-    expect(c2.chunk).to.equal('abc,*y,*z*,x*');
+    expect(c2.chunk).to.equal('*y,*z*,abc,x*');
   });
 
   it('with an overlapping StarChunks yields same StarChunks', function () {
@@ -78,5 +78,27 @@ describe('Adding Chunk', function () {
 
     expect(c1.chunk).to.equal('*a*,*b');
     expect(c2.chunk).to.equal('*x,a*c,z*');
+  });
+
+  it('with a MixedChunks yields a MixedChunks', function () {
+    const c1 = new Chunk('a').add(new MixedChunks('b*,c'));
+    const c2 = new Chunk('abc').add(new MixedChunks('x*,*y,*z*,u,v'));
+
+    expect(c1).to.be.instanceof(MixedChunks);
+    expect(c2).to.be.instanceof(MixedChunks);
+
+    expect(c1.chunk).to.equal('a,b*,c');
+    expect(c2.chunk).to.equal('*y,*z*,abc,u,v,x*');
+  });
+
+  it('with an overlapping MixedChunks yields same MixedChunks', function () {
+    const c1 = new Chunk('a').add(new MixedChunks('*b,*a*,c'));
+    const c2 = new Chunk('abc').add(new MixedChunks('*x,a*c,z*,u,v'));
+
+    expect(c1).to.be.instanceof(MixedChunks);
+    expect(c2).to.be.instanceof(MixedChunks);
+
+    expect(c1.chunk).to.equal('*a*,*b,c');
+    expect(c2.chunk).to.equal('*x,a*c,u,v,z*');
   });
 });

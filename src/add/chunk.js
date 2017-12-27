@@ -13,9 +13,13 @@ add(Chunk, StarChunk, function (obj) {
 });
 
 add(Chunk, Chunks, function (obj) {
-  return new Chunks(this.chunk + ',' + obj.chunk);
+  return obj.test(this) ? obj: new Chunks(this.chunk + ',' + obj.chunk);
 });
 
 add(Chunk, StarChunks, function (obj) {
+  return obj.test(this) ? obj: new MixedChunks(this.chunk + ',' + obj.chunk);
+});
+
+add(Chunk, MixedChunks, function (obj) {
   return obj.test(this) ? obj: new MixedChunks(this.chunk + ',' + obj.chunk);
 });

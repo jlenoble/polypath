@@ -20,7 +20,15 @@ export default class Chunks {
         value: Array.from(set).sort().join(','),
         enumerable: true,
       },
+
+      chunks: {
+        value: set,
+      },
     });
+  }
+
+  test (obj) {
+    return this.chunks.has(obj.chunk);
   }
 }
 
@@ -67,11 +75,25 @@ export class MixedChunks {
       });
     }
 
+    const set = Array.from(new Set(chunk.split(','))).sort();
+
     Object.defineProperties(this, {
       chunk: {
-        value: chunk,
+        value: set.join(','),
         enumerable: true,
       },
+
+      chunks: {
+        value: new Chunks(set.filter(chunk => !/\*/.test(chunk)).join(',')),
+      },
+
+      starchunks: {
+        value: new StarChunks(set.filter(chunk => /\*/.test(chunk)).join(',')),
+      },
     });
+  }
+
+  test (obj) {
+    return this.chunks.test(obj) || this.starchunks.test(obj);
   }
 }
