@@ -65,19 +65,22 @@ export default function add (Type1, Type2, implementation, options) {
     addSymbols.set(Type2, Symbol(symName2));
   }
 
+  const _add = addSymbols.get(Type2);
+
   if (nNewlySet === 0) {
-    error({
-      message: 'Both types are already coupled',
-      explain: [
-        ['In add factory, type', Type2.name],
-        ['is already know to be coupled with type', Type1.name],
-        ['You have probably defined a method add on ', Type1.name],
-        ['that can deal with', Type2.name],
-      ],
-    });
+    if (p2[_type] === Type1 && Type1[_add] !== undefined) {
+      error({
+        message: 'Both types are already coupled',
+        explain: [
+          ['In add factory, type', Type2.name],
+          ['is already known to be coupled with type', Type1.name],
+          ['You have probably defined a method add on ', Type1.name],
+          ['that can deal with', Type2.name],
+        ],
+      });
+    }
   }
 
-  const _add = addSymbols.get(Type2);
   const symbs2 = Object.getOwnPropertySymbols(Type1);
   const index2 = symbs2.map(s => s.toString()).indexOf(_add.toString());
 
