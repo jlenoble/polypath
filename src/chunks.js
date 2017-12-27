@@ -27,8 +27,8 @@ export default class Chunks {
     });
   }
 
-  test (obj) {
-    return this.chunks.has(obj.chunk);
+  testChunk (chunk) {
+    return this.chunks.has(chunk);
   }
 }
 
@@ -58,8 +58,8 @@ export class StarChunks {
     });
   }
 
-  test (obj) {
-    return this.chunks.some(starchunk => starchunk.test(obj));
+  testChunk (chunk) {
+    return this.chunks.some(starchunk => starchunk.testChunk(chunk));
   }
 }
 
@@ -93,7 +93,8 @@ export class MixedChunks {
     });
   }
 
-  test (obj) {
-    return this.chunks.test(obj) || this.starchunks.test(obj);
+  testChunk (chunk) {
+    return this.chunks.testChunk(chunk) ||
+      this.starchunks.testChunk(chunk);
   }
 }

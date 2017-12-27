@@ -1,5 +1,7 @@
 import {error} from 'explanation';
 
+const typeSymbols = new WeakMap();
+
 export default function method (name) {
   if (typeof name !== 'string') {
     error({
@@ -11,7 +13,6 @@ export default function method (name) {
     });
   }
 
-  const typeSymbols = new WeakMap();
   const methodSymbols = new WeakMap();
 
   const _method = function (Type1, Type2, implementation) {
@@ -125,16 +126,28 @@ export default function method (name) {
           if (new RegExp(`Cannot read property.*of undefined`)
             .test(e.message)) {
             const _p2 = a && Type2.name || typeof a;
+            const explain = [
+              [`You tried to run '${name}' of instance:`, this],
+              ['of type', Type1.name],
+              ['with argument:', a],
+              ['of type', _p2],
+            ];
 
-            error({
-              message: `${Type1.name} cannot run '${name}' with ${_p2}`,
-              explain: [
-                [`You tried to run '${name}' of instance:`, this],
-                ['of type', Type1.name],
-                ['with argument:', a],
-                ['of type', _p2],
-              ],
-            });
+            if (!a[_type] || !a[_type][_name]) {
+              error({
+                message: `${Type1.name} cannot run '${name}' with ${_p2}`,
+                explain: explain.concat(
+                  `But an implementation doesn't exist for this pair of types`),
+              });
+            } else if (e.message.includes(`property '${name}'`)) {
+              error({
+                message: `Undefined method ${name}`,
+                explain: explain.concat([
+                  `But method '${name}' was never defined`,
+                  'Or an eponymous call appears somewhere in the call chain',
+                ]),
+              });
+            }
           }
 
           throw e;

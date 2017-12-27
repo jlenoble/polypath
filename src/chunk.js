@@ -45,7 +45,7 @@ export class StarChunk {
     });
   }
 
-  test (obj) {
-    return this.regex.test(obj.chunk);
+  testChunk (chunk) {
+    return this.regex.test(chunk);
   }
 }
