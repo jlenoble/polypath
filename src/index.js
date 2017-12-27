@@ -1,7 +1,7 @@
 import Chunk from './chunk';
 import Chunks from './chunks';
 
-import './chunk-add';
+import './add/chunk';
 
 export {Chunk, Chunks};
 export {StarChunk} from './chunk';

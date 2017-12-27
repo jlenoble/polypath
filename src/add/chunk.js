@@ -1,7 +1,7 @@
 /* eslint-disable no-invalid-this */
-import add from './add';
-import Chunk, {StarChunk} from './chunk';
-import Chunks from './chunks';
+import add from '../add';
+import Chunk, {StarChunk} from '../chunk';
+import Chunks from '../chunks';
 
 add(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk ? this :

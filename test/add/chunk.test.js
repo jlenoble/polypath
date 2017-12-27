@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Chunk, StarChunk, Chunks} from '../src/index';
+import {Chunk, StarChunk, Chunks} from '../../src/index';
 
 // import Muter, {muted} from 'muter';
 // import Muter, {captured as muted} from 'muter';
