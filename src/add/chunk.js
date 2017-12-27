@@ -1,7 +1,7 @@
 /* eslint-disable no-invalid-this */
 import add from '../add';
 import Chunk, {StarChunk} from '../chunk';
-import Chunks from '../chunks';
+import Chunks, {MixedChunks} from '../chunks';
 
 add(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk ? this :
@@ -10,7 +10,7 @@ add(Chunk, Chunk, function (obj) {
 
 add(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk) ? obj:
-    new Chunks(this.chunk + ',' + obj.chunk);
+    new MixedChunks(this.chunk + ',' + obj.chunk);
 });
 
 add(Chunk, Chunks, function (obj) {

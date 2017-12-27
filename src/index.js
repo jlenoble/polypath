@@ -6,4 +6,4 @@ import './add/chunks';
 
 export {Chunk, Chunks};
 export {StarChunk} from './chunk';
-export {StarChunks} from './chunks';
+export {StarChunks, MixedChunks} from './chunks';

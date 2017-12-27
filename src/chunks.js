@@ -43,3 +43,24 @@ export class StarChunks {
     });
   }
 }
+
+export class MixedChunks {
+  constructor (chunk) {
+    if (!/^(\w|\*)+(,(\w|\*)+)*$/.test(chunk)) {
+      error({
+        message: 'Not mixed chunks',
+        explain: [
+          ['You attempted to initialize a MixedChunks object with:', chunk],
+          'But expected \'(chunk|starchunk)(,(chunk|starchunk))*`\'',
+        ],
+      });
+    }
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: chunk,
+        enumerable: true,
+      },
+    });
+  }
+}
