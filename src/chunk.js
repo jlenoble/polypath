@@ -40,8 +40,12 @@ export class StarChunk {
       },
 
       regex: {
-        value: new RegExp(chunk.replace('*', '\\w*')),
+        value: new RegExp(chunk.replace(/\*/g, '\\w*')),
       },
     });
+  }
+
+  test (obj) {
+    return this.regex.test(obj.chunk);
   }
 }

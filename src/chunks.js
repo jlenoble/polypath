@@ -1,4 +1,5 @@
 import {error} from 'explanation';
+import {StarChunk} from './chunk';
 
 export default class Chunks {
   constructor (chunk) {
@@ -35,12 +36,22 @@ export class StarChunks {
       });
     }
 
+    const set = Array.from(new Set(chunk.split(','))).sort();
+
     Object.defineProperties(this, {
       chunk: {
-        value: chunk,
+        value: set.join(','),
         enumerable: true,
       },
+
+      chunks: {
+        value: set.map(chunk => new StarChunk(chunk)),
+      },
     });
+  }
+
+  test (obj) {
+    return this.chunks.some(starchunk => starchunk.test(obj));
   }
 }
 

@@ -1,11 +1,6 @@
 import {expect} from 'chai';
 import {Chunk, Chunks} from '../../src/index';
 
-// import Muter, {muted} from 'muter';
-// import Muter, {captured as muted} from 'muter';
-
-// const muter = Muter(console);
-
 describe('Adding Chunks', function () {
   it('with same Chunks yields same Chunks', function () {
     expect(new Chunks('a').add(new Chunks('a')).chunk).to.equal('a');

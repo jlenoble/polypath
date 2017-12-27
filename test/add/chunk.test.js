@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import {Chunk, StarChunk, Chunks, MixedChunks} from '../../src/index';
+import {Chunk, StarChunk, Chunks, StarChunks, MixedChunks}
+  from '../../src/index';
 
 describe('Adding Chunk', function () {
   it('with same Chunk yields same Chunk', function () {
@@ -55,5 +56,27 @@ describe('Adding Chunk', function () {
 
     expect(c1.chunk).to.equal('a,b');
     expect(c2.chunk).to.equal('abc,x,y,z');
+  });
+
+  it('with a StarChunks yields a MixedChunks', function () {
+    const c1 = new Chunk('a').add(new StarChunks('b*'));
+    const c2 = new Chunk('abc').add(new StarChunks('x*,*y,*z*'));
+
+    expect(c1).to.be.instanceof(MixedChunks);
+    expect(c2).to.be.instanceof(MixedChunks);
+
+    expect(c1.chunk).to.equal('a,b*');
+    expect(c2.chunk).to.equal('abc,*y,*z*,x*');
+  });
+
+  it('with an overlapping StarChunks yields same StarChunks', function () {
+    const c1 = new Chunk('a').add(new StarChunks('*b,*a*'));
+    const c2 = new Chunk('abc').add(new StarChunks('*x,a*c,z*'));
+
+    expect(c1).to.be.instanceof(StarChunks);
+    expect(c2).to.be.instanceof(StarChunks);
+
+    expect(c1.chunk).to.equal('*a*,*b');
+    expect(c2.chunk).to.equal('*x,a*c,z*');
   });
 });
