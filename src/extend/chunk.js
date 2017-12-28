@@ -70,7 +70,6 @@ overlapsStrictly(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk);
 });
 
-
 add(Chunk, Star, function (obj) {
   return obj;
 });
@@ -131,4 +130,36 @@ overlaps(Chunk, Empty, function (obj) {
 });
 overlapsStrictly(Chunk, Empty, function (obj) {
   return true;
+});
+
+add(Chunk, Chunks, function (obj) {
+  return obj.chunks.has(this.chunk) ? obj :
+    new Chunks(this.chunk + ',' + obj.chunk);
+});
+remove(Chunk, Chunks, function (obj) {
+  return obj.chunks.has(this.chunk) ? empty : this;
+});
+equals(Chunk, Chunks, function (obj) {
+  return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
+});
+isDistinct(Chunk, Chunks, function (obj) {
+  return !obj.chunks.has(this.chunk);
+});
+includes(Chunk, Chunks, function (obj) {
+  return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
+});
+isIncluded(Chunk, Chunks, function (obj) {
+  return obj.chunks.has(this.chunk);
+});
+includesStrictly(Chunk, Chunks, function (obj) {
+  return false;
+});
+isIncludedStrictly(Chunk, Chunks, function (obj) {
+  return obj.chunks.size > 1 && obj.chunks.has(this.chunk);
+});
+overlaps(Chunk, Chunks, function (obj) {
+  return obj.chunks.has(this.chunk);
+});
+overlapsStrictly(Chunk, Chunks, function (obj) {
+  return obj.chunks.size !== 1 && obj.chunks.has(this.chunk);
 });
