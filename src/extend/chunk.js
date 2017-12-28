@@ -163,3 +163,35 @@ overlaps(Chunk, Chunks, function (obj) {
 overlapsStrictly(Chunk, Chunks, function (obj) {
   return obj.chunks.size !== 1 && obj.chunks.has(this.chunk);
 });
+
+add(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk)) ? obj :
+    new MixedChunks(this.chunk + ',' + obj.chunk);
+});
+remove(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty : this;
+});
+equals(Chunk, StarChunks, function (obj) {
+  return false;
+});
+isDistinct(Chunk, StarChunks, function (obj) {
+  return !obj.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+includes(Chunk, StarChunks, function (obj) {
+  return false;
+});
+isIncluded(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+includesStrictly(Chunk, StarChunks, function (obj) {
+  return false;
+});
+isIncludedStrictly(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+overlaps(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+overlapsStrictly(Chunk, StarChunks, function (obj) {
+  return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
