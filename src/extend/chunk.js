@@ -38,6 +38,39 @@ overlapsStrictly(Chunk, Chunk, function (obj) {
   return false;
 });
 
+add(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk) ? obj : new MixedChunks(
+    this.chunk + ',' + obj.chunk);
+});
+remove(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk) ? empty : this;
+});
+equals(Chunk, StarChunk, function (obj) {
+  return false;
+});
+isDistinct(Chunk, StarChunk, function (obj) {
+  return !obj.regex.test(this.chunk);
+});
+includes(Chunk, StarChunk, function (obj) {
+  return false;
+});
+isIncluded(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk);
+});
+includesStrictly(Chunk, StarChunk, function (obj) {
+  return false;
+});
+isIncludedStrictly(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk);
+});
+overlaps(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk);
+});
+overlapsStrictly(Chunk, StarChunk, function (obj) {
+  return obj.regex.test(this.chunk);
+});
+
+
 add(Chunk, Star, function (obj) {
   return obj;
 });
