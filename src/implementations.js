@@ -28,6 +28,10 @@ export const _testRight = function (obj) {
   return obj.test(this.chunk);
 };
 
+export const _antitestRight = function (obj) {
+  return !obj.test(this.chunk);
+};
+
 export const _newChunksRight = function (obj) {
   return obj.test(this.chunk) ? obj : new Chunks(
     this.chunk + ',' + obj.chunk);

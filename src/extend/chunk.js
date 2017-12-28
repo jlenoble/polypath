@@ -3,7 +3,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _testRight, _newChunksRight, _newMixedChunksRight,
-  _clearRight, _identity, _empty, _this} from '../implementations';
+  _clearRight, _identity, _empty, _this, _antitestRight}
+  from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -15,9 +16,7 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 add(Chunk, Chunk, _newChunksRight);
 remove(Chunk, Chunk, _clearRight);
 equals(Chunk, Chunk, _testRight);
-isDistinct(Chunk, Chunk, function (obj) {
-  return this.chunk !== obj.chunk;
-});
+isDistinct(Chunk, Chunk, _antitestRight);
 includes(Chunk, Chunk, _testRight);
 includesStrictly(Chunk, Chunk, _false);
 isIncluded(Chunk, Chunk, _testRight);
@@ -32,9 +31,7 @@ overlapsStrictly(Chunk, Chunk, _false);
 add(Chunk, StarChunk, _newMixedChunksRight);
 remove(Chunk, StarChunk, _clearRight);
 equals(Chunk, StarChunk, _false);
-isDistinct(Chunk, StarChunk, function (obj) {
-  return !obj.test(this.chunk);
-});
+isDistinct(Chunk, StarChunk, _antitestRight);
 includes(Chunk, StarChunk, _false);
 includesStrictly(Chunk, StarChunk, _false);
 isIncluded(Chunk, StarChunk, _testRight);
@@ -79,9 +76,7 @@ overlapsStrictly(Chunk, Empty, _false);
 add(Chunk, Chunks, _newChunksRight);
 remove(Chunk, Chunks, _clearRight);
 equals(Chunk, Chunks, _false);
-isDistinct(Chunk, Chunks, function (obj) {
-  return !obj.chunks.has(this.chunk);
-});
+isDistinct(Chunk, Chunks, _antitestRight);
 includes(Chunk, Chunks, _false);
 includesStrictly(Chunk, Chunks, _false);
 isIncluded(Chunk, Chunks, _testRight);
@@ -96,9 +91,7 @@ overlapsStrictly(Chunk, Chunks, _false);
 add(Chunk, StarChunks, _newMixedChunksRight);
 remove(Chunk, StarChunks, _clearRight);
 equals(Chunk, StarChunks, _false);
-isDistinct(Chunk, StarChunks, function (obj) {
-  return !obj.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
+isDistinct(Chunk, StarChunks, _antitestRight);
 includes(Chunk, StarChunks, _false);
 includesStrictly(Chunk, StarChunks, _false);
 isIncluded(Chunk, StarChunks, _testRight);
@@ -113,10 +106,7 @@ overlapsStrictly(Chunk, StarChunks, _false);
 add(Chunk, MixedChunks, _newMixedChunksRight);
 remove(Chunk, MixedChunks, _clearRight);
 equals(Chunk, MixedChunks, _false);
-isDistinct(Chunk, MixedChunks, function (obj) {
-  return !obj.chunks.chunks.has(this.chunk) &&
-    !obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
+isDistinct(Chunk, MixedChunks, _antitestRight);
 includes(Chunk, MixedChunks, _false);
 includesStrictly(Chunk, MixedChunks, _false);
 isIncluded(Chunk, MixedChunks, _testRight);
