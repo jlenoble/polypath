@@ -2,8 +2,8 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_true, _false, _testRight, _newChunksRight, _newMixedChunksRight}
-  from '../implementations';
+import {_true, _false, _testRight, _newChunksRight, _newMixedChunksRight,
+  _clearRight} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -15,9 +15,7 @@ const empty = new Empty();
 // Chunk/Chunk API
 // ***************************************************************************
 add(Chunk, Chunk, _newChunksRight);
-remove(Chunk, Chunk, function (obj) {
-  return this.chunk === obj.chunk ? empty : this;
-});
+remove(Chunk, Chunk, _clearRight);
 equals(Chunk, Chunk, _testRight);
 isDistinct(Chunk, Chunk, function (obj) {
   return this.chunk !== obj.chunk;
@@ -34,9 +32,7 @@ overlapsStrictly(Chunk, Chunk, _false);
 // Chunk/StarChunk API
 // ***************************************************************************
 add(Chunk, StarChunk, _newMixedChunksRight);
-remove(Chunk, StarChunk, function (obj) {
-  return obj.test(this.chunk) ? empty : this;
-});
+remove(Chunk, StarChunk, _clearRight);
 equals(Chunk, StarChunk, _false);
 isDistinct(Chunk, StarChunk, function (obj) {
   return !obj.test(this.chunk);
@@ -91,9 +87,7 @@ overlapsStrictly(Chunk, Empty, _true);
 // Chunk/Chunks API
 // ***************************************************************************
 add(Chunk, Chunks, _newChunksRight);
-remove(Chunk, Chunks, function (obj) {
-  return obj.chunks.has(this.chunk) ? empty : this;
-});
+remove(Chunk, Chunks, _clearRight);
 equals(Chunk, Chunks, _false);
 isDistinct(Chunk, Chunks, function (obj) {
   return !obj.chunks.has(this.chunk);
@@ -110,9 +104,7 @@ overlapsStrictly(Chunk, Chunks, _testRight);
 // Chunk/StarChunks API
 // ***************************************************************************
 add(Chunk, StarChunks, _newMixedChunksRight);
-remove(Chunk, StarChunks, function (obj) {
-  return obj.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty : this;
-});
+remove(Chunk, StarChunks, _clearRight);
 equals(Chunk, StarChunks, _false);
 isDistinct(Chunk, StarChunks, function (obj) {
   return !obj.chunks.some(chunk => chunk.regex.test(this.chunk));
@@ -129,11 +121,7 @@ overlapsStrictly(Chunk, StarChunks, _testRight);
 // Chunk/MixedChunks API
 // ***************************************************************************
 add(Chunk, MixedChunks, _newMixedChunksRight);
-remove(Chunk, MixedChunks, function (obj) {
-  return obj.chunks.chunks.has(this.chunk) ||
-    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty :
-    this;
-});
+remove(Chunk, MixedChunks, _clearRight);
 equals(Chunk, MixedChunks, _false);
 isDistinct(Chunk, MixedChunks, function (obj) {
   return !obj.chunks.chunks.has(this.chunk) &&

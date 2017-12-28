@@ -1,5 +1,8 @@
 /* eslint-disable no-invalid-this */
+import {Empty} from './chunk';
 import Chunks, {StarChunks, MixedChunks} from './chunks';
+
+const empty = new Empty();
 
 export const _true = function () {
   return true;
@@ -26,4 +29,8 @@ export const _newStarChunksRight = function (obj) {
 export const _newMixedChunksRight = function (obj) {
   return obj.test(this.chunk) ? obj : new MixedChunks(
     this.chunk + ',' + obj.chunk);
+};
+
+export const _clearRight = function (obj) {
+  return obj.test(this.chunk) ? empty : this;
 };
