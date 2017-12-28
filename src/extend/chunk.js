@@ -195,3 +195,43 @@ overlaps(Chunk, StarChunks, function (obj) {
 overlapsStrictly(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
 });
+
+add(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk)) ? obj :
+    new MixedChunks(this.chunk + ',' + obj.chunk);
+});
+remove(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty :
+    this;
+});
+equals(Chunk, MixedChunks, function (obj) {
+  return false;
+});
+isDistinct(Chunk, MixedChunks, function (obj) {
+  return !obj.chunks.chunks.has(this.chunk) &&
+    !obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+includes(Chunk, MixedChunks, function (obj) {
+  return false;
+});
+isIncluded(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+includesStrictly(Chunk, MixedChunks, function (obj) {
+  return false;
+});
+isIncludedStrictly(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+overlaps(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
+overlapsStrictly(Chunk, MixedChunks, function (obj) {
+  return obj.chunks.chunks.has(this.chunk) ||
+    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
+});
