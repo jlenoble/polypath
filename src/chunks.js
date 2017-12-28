@@ -26,14 +26,6 @@ export default class Chunks {
       },
     });
   }
-
-  testChunk (chunk) {
-    return this.chunks.has(chunk);
-  }
-
-  testStarChunk (obj) {
-    return Array.from(this.chunks).some(chunk => obj.testChunk(chunk));
-  }
 }
 
 export class StarChunks {
@@ -60,10 +52,6 @@ export class StarChunks {
         value: set.map(chunk => new StarChunk(chunk)),
       },
     });
-  }
-
-  testChunk (chunk) {
-    return this.chunks.some(starchunk => starchunk.testChunk(chunk));
   }
 }
 
@@ -95,10 +83,5 @@ export class MixedChunks {
         value: new StarChunks(set.filter(chunk => /\*/.test(chunk)).join(',')),
       },
     });
-  }
-
-  testChunk (chunk) {
-    return this.chunks.testChunk(chunk) ||
-      this.starchunks.testChunk(chunk);
   }
 }

@@ -1,6 +1,15 @@
 import method from './method';
 
-const add = method('add');
-const test = method('test');
+export const add = method('add');
+export const remove = method('remove');
 
-export {add, test};
+export const equals = method('equals');
+export const isDistinct = method('isDistinct');
+
+export const includes = method('includes');
+export const isIncluded = method('isIncluded');
+export const includesStrictly = method('includesStrictly');
+export const isIncludedStrictly = method('isIncludedStrictly');
+
+export const overlaps = method('overlaps');
+export const overlapsStrictly = method('overlapsStrictly');
