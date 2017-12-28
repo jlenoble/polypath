@@ -50,3 +50,7 @@ export const _newMixedChunksRight = function (obj) {
 export const _clearRight = function (obj) {
   return obj.test(this.chunk) ? empty : this;
 };
+
+export const _toBeImplemented = function () {
+  // throw new Error('Needs implementation');
+};
