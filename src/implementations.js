@@ -24,6 +24,14 @@ export const _this = function () {
   return this;
 };
 
+export const _equals = function (obj) {
+  return this.chunk === obj.chunk;
+};
+
+export const _testLeft = function (obj) {
+  return this.test(obj.chunk);
+};
+
 export const _testRight = function (obj) {
   return obj.test(this.chunk);
 };

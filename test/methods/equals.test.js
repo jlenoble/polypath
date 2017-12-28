@@ -96,10 +96,12 @@ Object.keys(tests).forEach(chunk1 => {
       if (tests[chunk1][chunk2]) {
         it(`is equal to ${chunk2}`, function () {
           expect(c1.chunk).to.equal(c2.chunk);
+          expect(c1.equals(c2)).to.be.true;
         });
       } else {
         it(`is not equal to '${chunk2}'`, function () {
           expect(c1.chunk).not.to.equal(c2.chunk);
+          expect(c1.equals(c2)).to.be.false;
         });
       }
     });
