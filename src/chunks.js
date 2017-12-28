@@ -57,7 +57,7 @@ export class StarChunks {
 
 export class MixedChunks {
   constructor (chunk) {
-    if (!/^(\w|\*)+(,(\w|\*)+)*$/.test(chunk)) {
+    if (typeof chunk !== 'string' || !/^(\w|\*)+(,(\w|\*)+)*$/.test(chunk)) {
       error({
         message: 'Not mixed chunks',
         explain: [
@@ -69,19 +69,29 @@ export class MixedChunks {
 
     const set = Array.from(new Set(chunk.split(','))).sort();
 
-    Object.defineProperties(this, {
-      chunk: {
-        value: set.join(','),
-        enumerable: true,
-      },
+    try {
+      Object.defineProperties(this, {
+        chunk: {
+          value: set.join(','),
+          enumerable: true,
+        },
 
-      chunks: {
-        value: new Chunks(set.filter(chunk => !/\*/.test(chunk)).join(',')),
-      },
+        chunks: {
+          value: new Chunks(set.filter(chunk => !/\*/.test(chunk)).join(',')),
+        },
 
-      starchunks: {
-        value: new StarChunks(set.filter(chunk => /\*/.test(chunk)).join(',')),
-      },
-    });
+        starchunks: {
+          value: new StarChunks(set.filter(chunk => /\*/.test(chunk)).join(',')),
+        },
+      });
+    } catch (e) {
+      error({
+        message: 'Not mixed chunks',
+        explain: [
+          ['You attempted to initialize a MixedChunks object with:', chunk],
+          'But expected \'(chunk|starchunk)(,(chunk|starchunk))*`\'',
+        ],
+      });
+    }
   }
 }

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import Chunks, {StarChunks} from '../src/chunks';
+import Chunks, {StarChunks, MixedChunks} from '../src/chunks';
 import Muter, {muted} from 'muter';
 // import Muter, {captured as muted} from 'muter';
 
@@ -52,5 +52,33 @@ describe('A StarChunks instance', function () {
     expect(() => new StarChunks('a*,*b,?').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('!a,b*,c*').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('*/c,a/d,*').chunk).to.throw('Not star chunks');
+  }));
+});
+
+describe('A MixedChunks instance', function () {
+  it('encapsulates mixed chunks', function () {
+    expect(new MixedChunks('a*,b').chunk).to.equal('a*,b');
+    expect(new MixedChunks('*a*b*cde*,x,y').chunk).to.equal('*a*b*cde*,x,y');
+    expect(new MixedChunks('*a,*b*c,de*,xyz').chunk)
+      .to.equal('*a,*b*c,de*,xyz');
+  });
+
+  it('throws on anything but a string', muted(muter, function () {
+    expect(() => new MixedChunks(42).chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks({}).chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks([]).chunk).to.throw('Not mixed chunks');
+  }));
+
+  it('throws on non mixed chunks', muted(muter, function () {
+    expect(() => new MixedChunks('a').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('*?').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('!*bc').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('*/b/c').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('a,b,c').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('a*,*b,?').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('!a,b*,c*').chunk)
+      .to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('*/c,a/d,*').chunk)
+      .to.throw('Not mixed chunks');
   }));
 });
