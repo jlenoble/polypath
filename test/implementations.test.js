@@ -1,13 +1,7 @@
-/* eslint-disable no-invalid-this */
 import {expect} from 'chai';
 
 import * as methods from '../src/methods';
 import * as classes from '../src/index';
-
-// import Muter, {muted} from 'muter';
-// import Muter, {captured as muted} from 'muter';
-
-// const muter = Muter(console);
 
 const validArguments = {
   Chunk: ['a', 'abc'],
