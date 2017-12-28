@@ -3,12 +3,10 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _testRight, _newChunksRight, _newMixedChunksRight,
-  _clearRight} from '../implementations';
+  _clearRight, _identity, _empty, _this} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-
-const empty = new Empty();
 
 
 // ***************************************************************************
@@ -48,12 +46,8 @@ overlapsStrictly(Chunk, StarChunk, _testRight);
 // ***************************************************************************
 // Chunk/Star API
 // ***************************************************************************
-add(Chunk, Star, function (obj) {
-  return obj;
-});
-remove(Chunk, Star, function (obj) {
-  return empty;
-});
+add(Chunk, Star, _identity);
+remove(Chunk, Star, _empty);
 equals(Chunk, Star, _false);
 isDistinct(Chunk, Star, _false);
 includes(Chunk, Star, _false);
@@ -67,12 +61,8 @@ overlapsStrictly(Chunk, Star, _true);
 // ***************************************************************************
 // Chunk/Empty API
 // ***************************************************************************
-add(Chunk, Empty, function (obj) {
-  return this;
-});
-remove(Chunk, Empty, function (obj) {
-  return this;
-});
+add(Chunk, Empty, _this);
+remove(Chunk, Empty, _this);
 equals(Chunk, Empty, _false);
 isDistinct(Chunk, Empty, _false);
 includes(Chunk, Empty, _true);

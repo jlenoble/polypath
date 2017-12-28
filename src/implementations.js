@@ -12,6 +12,18 @@ export const _false = function () {
   return false;
 };
 
+export const _identity = function (obj) {
+  return obj;
+};
+
+export const _empty = function () {
+  return empty;
+};
+
+export const _this = function () {
+  return this;
+};
+
 export const _testRight = function (obj) {
   return obj.test(this.chunk);
 };
