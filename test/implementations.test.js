@@ -1,7 +1,13 @@
 import {expect} from 'chai';
 
 import * as methods from '../src/methods';
-import * as classes from '../src/index';
+import * as _classes from '../src/index';
+
+const classes = Object.assign({}, _classes);
+
+if (classes.default) {
+  delete classes.default;
+}
 
 const validArguments = {
   Chunk: ['a', 'abc'],
