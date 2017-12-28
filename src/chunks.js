@@ -30,6 +30,10 @@ export default class Chunks {
   testChunk (chunk) {
     return this.chunks.has(chunk);
   }
+
+  testStarChunk (obj) {
+    return Array.from(this.chunks).some(chunk => obj.testChunk(chunk));
+  }
 }
 
 export class StarChunks {
