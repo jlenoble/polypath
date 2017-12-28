@@ -102,4 +102,8 @@ export class MixedChunks {
       });
     }
   }
+
+  test (obj) {
+    return this.chunks.test(obj) || this.starchunks.test(obj);
+  }
 }

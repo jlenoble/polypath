@@ -156,19 +156,7 @@ isDistinct(Chunk, MixedChunks, function (obj) {
 });
 includes(Chunk, MixedChunks, _false);
 includesStrictly(Chunk, MixedChunks, _false);
-isIncluded(Chunk, MixedChunks, function (obj) {
-  return obj.chunks.chunks.has(this.chunk) ||
-    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
-isIncludedStrictly(Chunk, MixedChunks, function (obj) {
-  return obj.chunks.chunks.has(this.chunk) ||
-    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
-overlaps(Chunk, MixedChunks, function (obj) {
-  return obj.chunks.chunks.has(this.chunk) ||
-    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
-overlapsStrictly(Chunk, MixedChunks, function (obj) {
-  return obj.chunks.chunks.has(this.chunk) ||
-    obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
+isIncluded(Chunk, MixedChunks, _testRight);
+isIncludedStrictly(Chunk, MixedChunks, _testRight);
+overlaps(Chunk, MixedChunks, _testRight);
+overlapsStrictly(Chunk, MixedChunks, _testRight);
