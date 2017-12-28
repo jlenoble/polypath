@@ -1,6 +1,9 @@
 /* eslint-disable no-invalid-this */
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
+
+import {_true, _false} from '../implementations';
+
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 
@@ -22,21 +25,15 @@ isDistinct(Chunk, Chunk, function (obj) {
 includes(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk;
 });
+includesStrictly(Chunk, Chunk, _false);
 isIncluded(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk;
 });
-includesStrictly(Chunk, Chunk, function (obj) {
-  return false;
-});
-isIncludedStrictly(Chunk, Chunk, function (obj) {
-  return false;
-});
+isIncludedStrictly(Chunk, Chunk, _false);
 overlaps(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk;
 });
-overlapsStrictly(Chunk, Chunk, function (obj) {
-  return false;
-});
+overlapsStrictly(Chunk, Chunk, _false);
 
 add(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk) ? obj : new MixedChunks(
@@ -45,20 +42,14 @@ add(Chunk, StarChunk, function (obj) {
 remove(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk) ? empty : this;
 });
-equals(Chunk, StarChunk, function (obj) {
-  return false;
-});
+equals(Chunk, StarChunk, _false);
 isDistinct(Chunk, StarChunk, function (obj) {
   return !obj.regex.test(this.chunk);
 });
-includes(Chunk, StarChunk, function (obj) {
-  return false;
-});
+includes(Chunk, StarChunk, _false);
+includesStrictly(Chunk, StarChunk, _false);
 isIncluded(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk);
-});
-includesStrictly(Chunk, StarChunk, function (obj) {
-  return false;
 });
 isIncludedStrictly(Chunk, StarChunk, function (obj) {
   return obj.regex.test(this.chunk);
@@ -76,30 +67,14 @@ add(Chunk, Star, function (obj) {
 remove(Chunk, Star, function (obj) {
   return empty;
 });
-equals(Chunk, Star, function (obj) {
-  return false;
-});
-isDistinct(Chunk, Star, function (obj) {
-  return false;
-});
-includes(Chunk, Star, function (obj) {
-  return false;
-});
-isIncluded(Chunk, Star, function (obj) {
-  return true;
-});
-includesStrictly(Chunk, Star, function (obj) {
-  return false;
-});
-isIncludedStrictly(Chunk, Star, function (obj) {
-  return true;
-});
-overlaps(Chunk, Star, function (obj) {
-  return true;
-});
-overlapsStrictly(Chunk, Star, function (obj) {
-  return true;
-});
+equals(Chunk, Star, _false);
+isDistinct(Chunk, Star, _false);
+includes(Chunk, Star, _false);
+includesStrictly(Chunk, Star, _false);
+isIncluded(Chunk, Star, _true);
+isIncludedStrictly(Chunk, Star, _true);
+overlaps(Chunk, Star, _true);
+overlapsStrictly(Chunk, Star, _true);
 
 add(Chunk, Empty, function (obj) {
   return this;
@@ -107,30 +82,14 @@ add(Chunk, Empty, function (obj) {
 remove(Chunk, Empty, function (obj) {
   return this;
 });
-equals(Chunk, Empty, function (obj) {
-  return false;
-});
-isDistinct(Chunk, Empty, function (obj) {
-  return true;
-});
-includes(Chunk, Empty, function (obj) {
-  return true;
-});
-isIncluded(Chunk, Empty, function (obj) {
-  return false;
-});
-includesStrictly(Chunk, Empty, function (obj) {
-  return true;
-});
-isIncludedStrictly(Chunk, Empty, function (obj) {
-  return false;
-});
-overlaps(Chunk, Empty, function (obj) {
-  return true;
-});
-overlapsStrictly(Chunk, Empty, function (obj) {
-  return true;
-});
+equals(Chunk, Empty, _false);
+isDistinct(Chunk, Empty, _false);
+includes(Chunk, Empty, _true);
+includesStrictly(Chunk, Empty, _true);
+isIncluded(Chunk, Empty, _false);
+isIncludedStrictly(Chunk, Empty, _false);
+overlaps(Chunk, Empty, _true);
+overlapsStrictly(Chunk, Empty, _true);
 
 add(Chunk, Chunks, function (obj) {
   return obj.chunks.has(this.chunk) ? obj :
@@ -148,11 +107,9 @@ isDistinct(Chunk, Chunks, function (obj) {
 includes(Chunk, Chunks, function (obj) {
   return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
 });
+includesStrictly(Chunk, Chunks, _false);
 isIncluded(Chunk, Chunks, function (obj) {
   return obj.chunks.has(this.chunk);
-});
-includesStrictly(Chunk, Chunks, function (obj) {
-  return false;
 });
 isIncludedStrictly(Chunk, Chunks, function (obj) {
   return obj.chunks.size > 1 && obj.chunks.has(this.chunk);
@@ -171,20 +128,14 @@ add(Chunk, StarChunks, function (obj) {
 remove(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty : this;
 });
-equals(Chunk, StarChunks, function (obj) {
-  return false;
-});
+equals(Chunk, StarChunks, _false);
 isDistinct(Chunk, StarChunks, function (obj) {
   return !obj.chunks.some(chunk => chunk.regex.test(this.chunk));
 });
-includes(Chunk, StarChunks, function (obj) {
-  return false;
-});
+includes(Chunk, StarChunks, _false);
+includesStrictly(Chunk, StarChunks, _false);
 isIncluded(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
-includesStrictly(Chunk, StarChunks, function (obj) {
-  return false;
 });
 isIncludedStrictly(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
@@ -206,22 +157,16 @@ remove(Chunk, MixedChunks, function (obj) {
     obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk)) ? empty :
     this;
 });
-equals(Chunk, MixedChunks, function (obj) {
-  return false;
-});
+equals(Chunk, MixedChunks, _false);
 isDistinct(Chunk, MixedChunks, function (obj) {
   return !obj.chunks.chunks.has(this.chunk) &&
     !obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
 });
-includes(Chunk, MixedChunks, function (obj) {
-  return false;
-});
+includes(Chunk, MixedChunks, _false);
+includesStrictly(Chunk, MixedChunks, _false);
 isIncluded(Chunk, MixedChunks, function (obj) {
   return obj.chunks.chunks.has(this.chunk) ||
     obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk));
-});
-includesStrictly(Chunk, MixedChunks, function (obj) {
-  return false;
 });
 isIncludedStrictly(Chunk, MixedChunks, function (obj) {
   return obj.chunks.chunks.has(this.chunk) ||
