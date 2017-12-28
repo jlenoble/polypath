@@ -120,15 +120,11 @@ includes(Chunk, Chunks, function (obj) {
   return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
 });
 includesStrictly(Chunk, Chunks, _false);
-isIncluded(Chunk, Chunks, function (obj) {
-  return obj.chunks.has(this.chunk);
-});
+isIncluded(Chunk, Chunks, _testRight);
 isIncludedStrictly(Chunk, Chunks, function (obj) {
   return obj.chunks.size > 1 && obj.chunks.has(this.chunk);
 });
-overlaps(Chunk, Chunks, function (obj) {
-  return obj.chunks.has(this.chunk);
-});
+overlaps(Chunk, Chunks, _testRight);
 overlapsStrictly(Chunk, Chunks, function (obj) {
   return obj.chunks.size !== 1 && obj.chunks.has(this.chunk);
 });

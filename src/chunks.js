@@ -26,6 +26,10 @@ export default class Chunks {
       },
     });
   }
+
+  test (obj) {
+    return this.chunks.has(obj.chunk);
+  }
 }
 
 export class StarChunks {
