@@ -45,3 +45,47 @@ export class StarChunk {
     });
   }
 }
+
+export class Empty {
+  constructor () {
+    Object.defineProperties(this, {
+      chunk: {
+        value: '',
+        enumerable: true,
+      },
+    });
+
+    if (Empty.empty) {
+      return Empty.empty;
+    } else {
+      Empty.empty = this;
+    }
+  }
+}
+
+export class Star {
+  constructor (chunk) {
+    if (!/^\*+$/.test(chunk)) {
+      error({
+        message: 'Not a star',
+        explain: [
+          ['You attempted to initialize a Star object with:', chunk],
+          'But the initialization argument must be stars only (*)',
+        ],
+      });
+    }
+
+    if (Star.star) {
+      return Star.star;
+    } else {
+      Star.star = this;
+    }
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: '*',
+        enumerable: true,
+      },
+    });
+  }
+}

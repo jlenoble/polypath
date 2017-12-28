@@ -12,6 +12,8 @@ import * as classes from '../src/index';
 const validArguments = {
   Chunk: ['a', 'abc'],
   StarChunk: ['a*', 'a*bc*'],
+  Star: ['*', '**'],
+  Empty: [''],
   Chunks: ['a', 'a,b,c'],
   StarChunks: ['a*', 'a*,b*,*c'],
   MixedChunks: ['a,*b', 'a*,b', '*x*,y,z'],
