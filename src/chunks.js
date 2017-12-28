@@ -53,6 +53,10 @@ export class StarChunks {
       },
     });
   }
+
+  test (obj) {
+    return this.chunks.some(chunk => chunk.test(obj.chunk));
+  }
 }
 
 export class MixedChunks {
