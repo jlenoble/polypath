@@ -40,7 +40,7 @@ includesStrictly(Chunk, StarChunk, _false);
 isIncluded(Chunk, StarChunk, _testRight);
 isIncludedStrictly(Chunk, StarChunk, _testRight);
 overlaps(Chunk, StarChunk, _testRight);
-overlapsStrictly(Chunk, StarChunk, _testRight);
+overlapsStrictly(Chunk, StarChunk, _false);
 
 
 // ***************************************************************************
@@ -55,7 +55,7 @@ includesStrictly(Chunk, Star, _false);
 isIncluded(Chunk, Star, _true);
 isIncludedStrictly(Chunk, Star, _true);
 overlaps(Chunk, Star, _true);
-overlapsStrictly(Chunk, Star, _true);
+overlapsStrictly(Chunk, Star, _false);
 
 
 // ***************************************************************************
@@ -70,7 +70,7 @@ includesStrictly(Chunk, Empty, _true);
 isIncluded(Chunk, Empty, _false);
 isIncludedStrictly(Chunk, Empty, _false);
 overlaps(Chunk, Empty, _true);
-overlapsStrictly(Chunk, Empty, _true);
+overlapsStrictly(Chunk, Empty, _false);
 
 
 // ***************************************************************************
@@ -87,7 +87,7 @@ includesStrictly(Chunk, Chunks, _false);
 isIncluded(Chunk, Chunks, _testRight);
 isIncludedStrictly(Chunk, Chunks, _testRight);
 overlaps(Chunk, Chunks, _testRight);
-overlapsStrictly(Chunk, Chunks, _testRight);
+overlapsStrictly(Chunk, Chunks, _false);
 
 
 // ***************************************************************************
@@ -104,7 +104,7 @@ includesStrictly(Chunk, StarChunks, _false);
 isIncluded(Chunk, StarChunks, _testRight);
 isIncludedStrictly(Chunk, StarChunks, _testRight);
 overlaps(Chunk, StarChunks, _testRight);
-overlapsStrictly(Chunk, StarChunks, _testRight);
+overlapsStrictly(Chunk, StarChunks, _false);
 
 
 // ***************************************************************************
@@ -122,4 +122,4 @@ includesStrictly(Chunk, MixedChunks, _false);
 isIncluded(Chunk, MixedChunks, _testRight);
 isIncludedStrictly(Chunk, MixedChunks, _testRight);
 overlaps(Chunk, MixedChunks, _testRight);
-overlapsStrictly(Chunk, MixedChunks, _testRight);
+overlapsStrictly(Chunk, MixedChunks, _false);
