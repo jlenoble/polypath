@@ -19,6 +19,10 @@ export default class Chunk {
       },
     });
   }
+
+  test (chunk) {
+    return this.chunk === chunk;
+  }
 }
 
 export class StarChunk {

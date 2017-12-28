@@ -20,23 +20,15 @@ add(Chunk, Chunk, function (obj) {
 remove(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk ? empty : this;
 });
-equals(Chunk, Chunk, function (obj) {
-  return this.chunk === obj.chunk;
-});
+equals(Chunk, Chunk, _testRight);
 isDistinct(Chunk, Chunk, function (obj) {
   return this.chunk !== obj.chunk;
 });
-includes(Chunk, Chunk, function (obj) {
-  return this.chunk === obj.chunk;
-});
+includes(Chunk, Chunk, _testRight);
 includesStrictly(Chunk, Chunk, _false);
-isIncluded(Chunk, Chunk, function (obj) {
-  return this.chunk === obj.chunk;
-});
+isIncluded(Chunk, Chunk, _testRight);
 isIncludedStrictly(Chunk, Chunk, _false);
-overlaps(Chunk, Chunk, function (obj) {
-  return this.chunk === obj.chunk;
-});
+overlaps(Chunk, Chunk, _testRight);
 overlapsStrictly(Chunk, Chunk, _false);
 
 
