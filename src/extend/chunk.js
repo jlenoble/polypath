@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_true, _false} from '../implementations';
+import {_true, _false, _testRight} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -36,30 +36,22 @@ overlaps(Chunk, Chunk, function (obj) {
 overlapsStrictly(Chunk, Chunk, _false);
 
 add(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk) ? obj : new MixedChunks(
+  return obj.test(this.chunk) ? obj : new MixedChunks(
     this.chunk + ',' + obj.chunk);
 });
 remove(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk) ? empty : this;
+  return obj.test(this.chunk) ? empty : this;
 });
 equals(Chunk, StarChunk, _false);
 isDistinct(Chunk, StarChunk, function (obj) {
-  return !obj.regex.test(this.chunk);
+  return !obj.test(this.chunk);
 });
 includes(Chunk, StarChunk, _false);
 includesStrictly(Chunk, StarChunk, _false);
-isIncluded(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk);
-});
-isIncludedStrictly(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk);
-});
-overlaps(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk);
-});
-overlapsStrictly(Chunk, StarChunk, function (obj) {
-  return obj.regex.test(this.chunk);
-});
+isIncluded(Chunk, StarChunk, _testRight);
+isIncludedStrictly(Chunk, StarChunk, _testRight);
+overlaps(Chunk, StarChunk, _testRight);
+overlapsStrictly(Chunk, StarChunk, _testRight);
 
 add(Chunk, Star, function (obj) {
   return obj;

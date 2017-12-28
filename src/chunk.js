@@ -44,6 +44,10 @@ export class StarChunk {
       },
     });
   }
+
+  test (chunk) {
+    return this.regex.test(chunk);
+  }
 }
 
 export class Empty {
