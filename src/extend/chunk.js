@@ -9,6 +9,10 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 
 const empty = new Empty();
 
+
+// ***************************************************************************
+// Chunk/Chunk API
+// ***************************************************************************
 add(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk ? obj : new Chunks(
     this.chunk + ',' + obj.chunk);
@@ -35,6 +39,10 @@ overlaps(Chunk, Chunk, function (obj) {
 });
 overlapsStrictly(Chunk, Chunk, _false);
 
+
+// ***************************************************************************
+// Chunk/StarChunk API
+// ***************************************************************************
 add(Chunk, StarChunk, function (obj) {
   return obj.test(this.chunk) ? obj : new MixedChunks(
     this.chunk + ',' + obj.chunk);
@@ -53,6 +61,10 @@ isIncludedStrictly(Chunk, StarChunk, _testRight);
 overlaps(Chunk, StarChunk, _testRight);
 overlapsStrictly(Chunk, StarChunk, _testRight);
 
+
+// ***************************************************************************
+// Chunk/Star API
+// ***************************************************************************
 add(Chunk, Star, function (obj) {
   return obj;
 });
@@ -68,6 +80,10 @@ isIncludedStrictly(Chunk, Star, _true);
 overlaps(Chunk, Star, _true);
 overlapsStrictly(Chunk, Star, _true);
 
+
+// ***************************************************************************
+// Chunk/Empty API
+// ***************************************************************************
 add(Chunk, Empty, function (obj) {
   return this;
 });
@@ -83,6 +99,10 @@ isIncludedStrictly(Chunk, Empty, _false);
 overlaps(Chunk, Empty, _true);
 overlapsStrictly(Chunk, Empty, _true);
 
+
+// ***************************************************************************
+// Chunk/Chunks API
+// ***************************************************************************
 add(Chunk, Chunks, function (obj) {
   return obj.chunks.has(this.chunk) ? obj :
     new Chunks(this.chunk + ',' + obj.chunk);
@@ -113,6 +133,10 @@ overlapsStrictly(Chunk, Chunks, function (obj) {
   return obj.chunks.size !== 1 && obj.chunks.has(this.chunk);
 });
 
+
+// ***************************************************************************
+// Chunk/StarChunks API
+// ***************************************************************************
 add(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk)) ? obj :
     new MixedChunks(this.chunk + ',' + obj.chunk);
@@ -139,6 +163,10 @@ overlapsStrictly(Chunk, StarChunks, function (obj) {
   return obj.chunks.some(chunk => chunk.regex.test(this.chunk));
 });
 
+
+// ***************************************************************************
+// Chunk/MixedChunks API
+// ***************************************************************************
 add(Chunk, MixedChunks, function (obj) {
   return obj.chunks.chunks.has(this.chunk) ||
     obj.starchunks.chunks.some(chunk => chunk.regex.test(this.chunk)) ? obj :
