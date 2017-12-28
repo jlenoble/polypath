@@ -102,24 +102,16 @@ add(Chunk, Chunks, function (obj) {
 remove(Chunk, Chunks, function (obj) {
   return obj.chunks.has(this.chunk) ? empty : this;
 });
-equals(Chunk, Chunks, function (obj) {
-  return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
-});
+equals(Chunk, Chunks, _false);
 isDistinct(Chunk, Chunks, function (obj) {
   return !obj.chunks.has(this.chunk);
 });
-includes(Chunk, Chunks, function (obj) {
-  return obj.chunks.size === 1 && obj.chunks.has(this.chunk);
-});
+includes(Chunk, Chunks, _false);
 includesStrictly(Chunk, Chunks, _false);
 isIncluded(Chunk, Chunks, _testRight);
-isIncludedStrictly(Chunk, Chunks, function (obj) {
-  return obj.chunks.size > 1 && obj.chunks.has(this.chunk);
-});
+isIncludedStrictly(Chunk, Chunks, _testRight);
 overlaps(Chunk, Chunks, _testRight);
-overlapsStrictly(Chunk, Chunks, function (obj) {
-  return obj.chunks.size !== 1 && obj.chunks.has(this.chunk);
-});
+overlapsStrictly(Chunk, Chunks, _testRight);
 
 
 // ***************************************************************************
