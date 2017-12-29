@@ -3,8 +3,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
-  _includesAll, _includesNot, _isIncluded, _toBeImplemented}
-  from '../implementations';
+  _includesAll, _includesSome, _includesNot, _isIncluded, _overlaps,
+  _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -78,6 +78,11 @@ isIncludedStrictly(StarChunk, StarChunk, _toBeImplemented);
 overlaps(StarChunk, StarChunk, function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
+
+  if (chunks1[0] === '' && chunks2[chunks2.length - 1] === '' ||
+    chunks2[0] === '' && chunks1[chunks1.length - 1] === '') {
+    return true;
+  }
 
   let index1;
   let index2 = -1;
@@ -159,7 +164,7 @@ includes(StarChunk, Chunks, _includesAll);
 includesStrictly(StarChunk, Chunks, _includesAll);
 isIncluded(StarChunk, Chunks, _false);
 isIncludedStrictly(StarChunk, Chunks, _false);
-overlaps(StarChunk, Chunks, _toBeImplemented);
+overlaps(StarChunk, Chunks, _includesSome);
 overlapsStrictly(StarChunk, Chunks, _toBeImplemented);
 
 
@@ -174,7 +179,7 @@ includes(StarChunk, StarChunks, _includesAll);
 includesStrictly(StarChunk, StarChunks, _toBeImplemented);
 isIncluded(StarChunk, StarChunks, _isIncluded);
 isIncludedStrictly(StarChunk, StarChunks, _toBeImplemented);
-overlaps(StarChunk, StarChunks, _toBeImplemented);
+overlaps(StarChunk, StarChunks, _overlaps);
 overlapsStrictly(StarChunk, StarChunks, _toBeImplemented);
 
 
@@ -189,5 +194,5 @@ includes(StarChunk, MixedChunks, _includesAll);
 includesStrictly(StarChunk, MixedChunks, _includesAll);
 isIncluded(StarChunk, MixedChunks, _isIncluded);
 isIncludedStrictly(StarChunk, MixedChunks, _isIncluded);
-overlaps(StarChunk, MixedChunks, _toBeImplemented);
+overlaps(StarChunk, MixedChunks, _overlaps);
 overlapsStrictly(StarChunk, MixedChunks, _toBeImplemented);

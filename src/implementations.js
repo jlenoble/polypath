@@ -45,6 +45,15 @@ export const _includesAll = function (obj) {
   return true;
 };
 
+export const _includesSome = function (obj) {
+  for (let chunk of obj.chunks) {
+    if (this.includes(chunk)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const _includesNot = function (obj) {
   return !this.includes(obj);
 };
@@ -55,6 +64,25 @@ export const _isIncluded = function (obj) {
 
 export const _isNotIncluded = function (obj) {
   return !obj.includes(this);
+};
+
+export const _overlaps = function (obj) {
+  const overlaps = chunk => this.includes(chunk) || chunk.overlaps(this);
+
+  if (obj.chunks) {
+    for (let chunk of obj.chunks) {
+      if (overlaps(chunk)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  return overlaps(obj);
+};
+
+export const _isOverlapped = function (obj) {
+  return obj.overlaps(this);
 };
 
 export const _newChunksRight = function (obj) {
