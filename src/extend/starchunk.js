@@ -2,8 +2,8 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_empty, _this, _false, _equals, _testLeft, _toBeImplemented}
-  from '../implementations';
+import {_empty, _this, _false, _equals, _testLeft, _multiTest,
+  _multiTestMixed, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -115,14 +115,7 @@ add(StarChunk, Chunks, _toBeImplemented);
 remove(StarChunk, Chunks, _toBeImplemented);
 equals(StarChunk, Chunks, _false);
 isDistinct(StarChunk, Chunks, _toBeImplemented);
-includes(StarChunk, Chunks, function (obj) {
-  for (let chunk of obj.chunks) {
-    if (!this.test({chunk})) {
-      return false;
-    }
-  }
-  return true;
-});
+includes(StarChunk, Chunks, _multiTest);
 includesStrictly(StarChunk, Chunks, _toBeImplemented);
 isIncluded(StarChunk, Chunks, _toBeImplemented);
 isIncludedStrictly(StarChunk, Chunks, _toBeImplemented);
@@ -137,14 +130,7 @@ add(StarChunk, StarChunks, _toBeImplemented);
 remove(StarChunk, StarChunks, _toBeImplemented);
 equals(StarChunk, StarChunks, _false);
 isDistinct(StarChunk, StarChunks, _toBeImplemented);
-includes(StarChunk, StarChunks, function (obj) {
-  for (let chunk of obj.chunks) {
-    if (!this.includes(chunk)) {
-      return false;
-    }
-  }
-  return true;
-});
+includes(StarChunk, StarChunks, _multiTest);
 includesStrictly(StarChunk, StarChunks, _toBeImplemented);
 isIncluded(StarChunk, StarChunks, _toBeImplemented);
 isIncludedStrictly(StarChunk, StarChunks, _toBeImplemented);
@@ -159,19 +145,7 @@ add(StarChunk, MixedChunks, _toBeImplemented);
 remove(StarChunk, MixedChunks, _toBeImplemented);
 equals(StarChunk, MixedChunks, _false);
 isDistinct(StarChunk, MixedChunks, _toBeImplemented);
-includes(StarChunk, MixedChunks, function (obj) {
-  for (let chunk of obj.chunks.chunks) {
-    if (!this.test({chunk})) {
-      return false;
-    }
-  }
-  for (let chunk of obj.starchunks.chunks) {
-    if (!this.includes(chunk)) {
-      return false;
-    }
-  }
-  return true;
-});
+includes(StarChunk, MixedChunks, _multiTestMixed);
 includesStrictly(StarChunk, MixedChunks, _toBeImplemented);
 isIncluded(StarChunk, MixedChunks, _toBeImplemented);
 isIncludedStrictly(StarChunk, MixedChunks, _toBeImplemented);

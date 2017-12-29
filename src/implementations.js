@@ -40,6 +40,29 @@ export const _antitestRight = function (obj) {
   return !obj.test(this);
 };
 
+export const _multiTest = function (obj) {
+  for (let chunk of obj.chunks) {
+    if (!this.includes(chunk)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const _multiTestMixed = function (obj) {
+  for (let chunk of obj.chunks.chunks) {
+    if (!this.includes(chunk)) {
+      return false;
+    }
+  }
+  for (let chunk of obj.starchunks.chunks) {
+    if (!this.includes(chunk)) {
+      return false;
+    }
+  }
+  return true;
+};
+
 export const _newChunksRight = function (obj) {
   return obj.test(this) ? obj : new Chunks(
     this.chunk + ',' + obj.chunk);

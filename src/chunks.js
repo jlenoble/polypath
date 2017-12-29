@@ -1,5 +1,5 @@
 import {error} from 'explanation';
-import {StarChunk} from './chunk';
+import Chunk, {StarChunk} from './chunk';
 
 export default class Chunks {
   constructor (chunk) {
@@ -13,22 +13,22 @@ export default class Chunks {
       });
     }
 
-    const set = new Set(chunk.split(','));
+    const set = Array.from(new Set(chunk.split(','))).sort();
 
     Object.defineProperties(this, {
       chunk: {
-        value: Array.from(set).sort().join(','),
+        value: set.join(','),
         enumerable: true,
       },
 
       chunks: {
-        value: set,
+        value: set.map(chunk => new Chunk(chunk)),
       },
     });
   }
 
-  test ({chunk}) {
-    return this.chunks.has(chunk);
+  test (obj) {
+    return this.chunks.some(chunk => chunk.test(obj));
   }
 }
 
@@ -104,6 +104,6 @@ export class MixedChunks {
   }
 
   test (obj) {
-    return this.chunks.test(obj) || this.starchunks.test(obj);
+    return this.starchunks.test(obj) || this.chunks.test(obj);
   }
 }
