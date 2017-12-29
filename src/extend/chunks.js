@@ -4,7 +4,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
   _includesAll, _includesSome, _includesNot, _includesStrictly, _isIncluded,
-  _overlaps, _isOverlapped, _toBeImplemented} from '../implementations';
+  _isIncludedStrictly, _overlaps, _isOverlapped, _toBeImplemented}
+  from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -80,7 +81,7 @@ isDistinct(Chunks, Chunks, _toBeImplemented);
 includes(Chunks, Chunks, _includesAll);
 includesStrictly(Chunks, Chunks, _includesStrictly);
 isIncluded(Chunks, Chunks, _isIncluded);
-isIncludedStrictly(Chunks, Chunks, _toBeImplemented);
+isIncludedStrictly(Chunks, Chunks, _isIncludedStrictly);
 overlaps(Chunks, Chunks, _includesSome);
 overlapsStrictly(Chunks, Chunks, _toBeImplemented);
 

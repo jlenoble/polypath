@@ -66,6 +66,10 @@ export const _isIncluded = function (obj) {
   return obj.includes(this);
 };
 
+export const _isIncludedStrictly = function (obj) {
+  return this.chunk !== obj.chunk && obj.includes(this);
+};
+
 export const _isNotIncluded = function (obj) {
   return !obj.includes(this);
 };

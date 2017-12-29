@@ -4,7 +4,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
   _includesAll, _includesSome, _includesNot, _includesStrictly, _isIncluded,
-  _overlaps, _toBeImplemented} from '../implementations';
+  _isIncludedStrictly, _overlaps, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -74,7 +74,7 @@ includes(StarChunk, StarChunk, function (obj) {
 });
 includesStrictly(StarChunk, StarChunk, _includesStrictly);
 isIncluded(StarChunk, StarChunk, _isIncluded);
-isIncludedStrictly(StarChunk, StarChunk, _toBeImplemented);
+isIncludedStrictly(StarChunk, StarChunk, _isIncludedStrictly);
 overlaps(StarChunk, StarChunk, function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
