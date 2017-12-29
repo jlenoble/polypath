@@ -79,48 +79,37 @@ overlaps(StarChunk, StarChunk, function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
 
-  if (chunks1[0] === '' && chunks2[chunks2.length - 1] === '' ||
-    chunks2[0] === '' && chunks1[chunks1.length - 1] === '') {
-    return true;
-  }
+  const a1 = chunks1[0];
+  const b1 = chunks1[chunks1.length - 1];
+  const a2 = chunks2[0];
+  const b2 = chunks2[chunks2.length - 1];
 
-  let index1;
-  let index2 = -1;
-
-  chunks1.some((chunk1, i) => {
-    index1 = i;
-    chunks2.some((chunk2, j) => {
-      if (chunk2.includes(chunk1)) {
-        index2 = j;
-        return true;
-      }
-    });
-    return index2 !== -1;
-  });
-
-  if (index2 !== 1) {
-    const chunks = chunks2.slice(index2 + 1);
-    index2 = -1;
-
-    chunks1.slice(index1 + 1).some(chunk1 => {
-      chunks.some((chunk2, j) => {
-        if (chunk2.includes(chunk1)) {
-          index2 = j;
-          return true;
-        }
-      });
-      return index2 !== -1;
-    });
-
-    if (index2 !== -1) {
-      return true;
+  if (!a1.includes(a2)) {
+    if (!a2.includes(a1)) {
+      return false;
     }
+
+    return a2.substring(0, a1.length) === a1;
   }
 
-  return false;
-}
+  if (a1.substring(0, a2.length) !== a2) {
+    return false;
+  }
 
-);
+  if (!b1.includes(b2)) {
+    if (!b2.includes(b1)) {
+      return false;
+    }
+
+    return b2.substring(b2.length - b1.length) === b1;
+  }
+
+  if (b1.substring(b1.length - b2.length) !== b2) {
+    return false;
+  }
+
+  return true;
+});
 overlapsStrictly(StarChunk, StarChunk, _toBeImplemented);
 
 

@@ -101,6 +101,17 @@ const tests = {
     'b*,c': true,
     'c,d': false,
   },
+  'abc*ed*f*gh': {
+    'a*h': true,
+    'abc*ed*f*gh': true,
+    'ab*e*gh': true,
+    'ab*e*gh*': true,
+    '*ab*e*gh': true,
+    'a*cedf*h': true,
+    'ac*ed*gh': false,
+    'abc*ed*f*g': false,
+    'bc*ed*f*gh': false,
+  },
 };
 
 Object.keys(tests).forEach(chunk1 => {
@@ -111,11 +122,11 @@ Object.keys(tests).forEach(chunk1 => {
       const c2 = new Chunk(chunk2);
 
       if (tests[chunk1][chunk2]) {
-        it(`overlaps '${chunk2}'`, function () {
+        it(`overlaps with '${chunk2}'`, function () {
           expect(c1.overlaps(c2)).to.be.true;
         });
       } else {
-        it(`doesn't overlap '${chunk2}'`, function () {
+        it(`doesn't overlap with '${chunk2}'`, function () {
           expect(c1.overlaps(c2)).to.be.false;
         });
       }
