@@ -28,6 +28,10 @@ export const _equals = function (obj) {
   return this.chunk === obj.chunk;
 };
 
+export const _equalsNot = function (obj) {
+  return this.chunk !== obj.chunk;
+};
+
 export const _includes = function (obj) {
   return this.test(obj);
 };
@@ -49,8 +53,8 @@ export const _isIncluded = function (obj) {
   return obj.includes(this);
 };
 
-export const _antitestRight = function (obj) {
-  return !obj.test(this);
+export const _isNotIncluded = function (obj) {
+  return !obj.includes(this);
 };
 
 export const _newChunksRight = function (obj) {
