@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_empty, _this, _false, _equals, _testLeft, _multiTest,
+import {_empty, _this, _identity, _true, _false, _equals, _testLeft, _multiTest,
   _multiTestMixed, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -17,11 +17,11 @@ remove(Chunks, Chunk, _toBeImplemented);
 equals(Chunks, Chunk, _false);
 isDistinct(Chunks, Chunk, _toBeImplemented);
 includes(Chunks, Chunk, _testLeft);
-includesStrictly(Chunks, Chunk, _toBeImplemented);
-isIncluded(Chunks, Chunk, _toBeImplemented);
-isIncludedStrictly(Chunks, Chunk, _toBeImplemented);
-overlaps(Chunks, Chunk, _toBeImplemented);
-overlapsStrictly(Chunks, Chunk, _toBeImplemented);
+includesStrictly(Chunks, Chunk, _testLeft);
+isIncluded(Chunks, Chunk, _false);
+isIncludedStrictly(Chunks, Chunk, _false);
+overlaps(Chunks, Chunk, _testLeft);
+overlapsStrictly(Chunks, Chunk, _false);
 
 
 // ***************************************************************************
@@ -31,8 +31,8 @@ add(Chunks, StarChunk, _toBeImplemented);
 remove(Chunks, StarChunk, _toBeImplemented);
 equals(Chunks, StarChunk, _false);
 isDistinct(Chunks, StarChunk, _toBeImplemented);
-includes(Chunks, StarChunk, _testLeft);
-includesStrictly(Chunks, StarChunk, _toBeImplemented);
+includes(Chunks, StarChunk, _false);
+includesStrictly(Chunks, StarChunk, _false);
 isIncluded(Chunks, StarChunk, _toBeImplemented);
 isIncludedStrictly(Chunks, StarChunk, _toBeImplemented);
 overlaps(Chunks, StarChunk, _toBeImplemented);
@@ -42,16 +42,16 @@ overlapsStrictly(Chunks, StarChunk, _toBeImplemented);
 // ***************************************************************************
 // Chunks/Star API
 // ***************************************************************************
-add(Chunks, Star, _this);
+add(Chunks, Star, _identity);
 remove(Chunks, Star, _empty);
 equals(Chunks, Star, _false);
-isDistinct(Chunks, Star, _toBeImplemented);
-includes(Chunks, Star, _toBeImplemented);
-includesStrictly(Chunks, Star, _toBeImplemented);
-isIncluded(Chunks, Star, _toBeImplemented);
-isIncludedStrictly(Chunks, Star, _toBeImplemented);
-overlaps(Chunks, Star, _toBeImplemented);
-overlapsStrictly(Chunks, Star, _toBeImplemented);
+isDistinct(Chunks, Star, _false);
+includes(Chunks, Star, _false);
+includesStrictly(Chunks, Star, _false);
+isIncluded(Chunks, Star, _true);
+isIncludedStrictly(Chunks, Star, _true);
+overlaps(Chunks, Star, _true);
+overlapsStrictly(Chunks, Star, _false);
 
 
 // ***************************************************************************
@@ -60,13 +60,13 @@ overlapsStrictly(Chunks, Star, _toBeImplemented);
 add(Chunks, Empty, _this);
 remove(Chunks, Empty, _this);
 equals(Chunks, Empty, _false);
-isDistinct(Chunks, Empty, _toBeImplemented);
-includes(Chunks, Empty, _toBeImplemented);
-includesStrictly(Chunks, Empty, _toBeImplemented);
-isIncluded(Chunks, Empty, _toBeImplemented);
-isIncludedStrictly(Chunks, Empty, _toBeImplemented);
-overlaps(Chunks, Empty, _toBeImplemented);
-overlapsStrictly(Chunks, Empty, _toBeImplemented);
+isDistinct(Chunks, Empty, _false);
+includes(Chunks, Empty, _true);
+includesStrictly(Chunks, Empty, _true);
+isIncluded(Chunks, Empty, _false);
+isIncludedStrictly(Chunks, Empty, _false);
+overlaps(Chunks, Empty, _true);
+overlapsStrictly(Chunks, Empty, _false);
 
 
 // ***************************************************************************
