@@ -41,12 +41,16 @@ export const _includesAll = function (obj) {
   return true;
 };
 
-export const _antitestRight = function (obj) {
-  return !obj.test(this);
+export const _includesNot = function (obj) {
+  return !this.includes(obj);
 };
 
 export const _isIncluded = function (obj) {
   return obj.includes(this);
+};
+
+export const _antitestRight = function (obj) {
+  return !obj.test(this);
 };
 
 export const _newChunksRight = function (obj) {

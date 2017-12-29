@@ -3,7 +3,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
-  _includesAll, _isIncluded, _toBeImplemented} from '../implementations';
+  _includesAll, _includesNot, _isIncluded, _toBeImplemented}
+  from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -15,13 +16,13 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 add(StarChunk, Chunk, _toBeImplemented);
 remove(StarChunk, Chunk, _toBeImplemented);
 equals(StarChunk, Chunk, _false);
-isDistinct(StarChunk, Chunk, _toBeImplemented);
+isDistinct(StarChunk, Chunk, _includesNot);
 includes(StarChunk, Chunk, _includes);
 includesStrictly(StarChunk, Chunk, _includes);
 isIncluded(StarChunk, Chunk, _false);
-isIncludedStrictly(StarChunk, Chunk, _toBeImplemented);
+isIncludedStrictly(StarChunk, Chunk, _false);
 overlaps(StarChunk, Chunk, _includes);
-overlapsStrictly(StarChunk, Chunk, _toBeImplemented);
+overlapsStrictly(StarChunk, Chunk, _includes);
 
 
 // ***************************************************************************
@@ -74,7 +75,47 @@ includes(StarChunk, StarChunk, function (obj) {
 includesStrictly(StarChunk, StarChunk, _toBeImplemented);
 isIncluded(StarChunk, StarChunk, _isIncluded);
 isIncludedStrictly(StarChunk, StarChunk, _toBeImplemented);
-overlaps(StarChunk, StarChunk, _toBeImplemented);
+overlaps(StarChunk, StarChunk, function (obj) {
+  const chunks1 = this.chunk.split('*');
+  const chunks2 = obj.chunk.split('*');
+
+  let index1;
+  let index2 = -1;
+
+  chunks1.some((chunk1, i) => {
+    index1 = i;
+    chunks2.some((chunk2, j) => {
+      if (chunk2.includes(chunk1)) {
+        index2 = j;
+        return true;
+      }
+    });
+    return index2 !== -1;
+  });
+
+  if (index2 !== 1) {
+    const chunks = chunks2.slice(index2 + 1);
+    index2 = -1;
+
+    chunks1.slice(index1 + 1).some(chunk1 => {
+      chunks.some((chunk2, j) => {
+        if (chunk2.includes(chunk1)) {
+          index2 = j;
+          return true;
+        }
+      });
+      return index2 !== -1;
+    });
+
+    if (index2 !== -1) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+);
 overlapsStrictly(StarChunk, StarChunk, _toBeImplemented);
 
 
@@ -115,9 +156,9 @@ remove(StarChunk, Chunks, _toBeImplemented);
 equals(StarChunk, Chunks, _false);
 isDistinct(StarChunk, Chunks, _toBeImplemented);
 includes(StarChunk, Chunks, _includesAll);
-includesStrictly(StarChunk, Chunks, _toBeImplemented);
+includesStrictly(StarChunk, Chunks, _includesAll);
 isIncluded(StarChunk, Chunks, _false);
-isIncludedStrictly(StarChunk, Chunks, _toBeImplemented);
+isIncludedStrictly(StarChunk, Chunks, _false);
 overlaps(StarChunk, Chunks, _toBeImplemented);
 overlapsStrictly(StarChunk, Chunks, _toBeImplemented);
 
@@ -145,8 +186,8 @@ remove(StarChunk, MixedChunks, _toBeImplemented);
 equals(StarChunk, MixedChunks, _false);
 isDistinct(StarChunk, MixedChunks, _toBeImplemented);
 includes(StarChunk, MixedChunks, _includesAll);
-includesStrictly(StarChunk, MixedChunks, _toBeImplemented);
+includesStrictly(StarChunk, MixedChunks, _includesAll);
 isIncluded(StarChunk, MixedChunks, _isIncluded);
-isIncludedStrictly(StarChunk, MixedChunks, _toBeImplemented);
+isIncludedStrictly(StarChunk, MixedChunks, _isIncluded);
 overlaps(StarChunk, MixedChunks, _toBeImplemented);
 overlapsStrictly(StarChunk, MixedChunks, _toBeImplemented);
