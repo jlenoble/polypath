@@ -2,8 +2,8 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_empty, _this, _identity, _true, _false, _equals, _testLeft, _multiTest,
-  _isIncluded, _toBeImplemented} from '../implementations';
+import {_empty, _this, _identity, _true, _false, _equals, _includes,
+  _multiTest, _isIncluded, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -16,11 +16,11 @@ add(StarChunk, Chunk, _toBeImplemented);
 remove(StarChunk, Chunk, _toBeImplemented);
 equals(StarChunk, Chunk, _false);
 isDistinct(StarChunk, Chunk, _toBeImplemented);
-includes(StarChunk, Chunk, _testLeft);
-includesStrictly(StarChunk, Chunk, _testLeft);
+includes(StarChunk, Chunk, _includes);
+includesStrictly(StarChunk, Chunk, _includes);
 isIncluded(StarChunk, Chunk, _false);
 isIncludedStrictly(StarChunk, Chunk, _toBeImplemented);
-overlaps(StarChunk, Chunk, _testLeft);
+overlaps(StarChunk, Chunk, _includes);
 overlapsStrictly(StarChunk, Chunk, _toBeImplemented);
 
 

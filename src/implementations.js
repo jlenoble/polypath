@@ -28,7 +28,7 @@ export const _equals = function (obj) {
   return this.chunk === obj.chunk;
 };
 
-export const _testLeft = function (obj) {
+export const _includes = function (obj) {
   return this.test(obj);
 };
 
