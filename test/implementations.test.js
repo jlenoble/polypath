@@ -14,8 +14,8 @@ const validArguments = {
   StarChunk: ['a*', 'a*bc*'],
   Star: ['*', '**'],
   Empty: [''],
-  Chunks: ['a', 'a,b,c'],
-  StarChunks: ['a*', 'a*,b*,*c'],
+  Chunks: ['a,z', 'a,b,c'],
+  StarChunks: ['a*,*z', 'a*,b*,*c'],
   MixedChunks: ['a,*b', 'a*,b', '*x*,y,z'],
 };
 

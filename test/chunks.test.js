@@ -7,7 +7,6 @@ const muter = Muter(console);
 
 describe('A Chunks instance', function () {
   it('encapsulates chunks', function () {
-    expect(new Chunks('a').chunk).to.equal('a');
     expect(new Chunks('a,b,c').chunk).to.equal('a,b,c');
     expect(new Chunks('b,a,c').chunk).to.equal('a,b,c');
   });
@@ -19,6 +18,7 @@ describe('A Chunks instance', function () {
   }));
 
   it('throws on non chunks', muted(muter, function () {
+    expect(() => new Chunks('a').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('*').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('a?').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('!abc').chunk).to.throw('Not word chunks');
@@ -32,8 +32,7 @@ describe('A Chunks instance', function () {
 
 describe('A StarChunks instance', function () {
   it('encapsulates star chunks', function () {
-    expect(new StarChunks('a*').chunk).to.equal('a*');
-    expect(new StarChunks('*a*b*cde*').chunk).to.equal('*a*b*cde*');
+    expect(new StarChunks('*a*b*,cde*').chunk).to.equal('*a*b*,cde*');
     expect(new StarChunks('*a,*b*c,de*').chunk).to.equal('*a,*b*c,de*');
   });
 
@@ -45,6 +44,7 @@ describe('A StarChunks instance', function () {
 
   it('throws on non star chunks', muted(muter, function () {
     expect(() => new StarChunks('a').chunk).to.throw('Not star chunks');
+    expect(() => new StarChunks('a*').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('*?').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('!*bc').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('*/b/c').chunk).to.throw('Not star chunks');
@@ -71,6 +71,7 @@ describe('A MixedChunks instance', function () {
 
   it('throws on non mixed chunks', muted(muter, function () {
     expect(() => new MixedChunks('a').chunk).to.throw('Not mixed chunks');
+    expect(() => new MixedChunks('a*').chunk).to.throw('Not mixed chunks');
     expect(() => new MixedChunks('*?').chunk).to.throw('Not mixed chunks');
     expect(() => new MixedChunks('!*bc').chunk).to.throw('Not mixed chunks');
     expect(() => new MixedChunks('*/b/c').chunk).to.throw('Not mixed chunks');

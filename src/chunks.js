@@ -3,7 +3,7 @@ import Chunk, {StarChunk} from './chunk';
 
 export default class Chunks {
   constructor (chunk) {
-    if (typeof chunk !== 'string' || !/^\w+(,\w+)*$/.test(chunk)) {
+    if (typeof chunk !== 'string' || !/^\w+(,\w+)+$/.test(chunk)) {
       error({
         message: 'Not word chunks',
         explain: [
@@ -34,7 +34,7 @@ export default class Chunks {
 
 export class StarChunks {
   constructor (chunk) {
-    if (!/^\w*(\*\w*)+(,\w*(\*\w*)+)*$/.test(chunk)) {
+    if (!/^\w*(\*\w*)+(,\w*(\*\w*)+)+$/.test(chunk)) {
       error({
         message: 'Not star chunks',
         explain: [
@@ -65,7 +65,7 @@ export class StarChunks {
 
 export class MixedChunks {
   constructor (chunk) {
-    if (typeof chunk !== 'string' || !/^(\w|\*)+(,(\w|\*)+)*$/.test(chunk)) {
+    if (typeof chunk !== 'string' || !/^(\w|\*)+(,(\w|\*)+)+$/.test(chunk)) {
       error({
         message: 'Not mixed chunks',
         explain: [
@@ -76,6 +76,21 @@ export class MixedChunks {
     }
 
     const set = Array.from(new Set(chunk.split(','))).sort();
+    const chunks = set.filter(chunk => !/\*/.test(chunk)).map(
+      chunk => new Chunk(chunk));
+    const starchunks = set.filter(chunk => /\*/.test(chunk)).map(
+      chunk => new StarChunk(chunk));
+
+    if (!chunks.length || !starchunks.length) {
+      error({
+        message: 'Not mixed chunks',
+        explain: [
+          ['You attempted to initialize a MixedChunks object with:', chunk],
+          'But expected \'(chunk|starchunk)(,(chunk|starchunk))*`\'',
+          'And with at least one chunk and one starchunk',
+        ],
+      });
+    }
 
     try {
       Object.defineProperties(this, {
@@ -85,11 +100,7 @@ export class MixedChunks {
         },
 
         chunks: {
-          value: new Chunks(set.filter(chunk => !/\*/.test(chunk)).join(',')),
-        },
-
-        starchunks: {
-          value: new StarChunks(set.filter(chunk => /\*/.test(chunk)).join(',')),
+          value: [...starchunks, ...chunks],
         },
       });
     } catch (e) {
@@ -104,6 +115,6 @@ export class MixedChunks {
   }
 
   test (obj) {
-    return this.starchunks.test(obj) || this.chunks.test(obj);
+    return this.chunks.some(starchunk => starchunk.test(obj));
   }
 }

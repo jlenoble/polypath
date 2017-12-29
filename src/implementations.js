@@ -49,20 +49,6 @@ export const _multiTest = function (obj) {
   return true;
 };
 
-export const _multiTestMixed = function (obj) {
-  for (let chunk of obj.chunks.chunks) {
-    if (!this.includes(chunk)) {
-      return false;
-    }
-  }
-  for (let chunk of obj.starchunks.chunks) {
-    if (!this.includes(chunk)) {
-      return false;
-    }
-  }
-  return true;
-};
-
 export const _isIncluded = function (obj) {
   return obj.includes(this);
 };
