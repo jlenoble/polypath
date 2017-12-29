@@ -58,6 +58,10 @@ export const _includesNot = function (obj) {
   return !this.includes(obj);
 };
 
+export const _includesStrictly = function (obj) {
+  return this.chunk !== obj.chunk && this.includes(obj);
+};
+
 export const _isIncluded = function (obj) {
   return obj.includes(this);
 };

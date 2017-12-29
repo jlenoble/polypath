@@ -3,8 +3,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
-  _includesAll, _includesSome, _includesNot, _isIncluded, _overlaps,
-  _isOverlapped, _toBeImplemented} from '../implementations';
+  _includesAll, _includesSome, _includesNot, _isIncluded, _includesStrictly,
+  _overlaps, _isOverlapped, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -78,7 +78,7 @@ remove(MixedChunks, Chunks, _toBeImplemented);
 equals(MixedChunks, Chunks, _false);
 isDistinct(MixedChunks, Chunks, _toBeImplemented);
 includes(MixedChunks, Chunks, _includesAll);
-includesStrictly(MixedChunks, Chunks, _toBeImplemented);
+includesStrictly(MixedChunks, Chunks, _includesAll);
 isIncluded(MixedChunks, Chunks, _false);
 isIncludedStrictly(MixedChunks, Chunks, _false);
 overlaps(MixedChunks, Chunks, _includesSome);
@@ -108,7 +108,7 @@ remove(MixedChunks, MixedChunks, _toBeImplemented);
 equals(MixedChunks, MixedChunks, _equals);
 isDistinct(MixedChunks, MixedChunks, _toBeImplemented);
 includes(MixedChunks, MixedChunks, _includesAll);
-includesStrictly(MixedChunks, MixedChunks, _toBeImplemented);
+includesStrictly(MixedChunks, MixedChunks, _includesStrictly);
 isIncluded(MixedChunks, MixedChunks, _isIncluded);
 isIncludedStrictly(MixedChunks, MixedChunks, _toBeImplemented);
 overlaps(MixedChunks, MixedChunks, _overlaps);

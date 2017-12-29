@@ -3,8 +3,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
-  _includesAll, _includesSome, _includesNot, _isIncluded, _overlaps,
-  _toBeImplemented} from '../implementations';
+  _includesAll, _includesSome, _includesNot, _includesStrictly, _isIncluded,
+  _overlaps, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -72,7 +72,7 @@ includes(StarChunk, StarChunk, function (obj) {
 
   return true;
 });
-includesStrictly(StarChunk, StarChunk, _toBeImplemented);
+includesStrictly(StarChunk, StarChunk, _includesStrictly);
 isIncluded(StarChunk, StarChunk, _isIncluded);
 isIncludedStrictly(StarChunk, StarChunk, _toBeImplemented);
 overlaps(StarChunk, StarChunk, function (obj) {
@@ -165,9 +165,9 @@ remove(StarChunk, StarChunks, _toBeImplemented);
 equals(StarChunk, StarChunks, _false);
 isDistinct(StarChunk, StarChunks, _toBeImplemented);
 includes(StarChunk, StarChunks, _includesAll);
-includesStrictly(StarChunk, StarChunks, _toBeImplemented);
+includesStrictly(StarChunk, StarChunks, _includesAll);
 isIncluded(StarChunk, StarChunks, _isIncluded);
-isIncludedStrictly(StarChunk, StarChunks, _toBeImplemented);
+isIncludedStrictly(StarChunk, StarChunks, _isIncluded);
 overlaps(StarChunk, StarChunks, _overlaps);
 overlapsStrictly(StarChunk, StarChunks, _toBeImplemented);
 
