@@ -32,21 +32,21 @@ export const _includes = function (obj) {
   return this.test(obj);
 };
 
-export const _testRight = function (obj) {
-  return obj.test(this);
-};
-
-export const _antitestRight = function (obj) {
-  return !obj.test(this);
-};
-
-export const _multiTest = function (obj) {
+export const _includesAll = function (obj) {
   for (let chunk of obj.chunks) {
     if (!this.includes(chunk)) {
       return false;
     }
   }
   return true;
+};
+
+export const _testRight = function (obj) {
+  return obj.test(this);
+};
+
+export const _antitestRight = function (obj) {
+  return !obj.test(this);
 };
 
 export const _isIncluded = function (obj) {
