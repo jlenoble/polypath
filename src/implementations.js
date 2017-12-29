@@ -41,10 +41,6 @@ export const _includesAll = function (obj) {
   return true;
 };
 
-export const _testRight = function (obj) {
-  return obj.test(this);
-};
-
 export const _antitestRight = function (obj) {
   return !obj.test(this);
 };
