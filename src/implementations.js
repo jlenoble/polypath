@@ -29,34 +29,34 @@ export const _equals = function (obj) {
 };
 
 export const _testLeft = function (obj) {
-  return this.test(obj.chunk);
+  return this.test(obj);
 };
 
 export const _testRight = function (obj) {
-  return obj.test(this.chunk);
+  return obj.test(this);
 };
 
 export const _antitestRight = function (obj) {
-  return !obj.test(this.chunk);
+  return !obj.test(this);
 };
 
 export const _newChunksRight = function (obj) {
-  return obj.test(this.chunk) ? obj : new Chunks(
+  return obj.test(this) ? obj : new Chunks(
     this.chunk + ',' + obj.chunk);
 };
 
 export const _newStarChunksRight = function (obj) {
-  return obj.test(this.chunk) ? obj : new StarChunks(
+  return obj.test(this) ? obj : new StarChunks(
     this.chunk + ',' + obj.chunk);
 };
 
 export const _newMixedChunksRight = function (obj) {
-  return obj.test(this.chunk) ? obj : new MixedChunks(
+  return obj.test(this) ? obj : new MixedChunks(
     this.chunk + ',' + obj.chunk);
 };
 
 export const _clearRight = function (obj) {
-  return obj.test(this.chunk) ? empty : this;
+  return obj.test(this) ? empty : this;
 };
 
 export const _toBeImplemented = function () {

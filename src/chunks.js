@@ -27,8 +27,8 @@ export default class Chunks {
     });
   }
 
-  test (obj) {
-    return this.chunks.has(obj.chunk);
+  test ({chunk}) {
+    return this.chunks.has(chunk);
   }
 }
 
@@ -59,7 +59,7 @@ export class StarChunks {
   }
 
   test (obj) {
-    return this.chunks.some(chunk => chunk.test(obj.chunk));
+    return this.chunks.some(starchunk => starchunk.test(obj));
   }
 }
 

@@ -16,7 +16,7 @@ const tests = {
     'b*,c': false,
   },
   'a*': {
-    'a': false,
+    'a': true,
     'b': false,
     'a*': true,
     'b*': false,
@@ -29,8 +29,8 @@ const tests = {
     'b*,c': false,
   },
   'a,b': {
-    'a': false,
-    'b': false,
+    'a': true,
+    'b': true,
     'a*': false,
     'b*': false,
     'a,b': true,
@@ -43,25 +43,25 @@ const tests = {
     'b*,c': false,
   },
   'a*,b*': {
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
+    'a': true,
+    'b': true,
+    'a*': true,
+    'b*': true,
+    'a,b': true,
     'b,c': false,
     'a*,b*': true,
     'b*,a*': true,
     'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
+    'a*,b': true,
+    'a,b*': true,
     'b*,c': false,
   },
   'a*,b': {
-    'a': false,
-    'b': false,
-    'a*': false,
+    'a': true,
+    'b': true,
+    'a*': true,
     'b*': false,
-    'a,b': false,
+    'a,b': true,
     'b,c': false,
     'a*,b*': false,
     'b*,c*': false,
@@ -71,11 +71,11 @@ const tests = {
     'b*,c': false,
   },
   'a,b*': {
-    'a': false,
-    'b': false,
+    'a': true,
+    'b': true,
     'a*': false,
-    'b*': false,
-    'a,b': false,
+    'b*': true,
+    'a,b': true,
     'b,c': false,
     'a*,b*': false,
     'b*,c*': false,
@@ -94,14 +94,12 @@ Object.keys(tests).forEach(chunk1 => {
       const c2 = new Chunk(chunk2);
 
       if (tests[chunk1][chunk2]) {
-        it(`is equal to '${chunk2}'`, function () {
-          expect(c1.chunk).to.equal(c2.chunk);
-          expect(c1.equals(c2)).to.be.true;
+        it(`includes '${chunk2}'`, function () {
+          expect(c1.includes(c2)).to.be.true;
         });
       } else {
-        it(`is not equal to '${chunk2}'`, function () {
-          expect(c1.chunk).not.to.equal(c2.chunk);
-          expect(c1.equals(c2)).to.be.false;
+        it(`doesn't include '${chunk2}'`, function () {
+          expect(c1.includes(c2)).to.be.false;
         });
       }
     });

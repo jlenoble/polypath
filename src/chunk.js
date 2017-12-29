@@ -20,7 +20,7 @@ export default class Chunk {
     });
   }
 
-  test (chunk) {
+  test ({chunk}) {
     return this.chunk === chunk;
   }
 }
@@ -49,7 +49,7 @@ export class StarChunk {
     });
   }
 
-  test (chunk) {
+  test ({chunk}) {
     return this.regex.test(chunk);
   }
 }
