@@ -63,6 +63,10 @@ export const _multiTestMixed = function (obj) {
   return true;
 };
 
+export const _isIncluded = function (obj) {
+  return obj.includes(this);
+};
+
 export const _newChunksRight = function (obj) {
   return obj.test(this) ? obj : new Chunks(
     this.chunk + ',' + obj.chunk);
