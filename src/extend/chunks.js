@@ -91,7 +91,6 @@ includesStrictly(Chunks, StarChunks, _false);
 isIncluded(Chunks, StarChunks, _isIncluded);
 isIncludedStrictly(Chunks, StarChunks, _isIncluded);
 overlaps(Chunks, StarChunks, _overlaps);
-overlapsStrictly(Chunks, StarChunks, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -104,4 +103,3 @@ includesStrictly(Chunks, MixedChunks, _false);
 isIncluded(Chunks, MixedChunks, _isIncluded);
 isIncludedStrictly(Chunks, MixedChunks, _isIncluded);
 overlaps(Chunks, MixedChunks, _overlaps);
-overlapsStrictly(Chunks, MixedChunks, _overlapsStrictly);
