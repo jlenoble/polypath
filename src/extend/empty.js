@@ -30,7 +30,7 @@ overlapsStrictly(Empty, Empty, _false);
   Type => {
     add(Empty, Type, _identity);
     remove(Empty, Type, _empty);
-    equals(Empty, Type, _false);
+    equals(Empty, Type, _false, {commutative: true});
     isDistinct(Empty, Type, _false);
     includes(Empty, Type, _false);
     includesStrictly(Empty, Type, _false);

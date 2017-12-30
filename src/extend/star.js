@@ -27,7 +27,7 @@ overlapsStrictly(Star, Star, _false);
 // ***************************************************************************
 // Star/any type APIs
 // ***************************************************************************
-[Chunk, StarChunk, Empty, Chunks, StarChunks, MixedChunks].forEach(
+[Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(
   Type => {
     add(Star, Type, _this);
     equals(Star, Type, _false);
@@ -54,7 +54,15 @@ remove(Star, StarChunk, _toBeImplemented);
 // ***************************************************************************
 // Star/Empty API
 // ***************************************************************************
+add(Star, Empty, _this);
 remove(Star, Empty, _this);
+isDistinct(Star, Empty, _false);
+includes(Star, Empty, _true);
+includesStrictly(Star, Empty, _true);
+isIncluded(Star, Empty, _false);
+isIncludedStrictly(Star, Empty, _false);
+overlaps(Star, Empty, _true);
+overlapsStrictly(Star, Empty, _false);
 
 // ***************************************************************************
 // Star/Chunks API
