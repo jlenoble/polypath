@@ -198,7 +198,7 @@ Object.keys(tests).forEach(chunk1 => {
       const c2 = new Chunk(chunk2);
       const c3 = new Chunk(chunk3);
 
-      if (tests[chunk1][chunk2]) {
+      if (tests[chunk1][chunk2] !== undefined) {
         it(`minus '${chunk2}' yields '${chunk3}'`, function () {
           expect(c1.remove(c2).chunk).to.equal(c3.chunk);
         });
