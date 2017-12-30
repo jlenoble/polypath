@@ -4,7 +4,7 @@ import Chunk, {StarChunk, Empty} from './chunk';
 export default class Chunks {
   constructor (chunk) {
     if (typeof chunk !== 'string' || !/^\w+(,\w+)+$/.test(chunk)) {
-      if (/^\w*$/.test(chunk)) {
+      if (typeof chunk === 'string' && /^\w*$/.test(chunk)) {
         return new Chunk(chunk);
       }
 

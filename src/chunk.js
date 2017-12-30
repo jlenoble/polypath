@@ -3,6 +3,10 @@ import {error} from 'explanation';
 export default class Chunk {
   constructor (chunk) {
     if (typeof chunk !== 'string' || !/^\w+$/.test(chunk)) {
+      if (chunk === '') {
+        return new Empty();
+      }
+
       error({
         message: 'Not a word chunk',
         explain: [

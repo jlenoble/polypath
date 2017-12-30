@@ -18,7 +18,6 @@ describe('A Chunks instance', function () {
   }));
 
   it('throws on non chunks', muted(muter, function () {
-    expect(() => new Chunks('a').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('*').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('a?').chunk).to.throw('Not word chunks');
     expect(() => new Chunks('!abc').chunk).to.throw('Not word chunks');
@@ -44,7 +43,6 @@ describe('A StarChunks instance', function () {
 
   it('throws on non star chunks', muted(muter, function () {
     expect(() => new StarChunks('a').chunk).to.throw('Not star chunks');
-    expect(() => new StarChunks('a*').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('*?').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('!*bc').chunk).to.throw('Not star chunks');
     expect(() => new StarChunks('*/b/c').chunk).to.throw('Not star chunks');
