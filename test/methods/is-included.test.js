@@ -2,7 +2,39 @@ import {expect} from 'chai';
 import Chunk from '../../src/index';
 
 const tests = {
+  '': {
+    '': true,
+    '*': true,
+    'a': true,
+    'b': true,
+    'a*': true,
+    'b*': true,
+    'a,b': true,
+    'b,c': true,
+    'a*,b*': true,
+    'b*,c*': true,
+    'a*,b': true,
+    'a,b*': true,
+    'b*,c': true,
+  },
+  '*': {
+    '': false,
+    '*': true,
+    'a': false,
+    'b': false,
+    'a*': false,
+    'b*': false,
+    'a,b': false,
+    'b,c': false,
+    'a*,b*': false,
+    'b*,c*': false,
+    'a*,b': false,
+    'a,b*': false,
+    'b*,c': false,
+  },
   'a': {
+    '': false,
+    '*': true,
     'a': true,
     'b': false,
     'a*': true,
@@ -16,6 +48,8 @@ const tests = {
     'b*,c': false,
   },
   'a*': {
+    '': false,
+    '*': true,
     'a': false,
     'b': false,
     'a*': true,
@@ -29,6 +63,8 @@ const tests = {
     'b*,c': false,
   },
   'a,b': {
+    '': false,
+    '*': true,
     'a': false,
     'b': false,
     'a*': false,
@@ -43,6 +79,8 @@ const tests = {
     'b*,c': false,
   },
   'a*,b*': {
+    '': false,
+    '*': true,
     'a': false,
     'b': false,
     'a*': false,
@@ -57,6 +95,8 @@ const tests = {
     'b*,c': false,
   },
   'a*,b': {
+    '': false,
+    '*': true,
     'a': false,
     'b': false,
     'a*': false,
@@ -71,6 +111,8 @@ const tests = {
     'b*,c': false,
   },
   'a,b*': {
+    '': false,
+    '*': true,
     'a': false,
     'b': false,
     'a*': false,
