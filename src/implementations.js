@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 import {Empty} from './chunk';
-import {MixedChunks} from './chunks';
+import Chunks, {MixedChunks} from './chunks';
 
 const empty = new Empty();
 
@@ -118,6 +118,12 @@ export const _addReduce = function (obj) {
 
 export const _maybeClearChunk = function (obj) {
   return obj.test(this) ? empty : this;
+};
+
+export const _filterChunks = function (obj) {
+  const chunks = this.chunks.filter(chunk => !obj.includes(chunk));
+  return chunks.length === this.chunks.length ? this : new Chunks(
+    chunks.map(chunk => chunk.chunk).join(','));
 };
 
 export const _toBeImplemented = function () {

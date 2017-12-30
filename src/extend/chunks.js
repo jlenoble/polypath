@@ -5,7 +5,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 import {_empty, _this, _identity, _true, _false, _equals, _isDistinct,
   _includes, _includesAll, _includesSome, _includesNot, _includesStrictly,
   _isIncluded, _isIncludedStrictly, _overlaps, _isOverlapped, _overlapsStrictly,
-  _addTo, _toBeImplemented}
+  _addTo, _filterChunks}
   from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -18,7 +18,7 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 add(Chunks, Chunk, function (obj) {
   return this.includes(obj) ? this : new Chunks(this.chunk + ',' + obj.chunk);
 });
-remove(Chunks, Chunk, _toBeImplemented);
+remove(Chunks, Chunk, _filterChunks);
 equals(Chunks, Chunk, _false);
 isDistinct(Chunks, Chunk, _includesNot);
 includes(Chunks, Chunk, _includes);
@@ -33,7 +33,7 @@ overlapsStrictly(Chunks, Chunk, _false);
 // Chunks/StarChunk API
 // ***************************************************************************
 add(Chunks, StarChunk, _addTo);
-remove(Chunks, StarChunk, _toBeImplemented);
+remove(Chunks, StarChunk, _filterChunks);
 equals(Chunks, StarChunk, _false);
 isDistinct(Chunks, StarChunk, _isDistinct);
 includes(Chunks, StarChunk, _false);
@@ -80,7 +80,7 @@ overlapsStrictly(Chunks, Empty, _false);
 add(Chunks, Chunks, function (obj) {
   return new Chunks(this.chunk + ',' + obj.chunk);
 });
-remove(Chunks, Chunks, _toBeImplemented);
+remove(Chunks, Chunks, _filterChunks);
 equals(Chunks, Chunks, _equals);
 isDistinct(Chunks, Chunks, _isDistinct);
 includes(Chunks, Chunks, _includesAll);
@@ -95,7 +95,7 @@ overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
 // Chunks/StarChunks API
 // ***************************************************************************
 add(Chunks, StarChunks, _addTo);
-remove(Chunks, StarChunks, _toBeImplemented);
+remove(Chunks, StarChunks, _filterChunks);
 equals(Chunks, StarChunks, _false);
 isDistinct(Chunks, StarChunks, _isDistinct);
 includes(Chunks, StarChunks, _false);
@@ -110,7 +110,7 @@ overlapsStrictly(Chunks, StarChunks, _overlapsStrictly);
 // Chunks/MixedChunks API
 // ***************************************************************************
 add(Chunks, MixedChunks, _addTo);
-remove(Chunks, MixedChunks, _toBeImplemented);
+remove(Chunks, MixedChunks, _filterChunks);
 equals(Chunks, MixedChunks, _false);
 isDistinct(Chunks, MixedChunks, _isDistinct);
 includes(Chunks, MixedChunks, _false);
