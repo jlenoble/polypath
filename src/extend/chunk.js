@@ -3,7 +3,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _empty, _this, _equals, _equalsNot, _isNotIncluded,
-  _isIncluded, _maybeClearChunk, _addTo, _identity}
+  _isIncluded, _maybeClearChunk, _addTo}
   from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -46,7 +46,6 @@ overlapsStrictly(Chunk, StarChunk, _false);
 // ***************************************************************************
 // Chunk/Star API
 // ***************************************************************************
-add(Chunk, Star, _identity);
 remove(Chunk, Star, _empty);
 includes(Chunk, Star, _false);
 includesStrictly(Chunk, Star, _false);
