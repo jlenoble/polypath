@@ -28,7 +28,7 @@ overlapsStrictly(Empty, Empty, _false);
 // ***************************************************************************
 [Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(
   Type => {
-    add(Empty, Type, _identity);
+    add(Empty, Type, _identity, {commutative: true});
     remove(Empty, Type, _empty);
     equals(Empty, Type, _false, {commutative: true});
     isDistinct(Empty, Type, _false, {commutative: true});

@@ -62,7 +62,6 @@ overlapsStrictly(Chunks, Star, _false);
 // ***************************************************************************
 // Chunks/Empty API
 // ***************************************************************************
-add(Chunks, Empty, _this);
 remove(Chunks, Empty, _this);
 includes(Chunks, Empty, _true);
 includesStrictly(Chunks, Empty, _true);

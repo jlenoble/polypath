@@ -71,7 +71,6 @@ overlapsStrictly(MixedChunks, Star, _false);
 // ***************************************************************************
 // MixedChunks/Empty API
 // ***************************************************************************
-add(MixedChunks, Empty, _this);
 remove(MixedChunks, Empty, _this);
 includes(MixedChunks, Empty, _true);
 includesStrictly(MixedChunks, Empty, _true);
