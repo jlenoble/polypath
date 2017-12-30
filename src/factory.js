@@ -24,7 +24,9 @@ export default class ChunkFactory {
 }
 
 export class ChunksFactory {
-  constructor (chunk) {
+  constructor (_chunk) {
+    const chunk = _chunk.replace(/,+/g, ',').replace(/(^,|,$)/g, '');
+
     if (/^\w+(,\w+)*$/.test(chunk)) {
       return new Chunks(chunk);
     }
