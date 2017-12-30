@@ -77,7 +77,6 @@ includes(MixedChunks, Empty, _true);
 includesStrictly(MixedChunks, Empty, _true);
 isIncluded(MixedChunks, Empty, _false);
 isIncludedStrictly(MixedChunks, Empty, _false);
-overlaps(MixedChunks, Empty, _true);
 overlapsStrictly(MixedChunks, Empty, _false);
 
 

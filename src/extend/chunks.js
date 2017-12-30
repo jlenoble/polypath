@@ -68,7 +68,6 @@ includes(Chunks, Empty, _true);
 includesStrictly(Chunks, Empty, _true);
 isIncluded(Chunks, Empty, _false);
 isIncludedStrictly(Chunks, Empty, _false);
-overlaps(Chunks, Empty, _true);
 overlapsStrictly(Chunks, Empty, _false);
 
 

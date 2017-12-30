@@ -158,7 +158,6 @@ includes(StarChunk, Empty, _true);
 includesStrictly(StarChunk, Empty, _true);
 isIncluded(StarChunk, Empty, _false);
 isIncludedStrictly(StarChunk, Empty, _false);
-overlaps(StarChunk, Empty, _true);
 overlapsStrictly(StarChunk, Empty, _false);
 
 // ***************************************************************************

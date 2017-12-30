@@ -60,7 +60,6 @@ includes(Star, Empty, _true);
 includesStrictly(Star, Empty, _true);
 isIncluded(Star, Empty, _false);
 isIncludedStrictly(Star, Empty, _false);
-overlaps(Star, Empty, _true);
 overlapsStrictly(Star, Empty, _false);
 
 // ***************************************************************************

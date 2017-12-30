@@ -36,6 +36,6 @@ overlapsStrictly(Empty, Empty, _false);
     includesStrictly(Empty, Type, _false);
     isIncluded(Empty, Type, _true);
     isIncludedStrictly(Empty, Type, _true);
-    overlaps(Empty, Type, _true);
+    overlaps(Empty, Type, _true, {commutative: true});
     overlapsStrictly(Empty, Type, _false);
   });
