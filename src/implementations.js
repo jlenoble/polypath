@@ -116,7 +116,7 @@ export const _addReduce = function (obj) {
   }, this);
 };
 
-export const _clearRight = function (obj) {
+export const _maybeClearChunk = function (obj) {
   return obj.test(this) ? empty : this;
 };
 

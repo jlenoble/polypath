@@ -3,7 +3,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _empty, _this, _equals, _equalsNot, _isNotIncluded,
-  _isIncluded, _clearRight, _addTo, _identity}
+  _isIncluded, _maybeClearChunk, _addTo, _identity}
   from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -17,7 +17,7 @@ add(Chunk, Chunk, function (obj) {
   return this.chunk === obj.chunk ? this : new Chunks(
     this.chunk + ',' + obj.chunk);
 });
-remove(Chunk, Chunk, _clearRight);
+remove(Chunk, Chunk, _maybeClearChunk);
 equals(Chunk, Chunk, _equals);
 isDistinct(Chunk, Chunk, _equalsNot);
 includes(Chunk, Chunk, _equals);
@@ -32,7 +32,7 @@ overlapsStrictly(Chunk, Chunk, _false);
 // Chunk/StarChunk API
 // ***************************************************************************
 add(Chunk, StarChunk, _addTo);
-remove(Chunk, StarChunk, _clearRight);
+remove(Chunk, StarChunk, _maybeClearChunk);
 equals(Chunk, StarChunk, _false);
 isDistinct(Chunk, StarChunk, _isNotIncluded);
 includes(Chunk, StarChunk, _false);
@@ -77,7 +77,7 @@ overlapsStrictly(Chunk, Empty, _false);
 // Chunk/Chunks API
 // ***************************************************************************
 add(Chunk, Chunks, _addTo);
-remove(Chunk, Chunks, _clearRight);
+remove(Chunk, Chunks, _maybeClearChunk);
 equals(Chunk, Chunks, _false);
 isDistinct(Chunk, Chunks, _isNotIncluded);
 includes(Chunk, Chunks, _false);
@@ -92,7 +92,7 @@ overlapsStrictly(Chunk, Chunks, _false);
 // Chunk/StarChunks API
 // ***************************************************************************
 add(Chunk, StarChunks, _addTo);
-remove(Chunk, StarChunks, _clearRight);
+remove(Chunk, StarChunks, _maybeClearChunk);
 equals(Chunk, StarChunks, _false);
 isDistinct(Chunk, StarChunks, _isNotIncluded);
 includes(Chunk, StarChunks, _false);
@@ -107,7 +107,7 @@ overlapsStrictly(Chunk, StarChunks, _false);
 // Chunk/MixedChunks API
 // ***************************************************************************
 add(Chunk, MixedChunks, _addTo);
-remove(Chunk, MixedChunks, _clearRight);
+remove(Chunk, MixedChunks, _maybeClearChunk);
 equals(Chunk, MixedChunks, _false);
 isDistinct(Chunk, MixedChunks, _isNotIncluded);
 includes(Chunk, MixedChunks, _false);
