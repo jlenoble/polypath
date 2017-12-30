@@ -31,7 +31,7 @@ overlapsStrictly(Star, Star, _false);
   Type => {
     add(Star, Type, _this);
     equals(Star, Type, _false, {commutative: true});
-    isDistinct(Star, Type, _false);
+    isDistinct(Star, Type, _false, {commutative: true});
     includes(Star, Type, _true);
     includesStrictly(Star, Type, _true);
     isIncluded(Star, Type, _false);
