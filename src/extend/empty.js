@@ -58,7 +58,7 @@ overlapsStrictly(Empty, Star, _false);
 // ***************************************************************************
 add(Empty, Empty, _empty);
 remove(Empty, Empty, _empty);
-equals(Empty, Empty, _false);
+equals(Empty, Empty, _true);
 isDistinct(Empty, Empty, _false);
 includes(Empty, Empty, _true);
 includesStrictly(Empty, Empty, _false);
