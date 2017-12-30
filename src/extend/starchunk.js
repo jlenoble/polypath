@@ -154,7 +154,6 @@ overlapsStrictly(StarChunk, Star, _false);
 // ***************************************************************************
 add(StarChunk, Empty, _this);
 remove(StarChunk, Empty, _this);
-isDistinct(StarChunk, Empty, _false);
 includes(StarChunk, Empty, _true);
 includesStrictly(StarChunk, Empty, _true);
 isIncluded(StarChunk, Empty, _false);

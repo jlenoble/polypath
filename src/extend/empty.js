@@ -31,7 +31,7 @@ overlapsStrictly(Empty, Empty, _false);
     add(Empty, Type, _identity);
     remove(Empty, Type, _empty);
     equals(Empty, Type, _false, {commutative: true});
-    isDistinct(Empty, Type, _false);
+    isDistinct(Empty, Type, _false, {commutative: true});
     includes(Empty, Type, _false);
     includesStrictly(Empty, Type, _false);
     isIncluded(Empty, Type, _true);

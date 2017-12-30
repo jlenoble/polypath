@@ -73,7 +73,6 @@ overlapsStrictly(MixedChunks, Star, _false);
 // ***************************************************************************
 add(MixedChunks, Empty, _this);
 remove(MixedChunks, Empty, _this);
-isDistinct(MixedChunks, Empty, _false);
 includes(MixedChunks, Empty, _true);
 includesStrictly(MixedChunks, Empty, _true);
 isIncluded(MixedChunks, Empty, _false);

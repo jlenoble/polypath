@@ -56,7 +56,6 @@ remove(Star, StarChunk, _toBeImplemented);
 // ***************************************************************************
 add(Star, Empty, _this);
 remove(Star, Empty, _this);
-isDistinct(Star, Empty, _false);
 includes(Star, Empty, _true);
 includesStrictly(Star, Empty, _true);
 isIncluded(Star, Empty, _false);
