@@ -162,7 +162,6 @@ add(StarChunk, Chunks, function (obj) {
     .join(','));
 });
 remove(StarChunk, Chunks, _toBeImplemented);
-isDistinct(StarChunk, Chunks, _isDistinct);
 includes(StarChunk, Chunks, _includesAll);
 includesStrictly(StarChunk, Chunks, _includesAll);
 isIncluded(StarChunk, Chunks, _false);
@@ -176,7 +175,6 @@ overlapsStrictly(StarChunk, Chunks, _overlapsStrictly);
 // ***************************************************************************
 add(StarChunk, StarChunks, _addTo);
 remove(StarChunk, StarChunks, _toBeImplemented);
-isDistinct(StarChunk, StarChunks, _isDistinct);
 includes(StarChunk, StarChunks, _includesAll);
 includesStrictly(StarChunk, StarChunks, _includesAll);
 isIncluded(StarChunk, StarChunks, _isIncluded);
@@ -190,7 +188,6 @@ overlapsStrictly(StarChunk, StarChunks, _overlapsStrictly);
 // ***************************************************************************
 add(StarChunk, MixedChunks, _addTo);
 remove(StarChunk, MixedChunks, _toBeImplemented);
-isDistinct(StarChunk, MixedChunks, _isDistinct);
 includes(StarChunk, MixedChunks, _includesAll);
 includesStrictly(StarChunk, MixedChunks, _includesAll);
 isIncluded(StarChunk, MixedChunks, _isIncluded);
