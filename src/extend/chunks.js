@@ -2,9 +2,9 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_empty, _this, _identity, _true, _false, _equals, _includes,
-  _includesAll, _includesSome, _includesNot, _includesStrictly, _isIncluded,
-  _isIncludedStrictly, _overlaps, _isOverlapped, _overlapsStrictly,
+import {_empty, _this, _identity, _true, _false, _equals, _isDistinct,
+  _includes, _includesAll, _includesSome, _includesNot, _includesStrictly,
+  _isIncluded, _isIncludedStrictly, _overlaps, _isOverlapped, _overlapsStrictly,
   _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -32,7 +32,7 @@ overlapsStrictly(Chunks, Chunk, _false);
 add(Chunks, StarChunk, _toBeImplemented);
 remove(Chunks, StarChunk, _toBeImplemented);
 equals(Chunks, StarChunk, _false);
-isDistinct(Chunks, StarChunk, _toBeImplemented);
+isDistinct(Chunks, StarChunk, _isDistinct);
 includes(Chunks, StarChunk, _false);
 includesStrictly(Chunks, StarChunk, _false);
 isIncluded(Chunks, StarChunk, _isIncluded);
@@ -77,7 +77,7 @@ overlapsStrictly(Chunks, Empty, _false);
 add(Chunks, Chunks, _toBeImplemented);
 remove(Chunks, Chunks, _toBeImplemented);
 equals(Chunks, Chunks, _equals);
-isDistinct(Chunks, Chunks, _toBeImplemented);
+isDistinct(Chunks, Chunks, _isDistinct);
 includes(Chunks, Chunks, _includesAll);
 includesStrictly(Chunks, Chunks, _includesStrictly);
 isIncluded(Chunks, Chunks, _isIncluded);
@@ -92,7 +92,7 @@ overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
 add(Chunks, StarChunks, _toBeImplemented);
 remove(Chunks, StarChunks, _toBeImplemented);
 equals(Chunks, StarChunks, _false);
-isDistinct(Chunks, StarChunks, _toBeImplemented);
+isDistinct(Chunks, StarChunks, _isDistinct);
 includes(Chunks, StarChunks, _false);
 includesStrictly(Chunks, StarChunks, _false);
 isIncluded(Chunks, StarChunks, _isIncluded);
@@ -107,7 +107,7 @@ overlapsStrictly(Chunks, StarChunks, _overlapsStrictly);
 add(Chunks, MixedChunks, _toBeImplemented);
 remove(Chunks, MixedChunks, _toBeImplemented);
 equals(Chunks, MixedChunks, _false);
-isDistinct(Chunks, MixedChunks, _toBeImplemented);
+isDistinct(Chunks, MixedChunks, _isDistinct);
 includes(Chunks, MixedChunks, _false);
 includesStrictly(Chunks, MixedChunks, _false);
 isIncluded(Chunks, MixedChunks, _isIncluded);

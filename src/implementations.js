@@ -32,6 +32,10 @@ export const _equalsNot = function (obj) {
   return this.chunk !== obj.chunk;
 };
 
+export const _isDistinct = function (obj) {
+  return !this.overlaps(obj);
+};
+
 export const _includes = function (obj) {
   return this.test(obj);
 };
