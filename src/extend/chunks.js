@@ -86,7 +86,6 @@ overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
 // ***************************************************************************
 add(Chunks, StarChunks, _addTo);
 remove(Chunks, StarChunks, _filterChunks);
-equals(Chunks, StarChunks, _false);
 isDistinct(Chunks, StarChunks, _isDistinct);
 includes(Chunks, StarChunks, _false);
 includesStrictly(Chunks, StarChunks, _false);
@@ -101,7 +100,6 @@ overlapsStrictly(Chunks, StarChunks, _overlapsStrictly);
 // ***************************************************************************
 add(Chunks, MixedChunks, _addTo);
 remove(Chunks, MixedChunks, _filterChunks);
-equals(Chunks, MixedChunks, _false);
 isDistinct(Chunks, MixedChunks, _isDistinct);
 includes(Chunks, MixedChunks, _false);
 includesStrictly(Chunks, MixedChunks, _false);

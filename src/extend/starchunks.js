@@ -104,7 +104,6 @@ overlapsStrictly(StarChunks, StarChunks, _overlapsStrictly);
 // ***************************************************************************
 add(StarChunks, MixedChunks, _addTo);
 remove(StarChunks, MixedChunks, _toBeImplemented);
-equals(StarChunks, MixedChunks, _false);
 isDistinct(StarChunks, MixedChunks, _isDistinct);
 includes(StarChunks, MixedChunks, _includesAll);
 includesStrictly(StarChunks, MixedChunks, _includesAll);

@@ -3,7 +3,7 @@ import method from './method';
 export const add = method('add');
 export const remove = method('remove');
 
-export const equals = method('equals');
+export const equals = method('equals', {commutative: true});
 export const isDistinct = method('isDistinct');
 
 export const includes = method('includes');
