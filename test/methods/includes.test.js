@@ -120,6 +120,12 @@ const tests = {
   'ab*e*gh*': {
     'abc*ed*f*gh': true,
   },
+  'abc*ed*f*g': {
+    'abc*ed*f*gh': false,
+  },
+  'bc*ed*f*gh': {
+    'abc*ed*f*gh': false,
+  },
 };
 
 Object.keys(tests).forEach(chunk1 => {

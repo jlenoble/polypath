@@ -1,6 +1,6 @@
 /* eslint-disable no-invalid-this */
 import {Empty} from './chunk';
-import Chunks, {StarChunks, MixedChunks} from './chunks';
+import {MixedChunks} from './chunks';
 
 const empty = new Empty();
 
@@ -101,19 +101,19 @@ export const _isOverlapped = function (obj) {
   return obj.overlaps(this);
 };
 
-export const _newChunksRight = function (obj) {
-  return obj.test(this) ? obj : new Chunks(
+export const _addMixed = function (obj) {
+  return this.includes(obj) ? this : new MixedChunks(
     this.chunk + ',' + obj.chunk);
 };
 
-export const _newStarChunksRight = function (obj) {
-  return obj.test(this) ? obj : new StarChunks(
-    this.chunk + ',' + obj.chunk);
+export const _addTo = function (obj) {
+  return obj.add(this);
 };
 
-export const _newMixedChunksRight = function (obj) {
-  return obj.test(this) ? obj : new MixedChunks(
-    this.chunk + ',' + obj.chunk);
+export const _addReduce = function (obj) {
+  return obj.chunks.reduce((chunks, chunk) => {
+    return chunks.add(chunk);
+  }, this);
 };
 
 export const _clearRight = function (obj) {

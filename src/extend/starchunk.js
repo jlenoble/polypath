@@ -4,8 +4,9 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 
 import {_empty, _this, _identity, _true, _false, _equals, _isDistinct,
   _includes, _includesAll, _includesSome, _includesNot, _includesStrictly,
-  _isIncluded, _isIncludedStrictly, _overlaps, _overlapsStrictly,
-  _toBeImplemented} from '../implementations';
+  _isIncluded, _isIncludedStrictly, _overlaps, _overlapsStrictly, _addTo,
+  _addMixed, _toBeImplemented}
+  from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -14,7 +15,7 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 // ***************************************************************************
 // StarChunk/Chunk API
 // ***************************************************************************
-add(StarChunk, Chunk, _toBeImplemented);
+add(StarChunk, Chunk, _addMixed);
 remove(StarChunk, Chunk, _toBeImplemented);
 equals(StarChunk, Chunk, _false);
 isDistinct(StarChunk, Chunk, _includesNot);
@@ -29,7 +30,10 @@ overlapsStrictly(StarChunk, Chunk, _false);
 // ***************************************************************************
 // StarChunk/StarChunk API
 // ***************************************************************************
-add(StarChunk, StarChunk, _toBeImplemented);
+add(StarChunk, StarChunk, function (obj) {
+  return this.includes(obj) ? this : obj.includes(this) ? obj :
+    new StarChunks(this.chunk + ',' + obj.chunk);
+});
 remove(StarChunk, StarChunk, _toBeImplemented);
 equals(StarChunk, StarChunk, _equals);
 isDistinct(StarChunk, StarChunk, _isDistinct);
@@ -52,7 +56,11 @@ includes(StarChunk, StarChunk, function (obj) {
       a2 = iA2.next();
     }
   } else {
-    if (a2.value === '') {
+    if (!a2.value.includes(a1.value)) {
+      return false;
+    }
+
+    if (a2.value.substring(0, a1.value.length) !== a1.value) {
       return false;
     }
   }
@@ -85,7 +93,11 @@ includes(StarChunk, StarChunk, function (obj) {
     return b1.value === '';
   }
 
-  return b2.value.includes(b1.value);
+  if (!b2.value.includes(b1.value)) {
+    return false;
+  }
+
+  return b2.value.substring(b2.value.length - b1.value.length) === b1.value;
 });
 includesStrictly(StarChunk, StarChunk, _includesStrictly);
 isIncluded(StarChunk, StarChunk, _isIncluded);
@@ -154,7 +166,11 @@ overlapsStrictly(StarChunk, Empty, _false);
 // ***************************************************************************
 // StarChunk/Chunks API
 // ***************************************************************************
-add(StarChunk, Chunks, _toBeImplemented);
+add(StarChunk, Chunks, function (obj) {
+  const chunks = obj.chunks.filter(chunk => !this.includes(chunk));
+  return new MixedChunks(this.chunk + ',' + chunks.map(chunk => chunk.chunk)
+    .join(','));
+});
 remove(StarChunk, Chunks, _toBeImplemented);
 equals(StarChunk, Chunks, _false);
 isDistinct(StarChunk, Chunks, _isDistinct);
@@ -169,7 +185,7 @@ overlapsStrictly(StarChunk, Chunks, _overlapsStrictly);
 // ***************************************************************************
 // StarChunk/StarChunks API
 // ***************************************************************************
-add(StarChunk, StarChunks, _toBeImplemented);
+add(StarChunk, StarChunks, _addTo);
 remove(StarChunk, StarChunks, _toBeImplemented);
 equals(StarChunk, StarChunks, _false);
 isDistinct(StarChunk, StarChunks, _isDistinct);
@@ -184,7 +200,7 @@ overlapsStrictly(StarChunk, StarChunks, _overlapsStrictly);
 // ***************************************************************************
 // StarChunk/MixedChunks API
 // ***************************************************************************
-add(StarChunk, MixedChunks, _toBeImplemented);
+add(StarChunk, MixedChunks, _addTo);
 remove(StarChunk, MixedChunks, _toBeImplemented);
 equals(StarChunk, MixedChunks, _false);
 isDistinct(StarChunk, MixedChunks, _isDistinct);
