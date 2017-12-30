@@ -199,8 +199,26 @@ Object.keys(tests).forEach(chunk1 => {
       const c3 = new Chunk(chunk3);
 
       if (tests[chunk1][chunk2]) {
-        it(`added with '${chunk2}' yields ${chunk3}`, function () {
+        it(`added with '${chunk2}' yields '${chunk3}'`, function () {
           expect(c1.add(c2).chunk).to.equal(c3.chunk);
+        });
+      }
+    });
+  });
+});
+
+describe(`Testing initializations:`, function () {
+  Object.keys(tests).forEach(chunk1 => {
+    const c1 = new Chunk(chunk1);
+
+    Object.keys(tests[chunk1]).forEach(chunk2 => {
+      const chunk3 = tests[chunk1][chunk2];
+      const c2 = new Chunk(chunk2);
+      const c3 = new Chunk(chunk3);
+
+      if (tests[chunk1][chunk2]) {
+        it(`new Chunk('${chunk1}', '${chunk2}') is the same as new Chunk('${
+          chunk3}')`, function () {
           expect(new Chunk(c1.chunk + ',' + c2.chunk).chunk).to.equal(c3.chunk);
         });
       }
