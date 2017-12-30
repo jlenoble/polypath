@@ -36,7 +36,7 @@ overlapsStrictly(Star, Star, _false);
     includesStrictly(Star, Type, _true);
     isIncluded(Star, Type, _false);
     isIncludedStrictly(Star, Type, _false);
-    overlaps(Star, Type, _true);
+    overlaps(Star, Type, _true, {commutative: true});
     overlapsStrictly(Star, Type, _false);
   });
 
