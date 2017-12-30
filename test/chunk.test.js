@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import Chunk, {StarChunk} from '../src/chunk';
+import Chunk, {StarChunk, Empty, Star} from '../src/chunk';
 import Muter, {muted} from 'muter';
 // import Muter, {captured as muted} from 'muter';
 
@@ -9,6 +9,9 @@ describe('A Chunk instance', function () {
   it('encapsulates a word string', function () {
     expect(new Chunk('a').chunk).to.equal('a');
     expect(new Chunk('abc').chunk).to.equal('abc');
+    expect(new Chunk('').chunk).to.equal('');
+
+    expect(new Chunk('')).to.be.instanceof(Empty);
   });
 
   it('throws on anything but a string', muted(muter, function () {
