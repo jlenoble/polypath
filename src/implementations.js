@@ -89,6 +89,10 @@ export const _overlaps = function (obj) {
   return overlaps(obj);
 };
 
+export const _overlapsStrictly = function (obj) {
+  return !this.includes(obj) && !obj.includes(this) && obj.overlaps(this);
+};
+
 export const _isOverlapped = function (obj) {
   return obj.overlaps(this);
 };

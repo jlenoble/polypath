@@ -4,8 +4,8 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 
 import {_empty, _this, _identity, _true, _false, _equals, _includes,
   _includesAll, _includesSome, _includesNot, _includesStrictly, _isIncluded,
-  _isIncludedStrictly, _overlaps, _isOverlapped, _toBeImplemented}
-  from '../implementations';
+  _isIncludedStrictly, _overlaps, _isOverlapped, _overlapsStrictly,
+  _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -38,7 +38,7 @@ includesStrictly(Chunks, StarChunk, _false);
 isIncluded(Chunks, StarChunk, _isIncluded);
 isIncludedStrictly(Chunks, StarChunk, _isIncluded);
 overlaps(Chunks, StarChunk, _isOverlapped);
-overlapsStrictly(Chunks, StarChunk, _isOverlapped);
+overlapsStrictly(Chunks, StarChunk, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -83,7 +83,7 @@ includesStrictly(Chunks, Chunks, _includesStrictly);
 isIncluded(Chunks, Chunks, _isIncluded);
 isIncludedStrictly(Chunks, Chunks, _isIncludedStrictly);
 overlaps(Chunks, Chunks, _includesSome);
-overlapsStrictly(Chunks, Chunks, _toBeImplemented);
+overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -98,7 +98,7 @@ includesStrictly(Chunks, StarChunks, _false);
 isIncluded(Chunks, StarChunks, _isIncluded);
 isIncludedStrictly(Chunks, StarChunks, _isIncluded);
 overlaps(Chunks, StarChunks, _overlaps);
-overlapsStrictly(Chunks, StarChunks, _toBeImplemented);
+overlapsStrictly(Chunks, StarChunks, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -113,4 +113,4 @@ includesStrictly(Chunks, MixedChunks, _false);
 isIncluded(Chunks, MixedChunks, _isIncluded);
 isIncludedStrictly(Chunks, MixedChunks, _isIncluded);
 overlaps(Chunks, MixedChunks, _overlaps);
-overlapsStrictly(Chunks, MixedChunks, _toBeImplemented);
+overlapsStrictly(Chunks, MixedChunks, _overlapsStrictly);
