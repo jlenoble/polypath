@@ -30,15 +30,21 @@ export default class Chunk {
 }
 
 export class StarChunk {
-  constructor (chunk) {
-    if (!/^\w*(\*\w*)+$/.test(chunk)) {
+  constructor (_chunk) {
+    if (!/^\w*(\*\w*)+$/.test(_chunk)) {
       error({
         message: 'Not a star chunk',
         explain: [
-          ['You attempted to initialize a StarChunk object with:', chunk],
+          ['You attempted to initialize a StarChunk object with:', _chunk],
           'But the initialization argument must be a string including \'*\'',
         ],
       });
+    }
+
+    const chunk = _chunk.replace(/\*+/g, '*');
+
+    if (chunk === '*') {
+      return new Star('*');
     }
 
     Object.defineProperties(this, {

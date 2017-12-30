@@ -31,7 +31,15 @@ describe('A Chunk instance', function () {
 describe('A StarChunk instance', function () {
   it('encapsulates a chunk?(*chunk?)+', function () {
     expect(new StarChunk('a*').chunk).to.equal('a*');
+    expect(new StarChunk('a****').chunk).to.equal('a*');
     expect(new StarChunk('*a*b*cde*').chunk).to.equal('*a*b*cde*');
+    expect(new StarChunk('**a****b**cde***').chunk).to.equal('*a*b*cde*');
+
+    expect(new StarChunk('*').chunk).to.equal('*');
+    expect(new StarChunk('***').chunk).to.equal('*');
+
+    expect(new StarChunk('*')).to.be.instanceof(Star);
+    expect(new StarChunk('***')).to.be.instanceof(Star);
   });
 
   it('throws on anything but a string', muted(muter, function () {
