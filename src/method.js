@@ -2,7 +2,7 @@ import {error} from 'explanation';
 
 const typeSymbols = new WeakMap();
 
-export default function method (name) {
+export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
       message: 'Not a string',
@@ -15,8 +15,7 @@ export default function method (name) {
 
   const methodSymbols = new WeakMap();
 
-  const _method = function (Type1, Type2, implementation, {
-    commutative = false} = {}) {
+  const _method = function (Type1, Type2, implementation) {
     if (!(Type1 instanceof Function)) {
       error({
         message: 'Not a prototype',

@@ -29,15 +29,15 @@ overlapsStrictly(Star, Star, _false);
 // ***************************************************************************
 [Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(
   Type => {
-    add(Star, Type, _this, {commutative: true});
-    equals(Star, Type, _false, {commutative: true});
-    isDistinct(Star, Type, _false, {commutative: true});
+    add(Star, Type, _this);
+    equals(Star, Type, _false);
+    isDistinct(Star, Type, _false);
     includes(Star, Type, _true);
     includesStrictly(Star, Type, _true);
     isIncluded(Star, Type, _false);
     isIncludedStrictly(Star, Type, _false);
-    overlaps(Star, Type, _true, {commutative: true});
-    overlapsStrictly(Star, Type, _false, {commutative: true});
+    overlaps(Star, Type, _true);
+    overlapsStrictly(Star, Type, _false);
   });
 
 
