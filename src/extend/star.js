@@ -62,7 +62,7 @@ remove(Star, Empty, _this);
 equals(Star, Empty, _false);
 isDistinct(Star, Empty, _false);
 includes(Star, Empty, _true);
-includesStrictly(Star, Empty, _false);
+includesStrictly(Star, Empty, _true);
 isIncluded(Star, Empty, _false);
 isIncludedStrictly(Star, Empty, _false);
 overlaps(Star, Empty, _true);
