@@ -63,7 +63,6 @@ includes(MixedChunks, Star, _false);
 includesStrictly(MixedChunks, Star, _false);
 isIncluded(MixedChunks, Star, _true);
 isIncludedStrictly(MixedChunks, Star, _true);
-overlapsStrictly(MixedChunks, Star, _false);
 
 
 // ***************************************************************************
