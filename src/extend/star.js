@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
-import {_true, _false, _identity, _empty, _this, _toBeImplemented}
+import {_true, _false, _empty, _this, _toBeImplemented}
   from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -72,7 +72,7 @@ overlapsStrictly(Star, Empty, _false);
 // ***************************************************************************
 // Star/Chunks API
 // ***************************************************************************
-add(Star, Chunks, _identity);
+add(Star, Chunks, _this);
 remove(Star, Chunks, _toBeImplemented);
 equals(Star, Chunks, _false);
 isDistinct(Star, Chunks, _false);
@@ -87,7 +87,7 @@ overlapsStrictly(Star, Chunks, _false);
 // ***************************************************************************
 // Star/StarChunks API
 // ***************************************************************************
-add(Star, StarChunks, _identity);
+add(Star, StarChunks, _this);
 remove(Star, StarChunks, _toBeImplemented);
 equals(Star, StarChunks, _false);
 isDistinct(Star, StarChunks, _false);
@@ -102,7 +102,7 @@ overlapsStrictly(Star, StarChunks, _false);
 // ***************************************************************************
 // Star/MixedChunks API
 // ***************************************************************************
-add(Star, MixedChunks, _identity);
+add(Star, MixedChunks, _this);
 remove(Star, MixedChunks, _toBeImplemented);
 equals(Star, MixedChunks, _false);
 isDistinct(Star, MixedChunks, _false);
