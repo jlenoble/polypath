@@ -2,12 +2,12 @@
 import {add, remove, equals, isDistinct, includes,
   overlaps, overlapsStrictly} from '../methods';
 
-import {_this, _false, _equals, _isDistinct,
+import {_false, _equals, _isDistinct,
   _includes, _includesAll, _includesNot, _overlapsStrictly,
   _addMixed, _toBeImplemented}
   from '../implementations';
 
-import Chunk, {StarChunk, Empty} from '../chunk';
+import Chunk, {StarChunk} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 
 
@@ -125,12 +125,6 @@ overlaps(StarChunk, StarChunk, function (obj) {
   return b1.substring(b1.length - b2.length) === b2;
 });
 overlapsStrictly(StarChunk, StarChunk, _overlapsStrictly);
-
-
-// ***************************************************************************
-// StarChunk/Empty API
-// ***************************************************************************
-remove(StarChunk, Empty, _this);
 
 
 // ***************************************************************************

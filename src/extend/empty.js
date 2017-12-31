@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes,
   overlaps, overlapsStrictly} from '../methods';
 
-import {_true, _false, _identity, _empty} from '../implementations';
+import {_true, _false, _this, _identity, _empty} from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -35,4 +35,5 @@ overlapsStrictly(Empty, Empty, _false);
 
     // Reciprocal
     includes(Type, Empty, _true);
+    remove(Type, Empty, _this);
   });

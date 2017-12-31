@@ -5,7 +5,7 @@ import {add, remove, equals, isDistinct, includes,
 import {_true, _false, _empty, _this, _toBeImplemented}
   from '../implementations';
 
-import Chunk, {StarChunk, Star, Empty} from '../chunk';
+import Chunk, {StarChunk, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 
 
@@ -49,10 +49,6 @@ remove(Star, Chunk, _toBeImplemented);
 // ***************************************************************************
 remove(Star, StarChunk, _toBeImplemented);
 
-// ***************************************************************************
-// Star/Empty API
-// ***************************************************************************
-remove(Star, Empty, _this);
 
 // ***************************************************************************
 // Star/Chunks API
