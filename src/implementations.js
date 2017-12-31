@@ -33,45 +33,19 @@ export const _includes = function (obj) {
 };
 
 export const _includesAll = function (obj) {
-  for (let chunk of obj.chunks) {
-    if (!this.includes(chunk)) {
-      return false;
-    }
-  }
-  return true;
+  return obj.chunks.every(chunk => this.includes(chunk));
 };
 
 export const _includesSome = function (obj) {
-  for (let chunk of obj.chunks) {
-    if (this.includes(chunk)) {
-      return true;
-    }
-  }
-  return false;
+  return obj.chunks.some(chunk => this.includes(chunk));
 };
 
 export const _overlapsSingle = function (obj) {
-  for (let chunk of this.chunks) {
-    if (chunk.overlaps(obj)) {
-      return true;
-    }
-  }
-  return false;
+  return this.chunks.some(chunk => chunk.overlaps(obj));
 };
 
 export const _overlaps = function (obj) {
-  const overlaps = chunk => this.includes(chunk) || chunk.overlaps(this);
-
-  if (obj.chunks) {
-    for (let chunk of obj.chunks) {
-      if (overlaps(chunk)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  return overlaps(obj);
+  return obj.chunks.some(chunk => this.includes(chunk) || chunk.overlaps(this));
 };
 
 export const _addMixed = function (obj) {
