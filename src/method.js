@@ -58,6 +58,22 @@ const getVariables = (Type1, Type2, name, methodSymbols) => {
   };
 };
 
+const checkCoupling = ({Type1, Type2, _type, _name, name, p2, nNewlySet}) => {
+  if (nNewlySet === 0) {
+    if (p2[_type] === Type1 && Type1[_name] !== undefined) {
+      error({
+        message: 'Both types are already coupled',
+        explain: [
+          [`In ${name} factory, type`, Type2.name],
+          ['is already known to be coupled with type', Type1.name],
+          [`You have probably defined a method ${name} on`, Type1.name],
+          ['that can deal with', Type2.name],
+        ],
+      });
+    }
+  }
+};
+
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
@@ -89,19 +105,7 @@ export default function method (name, {commutative = false} = {}) {
     ];
     checkSymbol(_type, p2, message, explain);
 
-    if (nNewlySet === 0) {
-      if (p2[_type] === Type1 && Type1[_name] !== undefined) {
-        error({
-          message: 'Both types are already coupled',
-          explain: [
-            [`In ${name} factory, type`, Type2.name],
-            ['is already known to be coupled with type', Type1.name],
-            [`You have probably defined a method ${name} on`, Type1.name],
-            ['that can deal with', Type2.name],
-          ],
-        });
-      }
-    }
+    checkCoupling({Type1, Type2, p2, _type, _name, name, nNewlySet});
 
     message = `${Type1.name}::${name}(${Type2.name}) already implemented`;
     explain = [
