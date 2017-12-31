@@ -78,6 +78,15 @@ export const _isNotIncluded = function (obj) {
   return !obj.includes(this);
 };
 
+export const _overlapsSingle = function (obj) {
+  for (let chunk of this.chunks) {
+    if (chunk.overlaps(obj)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const _overlaps = function (obj) {
   const overlaps = chunk => this.includes(chunk) || chunk.overlaps(this);
 
@@ -95,10 +104,6 @@ export const _overlaps = function (obj) {
 
 export const _overlapsStrictly = function (obj) {
   return !this.includes(obj) && !obj.includes(this) && obj.overlaps(this);
-};
-
-export const _isOverlapped = function (obj) {
-  return obj.overlaps(this);
 };
 
 export const _addMixed = function (obj) {
