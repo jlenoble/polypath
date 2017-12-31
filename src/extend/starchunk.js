@@ -1,11 +1,8 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes,
-  overlaps, overlapsStrictly} from '../methods';
+import {add, remove, equals, isDistinct, includes, overlaps} from '../methods';
 
-import {_false, _equals, _isDistinct,
-  _includes, _includesAll, _includesNot, _overlapsStrictly,
-  _addMixed, _toBeImplemented}
-  from '../implementations';
+import {_false, _equals, _isDistinct, _includes, _includesAll, _includesNot,
+  _addMixed, _toBeImplemented} from '../implementations';
 
 import Chunk, {StarChunk} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -20,7 +17,6 @@ equals(StarChunk, Chunk, _false);
 isDistinct(StarChunk, Chunk, _includesNot);
 includes(StarChunk, Chunk, _includes);
 overlaps(StarChunk, Chunk, _includes);
-overlapsStrictly(StarChunk, Chunk, _false);
 
 
 // ***************************************************************************
@@ -124,7 +120,6 @@ overlaps(StarChunk, StarChunk, function (obj) {
 
   return b1.substring(b1.length - b2.length) === b2;
 });
-overlapsStrictly(StarChunk, StarChunk, _overlapsStrictly);
 
 
 // ***************************************************************************

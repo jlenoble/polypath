@@ -13,5 +13,9 @@ export const includes = method('includes', {
   reciprocal: 'isIncluded',
 });
 
-export const overlaps = method('overlaps', {commutative: true});
-export const overlapsStrictly = method('overlapsStrictly', {commutative: true});
+export const overlaps = method('overlaps', {
+  commutative: true,
+  strict: function (obj) {
+    return !this.includes(obj) && !obj.includes(this);
+  },
+});

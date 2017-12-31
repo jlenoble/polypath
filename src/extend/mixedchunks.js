@@ -1,11 +1,9 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes,
-  overlaps, overlapsStrictly} from '../methods';
+import {add, remove, equals, isDistinct, includes, overlaps} from '../methods';
 
 import {_false, _equals, _isDistinct,
   _includes, _includesAll, _includesSome, _includesNot,
-  _overlaps, _overlapsStrictly,
-  _overlapsSingle, _addMixed, _addReduce, _toBeImplemented}
+  _overlaps, _overlapsSingle, _addMixed, _addReduce, _toBeImplemented}
   from '../implementations';
 
 import Chunk, {StarChunk} from '../chunk';
@@ -21,7 +19,6 @@ equals(MixedChunks, Chunk, _false);
 isDistinct(MixedChunks, Chunk, _includesNot);
 includes(MixedChunks, Chunk, _includes);
 overlaps(MixedChunks, Chunk, _includes);
-overlapsStrictly(MixedChunks, Chunk, _false);
 
 
 // ***************************************************************************
@@ -44,7 +41,6 @@ equals(MixedChunks, StarChunk, _false);
 isDistinct(MixedChunks, StarChunk, _isDistinct);
 includes(MixedChunks, StarChunk, _includes);
 overlaps(MixedChunks, StarChunk, _overlapsSingle);
-overlapsStrictly(MixedChunks, StarChunk, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -56,7 +52,6 @@ equals(MixedChunks, Chunks, _false);
 isDistinct(MixedChunks, Chunks, _isDistinct);
 includes(MixedChunks, Chunks, _includesAll);
 overlaps(MixedChunks, Chunks, _includesSome);
-overlapsStrictly(MixedChunks, Chunks, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -68,7 +63,6 @@ equals(MixedChunks, StarChunks, _false);
 isDistinct(MixedChunks, StarChunks, _isDistinct);
 includes(MixedChunks, StarChunks, _includesAll);
 overlaps(MixedChunks, StarChunks, _overlaps);
-overlapsStrictly(MixedChunks, StarChunks, _overlapsStrictly);
 
 
 // ***************************************************************************
@@ -80,4 +74,3 @@ equals(MixedChunks, MixedChunks, _equals);
 isDistinct(MixedChunks, MixedChunks, _isDistinct);
 includes(MixedChunks, MixedChunks, _includesAll);
 overlaps(MixedChunks, MixedChunks, _overlaps);
-overlapsStrictly(MixedChunks, MixedChunks, _overlapsStrictly);

@@ -1,9 +1,7 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes,
-  overlaps, overlapsStrictly} from '../methods';
+import {add, remove, equals, isDistinct, includes, overlaps} from '../methods';
 
-import {_false, _equals, _equalsNot,
-  _maybeClearChunk}
+import {_false, _equals, _equalsNot, _maybeClearChunk}
   from '../implementations';
 
 import Chunk, {StarChunk} from '../chunk';
@@ -22,7 +20,6 @@ equals(Chunk, Chunk, _equals);
 isDistinct(Chunk, Chunk, _equalsNot);
 includes(Chunk, Chunk, _equals);
 overlaps(Chunk, Chunk, _equals);
-overlapsStrictly(Chunk, Chunk, _false);
 
 
 // ***************************************************************************

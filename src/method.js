@@ -151,7 +151,7 @@ const makeReciprocalImplementation = methodName => function (obj) {
   return obj[methodName](this); // eslint-disable-line no-invalid-this
 };
 
-const makeWrapper = ({strict, reciprocal, methodName, method}) => {
+const makeWrapper = ({strict, reciprocal, commutative, methodName, method}) => {
   const methods = {};
 
   const wrapper = function (Type1, Type2, implementation) {
@@ -236,9 +236,14 @@ export default function method (methodName, {
     if (!calledAlready && commutative && Type1 !== Type2) {
       _method(Type2, Type1, function (a) {
         return a[name](this); // eslint-disable-line no-invalid-this
-      }, {calledAlready: true});
+      }, {calledAlready: true, overrideName, _reciprocal, _strict});
     }
   };
 
-  return makeWrapper({method: _method, methodName, reciprocal, strict});
+  return makeWrapper({
+    method: _method,
+    methodName,
+    reciprocal,
+    strict,
+  });
 }
