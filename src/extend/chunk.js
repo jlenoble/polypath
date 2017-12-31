@@ -20,30 +20,10 @@ equals(Chunk, Chunk, _equals);
 includes(Chunk, Chunk, _equals);
 overlaps(Chunk, Chunk, _equals);
 
-
 // ***************************************************************************
-// Chunk/StarChunk API
+// Chunk/any type APIs
 // ***************************************************************************
-remove(Chunk, StarChunk, _maybeClearChunk);
-includes(Chunk, StarChunk, _false);
-
-
-// ***************************************************************************
-// Chunk/Chunks API
-// ***************************************************************************
-remove(Chunk, Chunks, _maybeClearChunk);
-includes(Chunk, Chunks, _false);
-
-
-// ***************************************************************************
-// Chunk/StarChunks API
-// ***************************************************************************
-remove(Chunk, StarChunks, _maybeClearChunk);
-includes(Chunk, StarChunks, _false);
-
-
-// ***************************************************************************
-// Chunk/MixedChunks API
-// ***************************************************************************
-remove(Chunk, MixedChunks, _maybeClearChunk);
-includes(Chunk, MixedChunks, _false);
+[StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  remove(Chunk, Type, _maybeClearChunk);
+  includes(Chunk, Type, _false);
+});
