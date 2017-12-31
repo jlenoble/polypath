@@ -28,14 +28,6 @@ export const _equals = function (obj) {
   return this.chunk === obj.chunk;
 };
 
-export const _equalsNot = function (obj) {
-  return this.chunk !== obj.chunk;
-};
-
-export const _isDistinct = function (obj) {
-  return !this.overlaps(obj);
-};
-
 export const _includes = function (obj) {
   return this.test(obj);
 };
@@ -56,10 +48,6 @@ export const _includesSome = function (obj) {
     }
   }
   return false;
-};
-
-export const _includesNot = function (obj) {
-  return !this.includes(obj);
 };
 
 export const _overlapsSingle = function (obj) {
