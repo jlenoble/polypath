@@ -74,6 +74,35 @@ const checkCoupling = ({Type1, Type2, _type, _name, name, p2, nNewlySet}) => {
   }
 };
 
+const makeSenseOfError = ({e, a, Type1, Type2, ctx, name, _type, _name}) => {
+  if (new RegExp(`Cannot read property.*of undefined`)
+    .test(e.message)) {
+    const _p2 = a && Type2.name || typeof a;
+    const explain = [
+      [`You tried to run '${name}' of instance:`, ctx],
+      ['of type', Type1.name],
+      ['with argument:', a],
+      ['of type', _p2],
+    ];
+
+    if (!a[_type] || !a[_type][_name]) {
+      error({
+        message: `${Type1.name} cannot run '${name}' with ${_p2}`,
+        explain: explain.concat(
+          `But an implementation doesn't exist for this pair of types`),
+      });
+    } else if (e.message.includes(`property '${name}'`)) {
+      error({
+        message: `Undefined method ${name}`,
+        explain: explain.concat([
+          `But method '${name}' was never defined`,
+          'Or an eponymous call appears somewhere in the call chain',
+        ]),
+      });
+    }
+  }
+}
+
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
@@ -129,33 +158,7 @@ export default function method (name, {commutative = false} = {}) {
         try {
           return a[_type][_name].call(this, a);
         } catch (e) {
-          if (new RegExp(`Cannot read property.*of undefined`)
-            .test(e.message)) {
-            const _p2 = a && Type2.name || typeof a;
-            const explain = [
-              [`You tried to run '${name}' of instance:`, this],
-              ['of type', Type1.name],
-              ['with argument:', a],
-              ['of type', _p2],
-            ];
-
-            if (!a[_type] || !a[_type][_name]) {
-              error({
-                message: `${Type1.name} cannot run '${name}' with ${_p2}`,
-                explain: explain.concat(
-                  `But an implementation doesn't exist for this pair of types`),
-              });
-            } else if (e.message.includes(`property '${name}'`)) {
-              error({
-                message: `Undefined method ${name}`,
-                explain: explain.concat([
-                  `But method '${name}' was never defined`,
-                  'Or an eponymous call appears somewhere in the call chain',
-                ]),
-              });
-            }
-          }
-
+          makeSenseOfError({e, a, Type1, Type2, ctx: this, name, _type, _name});
           throw e;
         }
       };
