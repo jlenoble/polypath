@@ -130,7 +130,7 @@ const makeSenseOfError = ({e, a, Type1, Type2, ctx, name, _type, _name}) => {
   }
 };
 
-export default function method (name, {commutative = false} = {}) {
+const checkName = name => {
   if (typeof name !== 'string') {
     error({
       message: 'Not a string',
@@ -140,11 +140,28 @@ export default function method (name, {commutative = false} = {}) {
       ],
     });
   }
+};
 
-  const methodSymbols = new WeakMap();
+export default function method (methodName, {
+  commutative = false,
+  strict,
+} = {}) {
+  checkName(methodName);
+
+  const baseMethodSymbols = new WeakMap();
+  const strictMethodSymbols = strict ? new WeakMap(): undefined;
 
   const _method = function (Type1, Type2, implementation, {
-    calledAlready = false} = {}) {
+    calledAlready = false,
+    overrideName,
+  } = {}) {
+    const name = overrideName || methodName;
+    const methodSymbols = overrideName
+      ? strict
+        ? strictMethodSymbols
+        : null
+      : baseMethodSymbols;
+
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
 
@@ -176,6 +193,16 @@ export default function method (name, {commutative = false} = {}) {
       }, {calledAlready: true});
     }
   };
+
+  if (strict) {
+    return function (Type1, Type2, implementation) {
+      _method(Type1, Type2, implementation);
+      _method(Type1, Type2, function (obj) {
+        // eslint-disable-next-line no-invalid-this
+        return strict.call(this, obj) && this[methodName](obj);
+      }, {overrideName: methodName + 'Strictly'});
+    };
+  }
 
   return _method;
 }

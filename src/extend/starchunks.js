@@ -1,10 +1,10 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
+import {add, remove, equals, isDistinct, includes, isIncluded,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _true, _false, _equals, _isDistinct,
   _includes, _includesAll, _includesSome, _includesNot, _isIncluded,
-  _includesStrictly, _isIncludedStrictly, _overlaps, _overlapsStrictly,
+  _isIncludedStrictly, _overlaps, _overlapsStrictly,
   _overlapsSingle, _addMixed, _addReduce, _toBeImplemented}
   from '../implementations';
 
@@ -20,7 +20,6 @@ remove(StarChunks, Chunk, _toBeImplemented);
 equals(StarChunks, Chunk, _false);
 isDistinct(StarChunks, Chunk, _includesNot);
 includes(StarChunks, Chunk, _includes);
-includesStrictly(StarChunks, Chunk, _includes);
 isIncluded(StarChunks, Chunk, _false);
 isIncludedStrictly(StarChunks, Chunk, _false);
 overlaps(StarChunks, Chunk, _includes);
@@ -42,7 +41,6 @@ remove(StarChunks, StarChunk, _toBeImplemented);
 equals(StarChunks, StarChunk, _false);
 isDistinct(StarChunks, StarChunk, _isDistinct);
 includes(StarChunks, StarChunk, _includes);
-includesStrictly(StarChunks, StarChunk, _includes);
 isIncluded(StarChunks, StarChunk, _isIncluded);
 isIncludedStrictly(StarChunks, StarChunk, _isIncluded);
 overlaps(StarChunks, StarChunk, _overlapsSingle);
@@ -54,7 +52,6 @@ overlapsStrictly(StarChunks, StarChunk, _overlapsStrictly);
 // ***************************************************************************
 remove(StarChunks, Star, _empty);
 includes(StarChunks, Star, _false);
-includesStrictly(StarChunks, Star, _false);
 isIncluded(StarChunks, Star, _true);
 isIncludedStrictly(StarChunks, Star, _true);
 
@@ -64,7 +61,6 @@ isIncludedStrictly(StarChunks, Star, _true);
 // ***************************************************************************
 remove(StarChunks, Empty, _this);
 includes(StarChunks, Empty, _true);
-includesStrictly(StarChunks, Empty, _true);
 isIncluded(StarChunks, Empty, _false);
 isIncludedStrictly(StarChunks, Empty, _false);
 
@@ -77,7 +73,6 @@ remove(StarChunks, Chunks, _toBeImplemented);
 equals(StarChunks, Chunks, _false);
 isDistinct(StarChunks, Chunks, _isDistinct);
 includes(StarChunks, Chunks, _includesAll);
-includesStrictly(StarChunks, Chunks, _includesAll);
 isIncluded(StarChunks, Chunks, _false);
 isIncludedStrictly(StarChunks, Chunks, _false);
 overlaps(StarChunks, Chunks, _includesSome);
@@ -92,7 +87,6 @@ remove(StarChunks, StarChunks, _toBeImplemented);
 equals(StarChunks, StarChunks, _equals);
 isDistinct(StarChunks, StarChunks, _isDistinct);
 includes(StarChunks, StarChunks, _includesAll);
-includesStrictly(StarChunks, StarChunks, _includesStrictly);
 isIncluded(StarChunks, StarChunks, _isIncluded);
 isIncludedStrictly(StarChunks, StarChunks, _isIncludedStrictly);
 overlaps(StarChunks, StarChunks, _overlaps);
@@ -104,6 +98,5 @@ overlapsStrictly(StarChunks, StarChunks, _overlapsStrictly);
 // ***************************************************************************
 remove(StarChunks, MixedChunks, _toBeImplemented);
 includes(StarChunks, MixedChunks, _includesAll);
-includesStrictly(StarChunks, MixedChunks, _includesAll);
 isIncluded(StarChunks, MixedChunks, _isIncluded);
 isIncludedStrictly(StarChunks, MixedChunks, _isIncluded);

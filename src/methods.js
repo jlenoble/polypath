@@ -6,9 +6,13 @@ export const remove = method('remove');
 export const equals = method('equals', {commutative: true});
 export const isDistinct = method('isDistinct', {commutative: true});
 
-export const includes = method('includes');
+export const includes = method('includes', {
+  strict: function (obj) {
+    return this.chunk !== obj.chunk;
+  },
+});
+
 export const isIncluded = method('isIncluded');
-export const includesStrictly = method('includesStrictly');
 export const isIncludedStrictly = method('isIncludedStrictly');
 
 export const overlaps = method('overlaps', {commutative: true});
