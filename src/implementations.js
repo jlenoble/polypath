@@ -62,18 +62,6 @@ export const _includesNot = function (obj) {
   return !this.includes(obj);
 };
 
-export const _isIncluded = function (obj) {
-  return obj.includes(this);
-};
-
-export const _isIncludedStrictly = function (obj) {
-  return this.chunk !== obj.chunk && obj.includes(this);
-};
-
-export const _isNotIncluded = function (obj) {
-  return !obj.includes(this);
-};
-
 export const _overlapsSingle = function (obj) {
   for (let chunk of this.chunks) {
     if (chunk.overlaps(obj)) {
