@@ -1,10 +1,9 @@
 /* eslint-disable no-invalid-this */
 import {add, remove, equals, isDistinct, includes,
-  isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
+  overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _true, _false, _equals, _isDistinct,
-  _includes, _includesAll, _includesNot,
-  _isIncluded, _isIncludedStrictly, _overlapsStrictly,
+  _includes, _includesAll, _includesNot, _overlapsStrictly,
   _addMixed, _toBeImplemented}
   from '../implementations';
 
@@ -20,7 +19,6 @@ remove(StarChunk, Chunk, _toBeImplemented);
 equals(StarChunk, Chunk, _false);
 isDistinct(StarChunk, Chunk, _includesNot);
 includes(StarChunk, Chunk, _includes);
-isIncludedStrictly(StarChunk, Chunk, _false);
 overlaps(StarChunk, Chunk, _includes);
 overlapsStrictly(StarChunk, Chunk, _false);
 
@@ -97,7 +95,6 @@ includes(StarChunk, StarChunk, function (obj) {
 
   return b2.value.substring(b2.value.length - b1.value.length) === b1.value;
 });
-isIncludedStrictly(StarChunk, StarChunk, _isIncludedStrictly);
 overlaps(StarChunk, StarChunk, function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
@@ -135,7 +132,6 @@ overlapsStrictly(StarChunk, StarChunk, _overlapsStrictly);
 // ***************************************************************************
 remove(StarChunk, Star, _empty);
 includes(StarChunk, Star, _false);
-isIncludedStrictly(StarChunk, Star, _true);
 
 
 // ***************************************************************************
@@ -143,14 +139,13 @@ isIncludedStrictly(StarChunk, Star, _true);
 // ***************************************************************************
 remove(StarChunk, Empty, _this);
 includes(StarChunk, Empty, _true);
-isIncludedStrictly(StarChunk, Empty, _false);
+
 
 // ***************************************************************************
 // StarChunk/Chunks API
 // ***************************************************************************
 remove(StarChunk, Chunks, _toBeImplemented);
 includes(StarChunk, Chunks, _includesAll);
-isIncludedStrictly(StarChunk, Chunks, _false);
 
 
 // ***************************************************************************
@@ -158,7 +153,6 @@ isIncludedStrictly(StarChunk, Chunks, _false);
 // ***************************************************************************
 remove(StarChunk, StarChunks, _toBeImplemented);
 includes(StarChunk, StarChunks, _includesAll);
-isIncludedStrictly(StarChunk, StarChunks, _isIncluded);
 
 
 // ***************************************************************************
@@ -166,4 +160,3 @@ isIncludedStrictly(StarChunk, StarChunks, _isIncluded);
 // ***************************************************************************
 remove(StarChunk, MixedChunks, _toBeImplemented);
 includes(StarChunk, MixedChunks, _includesAll);
-isIncludedStrictly(StarChunk, MixedChunks, _isIncluded);

@@ -156,21 +156,24 @@ const makeWrapper = ({strict, reciprocal, methodName, method}) => {
 
   const wrapper = function (Type1, Type2, implementation) {
     let args = [
-      [implementation, methodName],
+      [implementation, methodName, {}],
     ];
 
     if (reciprocal) {
-      args.push([makeReciprocalImplementation(methodName), reciprocal]);
+      args.push([makeReciprocalImplementation(methodName), reciprocal,
+        {_reciprocal: reciprocal}]);
     }
 
-    // if (strict) {
-    //   args = args.concat(args.map(([impl, name]) => {
-    //     return [makeStrictImplementation(name, strict), name + 'Strictly'];
-    //   }));
-    // }
+    if (strict) {
+      args = args.concat(args.map(([impl, name, opts]) => {
+        return [makeStrictImplementation(name, strict), name + 'Strictly',
+          Object.assign({_strict: strict}, opts)];
+      }));
+    }
 
-    args.forEach(([impl, overrideName]) => {
-      methods[overrideName] = method(Type1, Type2, impl, {overrideName});
+    args.forEach(([impl, methodName, opts]) => {
+      methods[methodName] = method(Type1, Type2, impl, Object.assign({
+        overrideName: methodName}, opts));
     });
   };
 
@@ -187,23 +190,21 @@ export default function method (methodName, {
 
   const baseMethodSymbols = new WeakMap();
   const strictMethodSymbols = strict ? new WeakMap(): undefined;
-
-  const reciprocalMethodSymbols = reciprocal ? new WeakMap(): undefined;
+  const reciprocalMethodSymbols = reciprocal ? new WeakMap():
+    undefined;
   const strictReciprocalMethodSymbols = reciprocal && strict ? new WeakMap() :
     undefined;
 
   const _method = function (Type1, Type2, implementation, {
     calledAlready = false,
-    overrideName,
+    overrideName, _reciprocal, _strict,
   } = {}) {
     const name = overrideName || methodName;
-    const methodSymbols = name !== methodName
-      ? strict
-        ? reciprocal
-          ? strictReciprocalMethodSymbols
-          : strictMethodSymbols
-        : null
-      : reciprocal
+    const methodSymbols = _strict
+      ? _reciprocal
+        ? strictReciprocalMethodSymbols
+        : strictMethodSymbols
+      : _reciprocal
         ? reciprocalMethodSymbols
         : baseMethodSymbols;
 
