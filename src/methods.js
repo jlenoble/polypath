@@ -13,7 +13,6 @@ export const includes = method('includes', {
   reciprocal: 'isIncluded',
 });
 
-export const isIncluded = method('isIncluded');
 export const isIncludedStrictly = method('isIncludedStrictly');
 
 export const overlaps = method('overlaps', {commutative: true});

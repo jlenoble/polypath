@@ -142,17 +142,36 @@ const checkName = name => {
   }
 };
 
-const makeStrictWrapper = (method, methodName, strict) => {
+const makeStrictImplementation = (methodName, strict) => function (obj) {
+  // eslint-disable-next-line no-invalid-this
+  return strict.call(this, obj) && this[methodName](obj);
+};
+
+const makeReciprocalImplementation = methodName => function (obj) {
+  return obj[methodName](this); // eslint-disable-line no-invalid-this
+};
+
+const makeWrapper = ({strict, reciprocal, methodName, method}) => {
   const methods = {};
-  const overrideName = methodName + 'Strictly';
 
   const wrapper = function (Type1, Type2, implementation) {
-    methods[methodName] = method(Type1, Type2, implementation);
+    let args = [
+      [implementation, methodName],
+    ];
 
-    methods[overrideName] = method(Type1, Type2, function (obj) {
-      // eslint-disable-next-line no-invalid-this
-      return strict.call(this, obj) && this[methodName](obj);
-    }, {overrideName});
+    if (reciprocal) {
+      args.push([makeReciprocalImplementation(methodName), reciprocal]);
+    }
+
+    // if (strict) {
+    //   args = args.concat(args.map(([impl, name]) => {
+    //     return [makeStrictImplementation(name, strict), name + 'Strictly'];
+    //   }));
+    // }
+
+    args.forEach(([impl, overrideName]) => {
+      methods[overrideName] = method(Type1, Type2, impl, {overrideName});
+    });
   };
 
   wrapper.methods = methods;
@@ -178,7 +197,7 @@ export default function method (methodName, {
     overrideName,
   } = {}) {
     const name = overrideName || methodName;
-    const methodSymbols = overrideName
+    const methodSymbols = name !== methodName
       ? strict
         ? reciprocal
           ? strictReciprocalMethodSymbols
@@ -220,9 +239,5 @@ export default function method (methodName, {
     }
   };
 
-  if (strict) {
-    return makeStrictWrapper(_method, methodName, strict);
-  }
-
-  return _method;
+  return makeWrapper({method: _method, methodName, reciprocal, strict});
 }

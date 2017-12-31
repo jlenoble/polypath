@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes, isIncluded,
+import {add, remove, equals, isDistinct, includes,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_empty, _this, _true, _false, _equals, _isDistinct,
@@ -21,7 +21,6 @@ remove(Chunks, Chunk, _filterChunks);
 equals(Chunks, Chunk, _false);
 isDistinct(Chunks, Chunk, _includesNot);
 includes(Chunks, Chunk, _includes);
-isIncluded(Chunks, Chunk, _false);
 isIncludedStrictly(Chunks, Chunk, _false);
 overlaps(Chunks, Chunk, _includes);
 overlapsStrictly(Chunks, Chunk, _false);
@@ -39,7 +38,6 @@ remove(Chunks, StarChunk, _filterChunks);
 equals(Chunks, StarChunk, _false);
 isDistinct(Chunks, StarChunk, _isDistinct);
 includes(Chunks, StarChunk, _false);
-isIncluded(Chunks, StarChunk, _isIncluded);
 isIncludedStrictly(Chunks, StarChunk, _isIncluded);
 overlaps(Chunks, StarChunk, _overlapsSingle);
 overlapsStrictly(Chunks, StarChunk, _overlapsStrictly);
@@ -50,7 +48,6 @@ overlapsStrictly(Chunks, StarChunk, _overlapsStrictly);
 // ***************************************************************************
 remove(Chunks, Star, _empty);
 includes(Chunks, Star, _false);
-isIncluded(Chunks, Star, _true);
 isIncludedStrictly(Chunks, Star, _true);
 
 
@@ -59,7 +56,6 @@ isIncludedStrictly(Chunks, Star, _true);
 // ***************************************************************************
 remove(Chunks, Empty, _this);
 includes(Chunks, Empty, _true);
-isIncluded(Chunks, Empty, _false);
 isIncludedStrictly(Chunks, Empty, _false);
 
 
@@ -73,7 +69,6 @@ remove(Chunks, Chunks, _filterChunks);
 equals(Chunks, Chunks, _equals);
 isDistinct(Chunks, Chunks, _isDistinct);
 includes(Chunks, Chunks, _includesAll);
-isIncluded(Chunks, Chunks, _isIncluded);
 isIncludedStrictly(Chunks, Chunks, _isIncludedStrictly);
 overlaps(Chunks, Chunks, _includesSome);
 overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
@@ -84,7 +79,6 @@ overlapsStrictly(Chunks, Chunks, _overlapsStrictly);
 // ***************************************************************************
 remove(Chunks, StarChunks, _filterChunks);
 includes(Chunks, StarChunks, _false);
-isIncluded(Chunks, StarChunks, _isIncluded);
 isIncludedStrictly(Chunks, StarChunks, _isIncluded);
 
 
@@ -93,5 +87,4 @@ isIncludedStrictly(Chunks, StarChunks, _isIncluded);
 // ***************************************************************************
 remove(Chunks, MixedChunks, _filterChunks);
 includes(Chunks, MixedChunks, _false);
-isIncluded(Chunks, MixedChunks, _isIncluded);
 isIncludedStrictly(Chunks, MixedChunks, _isIncluded);

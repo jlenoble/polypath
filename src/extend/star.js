@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes, isIncluded,
+import {add, remove, equals, isDistinct, includes,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _empty, _this, _toBeImplemented}
@@ -17,7 +17,6 @@ remove(Star, Star, _empty);
 equals(Star, Star, _true);
 isDistinct(Star, Star, _false);
 includes(Star, Star, _true);
-isIncluded(Star, Star, _true);
 isIncludedStrictly(Star, Star, _false);
 overlaps(Star, Star, _true);
 overlapsStrictly(Star, Star, _false);
@@ -32,7 +31,6 @@ overlapsStrictly(Star, Star, _false);
     equals(Star, Type, _false);
     isDistinct(Star, Type, _false);
     includes(Star, Type, _true);
-    isIncluded(Star, Type, _false);
     isIncludedStrictly(Star, Type, _false);
     overlaps(Star, Type, _true);
     overlapsStrictly(Star, Type, _false);
@@ -54,7 +52,6 @@ remove(Star, StarChunk, _toBeImplemented);
 // ***************************************************************************
 remove(Star, Empty, _this);
 includes(Star, Empty, _true);
-isIncluded(Star, Empty, _false);
 isIncludedStrictly(Star, Empty, _false);
 
 // ***************************************************************************
