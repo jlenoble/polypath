@@ -70,6 +70,7 @@ const getVariables = (Type1, Type2, name, methodSymbols) => {
   }
 
   const _type = typeSymbols.get(Type1);
+  checkSymbol({symb: _type, obj: p2, Type1, Type2, name: 'type'});
 
   if (!methodSymbols.has(Type2)) {
     nNewlySet++;
@@ -77,6 +78,7 @@ const getVariables = (Type1, Type2, name, methodSymbols) => {
   }
 
   const _name = methodSymbols.get(Type2);
+  checkSymbol({symb: _name, obj: Type1, Type2, name});
 
   return {
     p1, p2, _type, _name, nNewlySet,
@@ -149,9 +151,7 @@ export default function method (name, {commutative = false} = {}) {
     const {p1, p2, _type, _name, nNewlySet} = getVariables(Type1, Type2, name,
       methodSymbols);
 
-    checkSymbol({symb: _type, obj: p2, Type1, Type2, name: 'type'});
     checkCoupling({Type1, Type2, p2, _type, _name, name, nNewlySet});
-    checkSymbol({symb: _name, obj: Type1, Type1, Type2, name: 'name'});
 
     p2[_type] = Type1;
     Type1[_name] = implementation; // eslint-disable-line no-param-reassign
