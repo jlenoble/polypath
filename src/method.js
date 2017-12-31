@@ -142,14 +142,36 @@ const checkName = name => {
   }
 };
 
+const makeStrictWrapper = (method, methodName, strict) => {
+  const methods = {};
+  const overrideName = methodName + 'Strictly';
+
+  const wrapper = function (Type1, Type2, implementation) {
+    methods[methodName] = method(Type1, Type2, implementation);
+
+    methods[overrideName] = method(Type1, Type2, function (obj) {
+      // eslint-disable-next-line no-invalid-this
+      return strict.call(this, obj) && this[methodName](obj);
+    }, {overrideName});
+  };
+
+  wrapper.methods = methods;
+
+  return wrapper;
+};
+
 export default function method (methodName, {
   commutative = false,
-  strict,
+  strict, reciprocal,
 } = {}) {
   checkName(methodName);
 
   const baseMethodSymbols = new WeakMap();
   const strictMethodSymbols = strict ? new WeakMap(): undefined;
+
+  const reciprocalMethodSymbols = reciprocal ? new WeakMap(): undefined;
+  const strictReciprocalMethodSymbols = reciprocal && strict ? new WeakMap() :
+    undefined;
 
   const _method = function (Type1, Type2, implementation, {
     calledAlready = false,
@@ -158,9 +180,13 @@ export default function method (methodName, {
     const name = overrideName || methodName;
     const methodSymbols = overrideName
       ? strict
-        ? strictMethodSymbols
+        ? reciprocal
+          ? strictReciprocalMethodSymbols
+          : strictMethodSymbols
         : null
-      : baseMethodSymbols;
+      : reciprocal
+        ? reciprocalMethodSymbols
+        : baseMethodSymbols;
 
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
@@ -195,21 +221,7 @@ export default function method (methodName, {
   };
 
   if (strict) {
-    const methods = {};
-    const overrideName = methodName + 'Strictly';
-
-    const wrapper = function (Type1, Type2, implementation) {
-      methods[methodName] = _method(Type1, Type2, implementation);
-
-      methods[overrideName] = _method(Type1, Type2, function (obj) {
-        // eslint-disable-next-line no-invalid-this
-        return strict.call(this, obj) && this[methodName](obj);
-      }, {overrideName});
-    };
-
-    wrapper.methods = methods;
-
-    return wrapper;
+    return makeStrictWrapper(_method, methodName, strict);
   }
 
   return _method;

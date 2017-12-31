@@ -10,6 +10,7 @@ export const includes = method('includes', {
   strict: function (obj) {
     return this.chunk !== obj.chunk;
   },
+  reciprocal: 'isIncluded',
 });
 
 export const isIncluded = method('isIncluded');
