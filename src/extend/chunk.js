@@ -37,7 +37,6 @@ includes(Chunk, StarChunk, _false);
 includesStrictly(Chunk, StarChunk, _false);
 isIncluded(Chunk, StarChunk, _isIncluded);
 isIncludedStrictly(Chunk, StarChunk, _isIncluded);
-overlaps(Chunk, StarChunk, _isIncluded);
 
 
 // ***************************************************************************
@@ -69,7 +68,6 @@ includes(Chunk, Chunks, _false);
 includesStrictly(Chunk, Chunks, _false);
 isIncluded(Chunk, Chunks, _isIncluded);
 isIncludedStrictly(Chunk, Chunks, _isIncluded);
-overlaps(Chunk, Chunks, _isIncluded);
 
 
 // ***************************************************************************
@@ -81,7 +79,6 @@ includes(Chunk, StarChunks, _false);
 includesStrictly(Chunk, StarChunks, _false);
 isIncluded(Chunk, StarChunks, _isIncluded);
 isIncludedStrictly(Chunk, StarChunks, _isIncluded);
-overlaps(Chunk, StarChunks, _isIncluded);
 
 
 // ***************************************************************************
@@ -93,4 +90,3 @@ includes(Chunk, MixedChunks, _false);
 includesStrictly(Chunk, MixedChunks, _false);
 isIncluded(Chunk, MixedChunks, _isIncluded);
 isIncludedStrictly(Chunk, MixedChunks, _isIncluded);
-overlaps(Chunk, MixedChunks, _isIncluded);

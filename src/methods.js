@@ -11,5 +11,5 @@ export const isIncluded = method('isIncluded');
 export const includesStrictly = method('includesStrictly');
 export const isIncludedStrictly = method('isIncludedStrictly');
 
-export const overlaps = method('overlaps');
+export const overlaps = method('overlaps', {commutative: true});
 export const overlapsStrictly = method('overlapsStrictly', {commutative: true});
