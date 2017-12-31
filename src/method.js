@@ -16,12 +16,37 @@ const checkType = (Type, name, argName) => {
   }
 };
 
-const checkSymbol = (symb, obj, message, explain) => {
+const checkSymbol = ({symb, obj, Type1, Type2, name = 'type'}) => {
   const symbs = Object.getOwnPropertySymbols(obj);
   const index = symbs.map(s => s.toString()).indexOf(symb.toString());
 
   if (index !== -1) {
     if (symbs[index] !== symb) {
+      const message = name === 'type' ?
+        `Symbols share name, but are different` :
+        `${obj.name}::${name}(${Type2.name}) already implemented`;
+
+      const explain = [['You attempted to set symbol', symb.toString()]];
+
+      if (name === 'type') {
+        explain.push(['on the prototype of type', Type2.name],
+          ['with the intention to target', Type1.name]);
+      } else {
+        explain.push(['on type', obj.name]);
+      }
+
+      explain.push('But the symbol already exists');
+
+      if (name === 'type') {
+        explain.push('But the symbol already exists',
+          'and points to a parasitic type with same name');
+      } else {
+        explain.push(
+          `This means that the '${name}' method has already been implemented`,
+          ['for intended type', Type2.name],
+          'or another parasitic type sharing its name');
+      }
+
       error({
         message,
         explain,
@@ -101,7 +126,7 @@ const makeSenseOfError = ({e, a, Type1, Type2, ctx, name, _type, _name}) => {
       });
     }
   }
-}
+};
 
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
@@ -124,28 +149,9 @@ export default function method (name, {commutative = false} = {}) {
     const {p1, p2, _type, _name, nNewlySet} = getVariables(Type1, Type2, name,
       methodSymbols);
 
-    let message = `Symbols share name, but are different`;
-    let explain = [
-      ['You attempted to set symbol', _type.toString()],
-      ['on the prototype of type', Type2.name],
-      ['with the intention to target', Type1.name],
-      'But the symbol already exists',
-      'and points to a parasitic type with same name',
-    ];
-    checkSymbol(_type, p2, message, explain);
-
+    checkSymbol({symb: _type, obj: p2, Type1, Type2, name: 'type'});
     checkCoupling({Type1, Type2, p2, _type, _name, name, nNewlySet});
-
-    message = `${Type1.name}::${name}(${Type2.name}) already implemented`;
-    explain = [
-      ['You attempted to set symbol', _name.toString()],
-      ['on type', Type1.name],
-      'But the symbol already exists',
-      `This means that the '${name}' method has already been implemented`,
-      ['for intended type', Type2.name],
-      'or another parasitic type sharing its name',
-    ];
-    checkSymbol(_name, Type1, message, explain);
+    checkSymbol({symb: _name, obj: Type1, Type1, Type2, name: 'name'});
 
     p2[_type] = Type1;
     Type1[_name] = implementation; // eslint-disable-line no-param-reassign
