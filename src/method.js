@@ -2,6 +2,20 @@ import {error} from 'explanation';
 
 const typeSymbols = new WeakMap();
 
+const checkType = (Type, name, argName) => {
+  if (!(Type instanceof Function)) {
+    error({
+      message: 'Not a prototype',
+      explain: [
+        [`In 'method' factory:`, name],
+        `You tried to access the prototype of ${argName}`,
+        `But ${argName} is not a function`,
+        `It is ${Type}`,
+      ],
+    });
+  }
+};
+
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
@@ -17,29 +31,8 @@ export default function method (name, {commutative = false} = {}) {
 
   const _method = function (Type1, Type2, implementation, {
     calledAlready = false} = {}) {
-    if (!(Type1 instanceof Function)) {
-      error({
-        message: 'Not a prototype',
-        explain: [
-          ['In function:', _method.name],
-          'You tried to access the prototype of Type1',
-          'But Type1 is not a function',
-          ['It is:', Type1],
-        ],
-      });
-    }
-
-    if (!(Type2 instanceof Function)) {
-      error({
-        message: 'Not a prototype',
-        explain: [
-          ['In function:', _method.name],
-          'You tried to access the prototype of Type2',
-          'But Type2 is not a function',
-          ['It is:', Type2],
-        ],
-      });
-    }
+    checkType(Type1, name, 'Type1');
+    checkType(Type2, name, 'Type2');
 
     let nNewlySet = 0;
 
