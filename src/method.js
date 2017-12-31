@@ -30,6 +30,34 @@ const checkSymbol = (symb, obj, message, explain) => {
   }
 };
 
+const getVariables = (Type1, Type2, name, methodSymbols) => {
+  let nNewlySet = 0;
+
+  const p1 = Type1.prototype;
+  const symName1 = `type:${Type1.name}`;
+
+  const p2 = Type2.prototype;
+  const symName2 = `${name}:${Type2.name}`;
+
+  if (!typeSymbols.has(Type1)) {
+    nNewlySet++;
+    typeSymbols.set(Type1, Symbol(symName1));
+  }
+
+  const _type = typeSymbols.get(Type1);
+
+  if (!methodSymbols.has(Type2)) {
+    nNewlySet++;
+    methodSymbols.set(Type2, Symbol(symName2));
+  }
+
+  const _name = methodSymbols.get(Type2);
+
+  return {
+    p1, p2, _type, _name, nNewlySet,
+  };
+};
+
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
@@ -48,20 +76,9 @@ export default function method (name, {commutative = false} = {}) {
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
 
-    let nNewlySet = 0;
+    const {p1, p2, _type, _name, nNewlySet} = getVariables(Type1, Type2, name,
+      methodSymbols);
 
-    const p1 = Type1.prototype;
-    const symName1 = `type:${Type1.name}`;
-
-    const p2 = Type2.prototype;
-    const symName2 = `${name}:${Type2.name}`;
-
-    if (!typeSymbols.has(Type1)) {
-      nNewlySet++;
-      typeSymbols.set(Type1, Symbol(symName1));
-    }
-
-    const _type = typeSymbols.get(Type1);
     let message = `Symbols share name, but are different`;
     let explain = [
       ['You attempted to set symbol', _type.toString()],
@@ -71,13 +88,6 @@ export default function method (name, {commutative = false} = {}) {
       'and points to a parasitic type with same name',
     ];
     checkSymbol(_type, p2, message, explain);
-
-    if (!methodSymbols.has(Type2)) {
-      nNewlySet++;
-      methodSymbols.set(Type2, Symbol(symName2));
-    }
-
-    const _name = methodSymbols.get(Type2);
 
     if (nNewlySet === 0) {
       if (p2[_type] === Type1 && Type1[_name] !== undefined) {
