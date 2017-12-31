@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes,
   overlaps, overlapsStrictly} from '../methods';
 
-import {_true, _false, _this, _equals, _equalsNot,
+import {_false, _this, _equals, _equalsNot,
   _maybeClearChunk}
   from '../implementations';
 
@@ -36,7 +36,6 @@ includes(Chunk, StarChunk, _false);
 // Chunk/Empty API
 // ***************************************************************************
 remove(Chunk, Empty, _this);
-includes(Chunk, Empty, _true);
 
 
 // ***************************************************************************

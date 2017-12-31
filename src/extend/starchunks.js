@@ -2,7 +2,7 @@
 import {add, remove, equals, isDistinct, includes,
   overlaps, overlapsStrictly} from '../methods';
 
-import {_this, _true, _false, _equals, _isDistinct,
+import {_this, _false, _equals, _isDistinct,
   _includes, _includesAll, _includesSome, _includesNot,
   _overlaps, _overlapsStrictly,
   _overlapsSingle, _addMixed, _addReduce, _toBeImplemented}
@@ -47,7 +47,6 @@ overlapsStrictly(StarChunks, StarChunk, _overlapsStrictly);
 // StarChunks/Empty API
 // ***************************************************************************
 remove(StarChunks, Empty, _this);
-includes(StarChunks, Empty, _true);
 
 
 // ***************************************************************************

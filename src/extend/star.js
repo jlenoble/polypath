@@ -53,7 +53,6 @@ remove(Star, StarChunk, _toBeImplemented);
 // Star/Empty API
 // ***************************************************************************
 remove(Star, Empty, _this);
-includes(Star, Empty, _true);
 
 // ***************************************************************************
 // Star/Chunks API

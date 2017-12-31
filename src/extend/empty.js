@@ -32,4 +32,7 @@ overlapsStrictly(Empty, Empty, _false);
     includes(Empty, Type, _false);
     overlaps(Empty, Type, _true);
     overlapsStrictly(Empty, Type, _false);
+
+    // Reciprocal
+    includes(Type, Empty, _true);
   });
