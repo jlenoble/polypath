@@ -15,7 +15,8 @@ export default function method (name, {commutative = false} = {}) {
 
   const methodSymbols = new WeakMap();
 
-  const _method = function (Type1, Type2, implementation, {done = false} = {}) {
+  const _method = function (Type1, Type2, implementation, {
+    calledAlready = false} = {}) {
     if (!(Type1 instanceof Function)) {
       error({
         message: 'Not a prototype',
@@ -155,10 +156,10 @@ export default function method (name, {commutative = false} = {}) {
       };
     }
 
-    if (!done && commutative && Type1 !== Type2) {
+    if (!calledAlready && commutative && Type1 !== Type2) {
       _method(Type2, Type1, function (a) {
         return a[name](this); // eslint-disable-line no-invalid-this
-      }, {done: true});
+      }, {calledAlready: true});
     }
   };
 
