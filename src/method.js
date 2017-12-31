@@ -1,4 +1,5 @@
 import {error} from 'explanation';
+import {_commute, _false, _true, _this, _identity} from './implementations';
 
 const typeSymbols = new WeakMap();
 
@@ -193,29 +194,92 @@ const makeWrapper = ({
   return wrapper;
 };
 
+const getMethodSymbols = ({_reciprocal, _strict, _negate}, {
+  baseMethodSymbols,
+  strictMethodSymbols,
+  reciprocalMethodSymbols,
+  strictReciprocalMethodSymbols,
+  negateMethodSymbols,
+}) => {
+  return _negate
+    ? negateMethodSymbols
+    : _strict
+      ? _reciprocal
+        ? strictReciprocalMethodSymbols
+        : strictMethodSymbols
+      : _reciprocal
+        ? reciprocalMethodSymbols
+        : baseMethodSymbols;
+};
+
+const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
+  _type}, name) => {
+  switch (p2[_type][_name]) {
+  case _false:
+    // console.log(name, p1.constructor.name, p2.constructor.name, 'FALSE');
+    return _false;
+
+  case _true:
+    // console.log(name, p1.constructor.name, p2.constructor.name, 'TRUE');
+    return _true;
+
+  case _this:
+    // console.log(name, p1.constructor.name, p2.constructor.name, 'THIS');
+    return _identity;
+
+  case _identity:
+    // console.log(name, p1.constructor.name, p2.constructor.name, 'IDENTITY');
+    return _this;
+
+  default:
+    console.log(name, p1.constructor.name, p2.constructor.name, 'OTHER');
+    return implementation;
+  }
+};
+
+const optimizeImplementation = ({Type1, Type2, implementation, methodName,
+  overrideName, commutative, _reciprocal, _strict, _negate, typeSymbols,
+  _commuteImplementation, symbolMaps, calledAlready}) => {
+  // const methodSymbols1 = symbolMaps.baseMethodSymbols;
+  const methodSymbols2 = getMethodSymbols({_reciprocal, _strict, _negate},
+    symbolMaps);
+
+  // let variables = getVariables(Type1, Type2, methodName, methodSymbols1);
+  //
+  // const p11 = variables.p1;
+  // const p21 = variables.p2;
+  // const _type1 = variables._type;
+  // const _name1 = variables._name;
+  // const nNewlySet1 = variables.nNewlySet;
+  //
+  // variables = getVariables(Type2, Type1, overrideName, methodSymbols2);
+  //
+  // const p12 = variables.p1;
+  // const p22 = variables.p2;
+  // const _type2 = variables._type;
+  // const _name2 = variables._name;
+  // const nNewlySet2 = variables.nNewlySet;
+
+  if (_commuteImplementation === implementation) {
+    return optimizeCommuteImplementation(implementation,
+      getVariables(Type2, Type1, overrideName, methodSymbols2), overrideName);
+  }
+
+  return implementation;
+};
+
 export default function method (methodName, {
   commutative, strict, reciprocal, negate,
 } = {}) {
   checkName(methodName);
 
-  const baseMethodSymbols = new WeakMap();
-  const strictMethodSymbols = strict ? new WeakMap(): undefined;
-  const reciprocalMethodSymbols = reciprocal ? new WeakMap():
-    undefined;
-  const strictReciprocalMethodSymbols = reciprocal && strict ? new WeakMap() :
-    undefined;
-  const negateMethodSymbols = negate ? new WeakMap(): undefined;
-
-  const getMethodSymbols = ({_reciprocal, _strict, _negate}) => {
-    return _negate
-      ? negateMethodSymbols
-      : _strict
-        ? _reciprocal
-          ? strictReciprocalMethodSymbols
-          : strictMethodSymbols
-        : _reciprocal
-          ? reciprocalMethodSymbols
-          : baseMethodSymbols;
+  const symbolMaps = {
+    baseMethodSymbols: new WeakMap(),
+    strictMethodSymbols: strict ? new WeakMap(): undefined,
+    reciprocalMethodSymbols: reciprocal ? new WeakMap(): undefined,
+    strictReciprocalMethodSymbols: reciprocal && strict ? new WeakMap() :
+      undefined,
+    negateMethodSymbols: negate ? new WeakMap(): undefined,
   };
 
   const _method = function (Type1, Type2, implementation, {
@@ -223,7 +287,10 @@ export default function method (methodName, {
     overrideName, _reciprocal, _strict, _negate,
   } = {}) {
     const name = overrideName || methodName;
-    const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate});
+    const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate},
+      symbolMaps);
+    const _commuteImplementation = commutative ? !calledAlready ?
+      _commute(name) : implementation : undefined;
 
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
@@ -234,7 +301,12 @@ export default function method (methodName, {
     checkCoupling({Type1, Type2, p2, _type, _name, name, nNewlySet});
 
     p2[_type] = Type1;
-    Type1[_name] = implementation; // eslint-disable-line no-param-reassign
+
+    // eslint-disable-next-line no-param-reassign
+    Type1[_name] = optimizeImplementation({Type1, Type2, implementation,
+      _commuteImplementation,
+      methodName, overrideName, commutative, _reciprocal, _strict, _negate,
+      typeSymbols, symbolMaps, calledAlready});
 
     if (!p1.hasOwnProperty(name)) {
       p1[name] = function (a) {
@@ -251,9 +323,8 @@ export default function method (methodName, {
     }
 
     if (!calledAlready && commutative && Type1 !== Type2) {
-      _method(Type2, Type1, function (a) {
-        return a[name](this); // eslint-disable-line no-invalid-this
-      }, {calledAlready: true, overrideName, _reciprocal, _strict, _negate});
+      _method(Type2, Type1, _commuteImplementation,
+        {calledAlready: true, overrideName, _reciprocal, _strict, _negate});
     }
   };
 

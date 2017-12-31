@@ -95,6 +95,10 @@ export const _filterChunks = function (obj) {
     chunks.map(chunk => chunk.chunk).join(','));
 };
 
+export const _commute = name => function (a) {
+  return a[name](this);
+};
+
 export const _toBeImplemented = function () {
   // throw new Error('Needs implementation');
 };
