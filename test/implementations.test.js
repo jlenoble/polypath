@@ -1,7 +1,17 @@
 import {expect} from 'chai';
 
-import * as methods from '../src/methods';
+import * as _methods from '../src/methods';
 import * as _classes from '../src/index';
+
+const methods = [];
+
+Object.keys(_methods).forEach(methodKey => {
+  if (_methods[methodKey].methods) {
+    methods.push(...Object.keys(_methods[methodKey].methods));
+  } else {
+    methods.push(methodKey);
+  }
+});
 
 const classes = Object.assign({}, _classes);
 
@@ -19,7 +29,7 @@ const validArguments = {
   MixedChunks: ['a,*b', 'a*,b', '*x*,y,z'],
 };
 
-Object.keys(methods).forEach(methodKey => {
+methods.forEach(methodKey => {
   Object.keys(classes).forEach(Type1Key => {
     const Type1 = classes[Type1Key];
     const args1 = validArguments[Type1Key];

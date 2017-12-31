@@ -195,13 +195,21 @@ export default function method (methodName, {
   };
 
   if (strict) {
-    return function (Type1, Type2, implementation) {
-      _method(Type1, Type2, implementation);
-      _method(Type1, Type2, function (obj) {
+    const methods = {};
+    const overrideName = methodName + 'Strictly';
+
+    const wrapper = function (Type1, Type2, implementation) {
+      methods[methodName] = _method(Type1, Type2, implementation);
+
+      methods[overrideName] = _method(Type1, Type2, function (obj) {
         // eslint-disable-next-line no-invalid-this
         return strict.call(this, obj) && this[methodName](obj);
-      }, {overrideName: methodName + 'Strictly'});
+      }, {overrideName});
     };
+
+    wrapper.methods = methods;
+
+    return wrapper;
   }
 
   return _method;
