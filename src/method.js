@@ -16,6 +16,20 @@ const checkType = (Type, name, argName) => {
   }
 };
 
+const checkSymbol = (symb, obj, message, explain) => {
+  const symbs = Object.getOwnPropertySymbols(obj);
+  const index = symbs.map(s => s.toString()).indexOf(symb.toString());
+
+  if (index !== -1) {
+    if (symbs[index] !== symb) {
+      error({
+        message,
+        explain,
+      });
+    }
+  }
+};
+
 export default function method (name, {commutative = false} = {}) {
   if (typeof name !== 'string') {
     error({
@@ -48,23 +62,15 @@ export default function method (name, {commutative = false} = {}) {
     }
 
     const _type = typeSymbols.get(Type1);
-    const symbs1 = Object.getOwnPropertySymbols(p2);
-    const index1 = symbs1.map(s => s.toString()).indexOf(_type.toString());
-
-    if (index1 !== -1) {
-      if (symbs1[index1] !== _type) {
-        error({
-          message: `Symbols share name, but are different`,
-          explain: [
-            ['You attempted to set symbol', _type.toString()],
-            ['on the prototype of type', Type2.name],
-            ['with the intention to target', Type1.name],
-            'But the symbol already exists',
-            'and points to a parasitic type with same name',
-          ],
-        });
-      }
-    }
+    let message = `Symbols share name, but are different`;
+    let explain = [
+      ['You attempted to set symbol', _type.toString()],
+      ['on the prototype of type', Type2.name],
+      ['with the intention to target', Type1.name],
+      'But the symbol already exists',
+      'and points to a parasitic type with same name',
+    ];
+    checkSymbol(_type, p2, message, explain);
 
     if (!methodSymbols.has(Type2)) {
       nNewlySet++;
@@ -87,24 +93,16 @@ export default function method (name, {commutative = false} = {}) {
       }
     }
 
-    const symbs2 = Object.getOwnPropertySymbols(Type1);
-    const index2 = symbs2.map(s => s.toString()).indexOf(_name.toString());
-
-    if (index2 !== -1) {
-      if (symbs2[index2] !== _name) {
-        error({
-          message: `${Type1.name}::${name}(${Type2.name}) already implemented`,
-          explain: [
-            ['You attempted to set symbol', _name.toString()],
-            ['on type', Type1.name],
-            'But the symbol already exists',
-            `This means that the '${name}' method has already been implemented`,
-            ['for intended type', Type2.name],
-            'or another parasitic type sharing its name',
-          ],
-        });
-      }
-    }
+    message = `${Type1.name}::${name}(${Type2.name}) already implemented`;
+    explain = [
+      ['You attempted to set symbol', _name.toString()],
+      ['on type', Type1.name],
+      'But the symbol already exists',
+      `This means that the '${name}' method has already been implemented`,
+      ['for intended type', Type2.name],
+      'or another parasitic type sharing its name',
+    ];
+    checkSymbol(_name, Type1, message, explain);
 
     p2[_type] = Type1;
     Type1[_name] = implementation; // eslint-disable-line no-param-reassign
