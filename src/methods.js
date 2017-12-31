@@ -1,6 +1,6 @@
 import method from './method';
 
-export const add = method('add');
+export const add = method('add', {commutative: true});
 export const remove = method('remove');
 
 export const equals = method('equals', {commutative: true});

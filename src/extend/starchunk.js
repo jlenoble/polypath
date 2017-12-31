@@ -4,7 +4,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
 
 import {_empty, _this, _true, _false, _equals, _isDistinct,
   _includes, _includesAll, _includesNot, _includesStrictly,
-  _isIncluded, _isIncludedStrictly, _overlapsStrictly, _addTo,
+  _isIncluded, _isIncludedStrictly, _overlapsStrictly,
   _addMixed, _toBeImplemented}
   from '../implementations';
 
@@ -156,11 +156,6 @@ isIncludedStrictly(StarChunk, Empty, _false);
 // ***************************************************************************
 // StarChunk/Chunks API
 // ***************************************************************************
-add(StarChunk, Chunks, function (obj) {
-  const chunks = obj.chunks.filter(chunk => !this.includes(chunk));
-  return new MixedChunks(this.chunk + ',' + chunks.map(chunk => chunk.chunk)
-    .join(','));
-});
 remove(StarChunk, Chunks, _toBeImplemented);
 includes(StarChunk, Chunks, _includesAll);
 includesStrictly(StarChunk, Chunks, _includesAll);
@@ -171,7 +166,6 @@ isIncludedStrictly(StarChunk, Chunks, _false);
 // ***************************************************************************
 // StarChunk/StarChunks API
 // ***************************************************************************
-add(StarChunk, StarChunks, _addTo);
 remove(StarChunk, StarChunks, _toBeImplemented);
 includes(StarChunk, StarChunks, _includesAll);
 includesStrictly(StarChunk, StarChunks, _includesAll);
@@ -182,7 +176,6 @@ isIncludedStrictly(StarChunk, StarChunks, _isIncluded);
 // ***************************************************************************
 // StarChunk/MixedChunks API
 // ***************************************************************************
-add(StarChunk, MixedChunks, _addTo);
 remove(StarChunk, MixedChunks, _toBeImplemented);
 includes(StarChunk, MixedChunks, _includesAll);
 includesStrictly(StarChunk, MixedChunks, _includesAll);

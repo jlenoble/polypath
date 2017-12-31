@@ -111,10 +111,6 @@ export const _addMixed = function (obj) {
     this.chunk + ',' + obj.chunk);
 };
 
-export const _addTo = function (obj) {
-  return obj.add(this);
-};
-
 export const _addReduce = function (obj) {
   return obj.chunks.reduce((chunks, chunk) => {
     return chunks.add(chunk);

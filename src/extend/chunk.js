@@ -3,7 +3,7 @@ import {add, remove, equals, isDistinct, includes, isIncluded, includesStrictly,
   isIncludedStrictly, overlaps, overlapsStrictly} from '../methods';
 
 import {_true, _false, _empty, _this, _equals, _equalsNot,
-  _isIncluded, _maybeClearChunk, _addTo}
+  _isIncluded, _maybeClearChunk}
   from '../implementations';
 
 import Chunk, {StarChunk, Star, Empty} from '../chunk';
@@ -31,7 +31,6 @@ overlapsStrictly(Chunk, Chunk, _false);
 // ***************************************************************************
 // Chunk/StarChunk API
 // ***************************************************************************
-add(Chunk, StarChunk, _addTo);
 remove(Chunk, StarChunk, _maybeClearChunk);
 includes(Chunk, StarChunk, _false);
 includesStrictly(Chunk, StarChunk, _false);
@@ -62,7 +61,6 @@ isIncludedStrictly(Chunk, Empty, _false);
 // ***************************************************************************
 // Chunk/Chunks API
 // ***************************************************************************
-add(Chunk, Chunks, _addTo);
 remove(Chunk, Chunks, _maybeClearChunk);
 includes(Chunk, Chunks, _false);
 includesStrictly(Chunk, Chunks, _false);
@@ -73,7 +71,6 @@ isIncludedStrictly(Chunk, Chunks, _isIncluded);
 // ***************************************************************************
 // Chunk/StarChunks API
 // ***************************************************************************
-add(Chunk, StarChunks, _addTo);
 remove(Chunk, StarChunks, _maybeClearChunk);
 includes(Chunk, StarChunks, _false);
 includesStrictly(Chunk, StarChunks, _false);
@@ -84,7 +81,6 @@ isIncludedStrictly(Chunk, StarChunks, _isIncluded);
 // ***************************************************************************
 // Chunk/MixedChunks API
 // ***************************************************************************
-add(Chunk, MixedChunks, _addTo);
 remove(Chunk, MixedChunks, _maybeClearChunk);
 includes(Chunk, MixedChunks, _false);
 includesStrictly(Chunk, MixedChunks, _false);
