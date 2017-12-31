@@ -32,6 +32,9 @@ overlapsStrictly(Star, Star, _false);
     includes(Star, Type, _true);
     overlaps(Star, Type, _true);
     overlapsStrictly(Star, Type, _false);
+
+    // Reciprocal
+    includes(Type, Star, _false);
   });
 
 

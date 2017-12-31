@@ -47,7 +47,6 @@ overlapsStrictly(StarChunks, StarChunk, _overlapsStrictly);
 // StarChunks/Star API
 // ***************************************************************************
 remove(StarChunks, Star, _empty);
-includes(StarChunks, Star, _false);
 
 
 // ***************************************************************************

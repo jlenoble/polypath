@@ -131,7 +131,6 @@ overlapsStrictly(StarChunk, StarChunk, _overlapsStrictly);
 // StarChunk/Star API
 // ***************************************************************************
 remove(StarChunk, Star, _empty);
-includes(StarChunk, Star, _false);
 
 
 // ***************************************************************************
