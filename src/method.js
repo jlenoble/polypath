@@ -151,7 +151,13 @@ const makeReciprocalImplementation = methodName => function (obj) {
   return obj[methodName](this); // eslint-disable-line no-invalid-this
 };
 
-const makeWrapper = ({strict, reciprocal, commutative, methodName, method}) => {
+const makeNegateImplementation = methodName => function (obj) {
+  return !this[methodName](obj); // eslint-disable-line no-invalid-this
+};
+
+const makeWrapper = ({
+  strict, reciprocal, commutative, negate, methodName, method,
+}) => {
   const methods = {};
 
   const wrapper = function (Type1, Type2, implementation) {
@@ -171,6 +177,11 @@ const makeWrapper = ({strict, reciprocal, commutative, methodName, method}) => {
       }));
     }
 
+    if (negate) {
+      args.push([makeNegateImplementation(methodName), negate,
+        {_negate: negate}]);
+    }
+
     args.forEach(([impl, methodName, opts]) => {
       methods[methodName] = method(Type1, Type2, impl, Object.assign({
         overrideName: methodName}, opts));
@@ -183,8 +194,7 @@ const makeWrapper = ({strict, reciprocal, commutative, methodName, method}) => {
 };
 
 export default function method (methodName, {
-  commutative = false,
-  strict, reciprocal,
+  commutative, strict, reciprocal, negate,
 } = {}) {
   checkName(methodName);
 
@@ -194,19 +204,26 @@ export default function method (methodName, {
     undefined;
   const strictReciprocalMethodSymbols = reciprocal && strict ? new WeakMap() :
     undefined;
+  const negateMethodSymbols = negate ? new WeakMap(): undefined;
+
+  const getMethodSymbols = ({_reciprocal, _strict, _negate}) => {
+    return _negate
+      ? negateMethodSymbols
+      : _strict
+        ? _reciprocal
+          ? strictReciprocalMethodSymbols
+          : strictMethodSymbols
+        : _reciprocal
+          ? reciprocalMethodSymbols
+          : baseMethodSymbols;
+  };
 
   const _method = function (Type1, Type2, implementation, {
     calledAlready = false,
-    overrideName, _reciprocal, _strict,
+    overrideName, _reciprocal, _strict, _negate,
   } = {}) {
     const name = overrideName || methodName;
-    const methodSymbols = _strict
-      ? _reciprocal
-        ? strictReciprocalMethodSymbols
-        : strictMethodSymbols
-      : _reciprocal
-        ? reciprocalMethodSymbols
-        : baseMethodSymbols;
+    const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate});
 
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
@@ -236,7 +253,7 @@ export default function method (methodName, {
     if (!calledAlready && commutative && Type1 !== Type2) {
       _method(Type2, Type1, function (a) {
         return a[name](this); // eslint-disable-line no-invalid-this
-      }, {calledAlready: true, overrideName, _reciprocal, _strict});
+      }, {calledAlready: true, overrideName, _reciprocal, _strict, _negate});
     }
   };
 
@@ -245,5 +262,6 @@ export default function method (methodName, {
     methodName,
     reciprocal,
     strict,
+    negate,
   });
 }

@@ -1,8 +1,8 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, isDistinct, includes, overlaps} from '../methods';
+import {add, remove, equals, includes, overlaps} from '../methods';
 
-import {_false, _equals, _isDistinct, _includes, _includesAll, _includesNot,
-  _addMixed, _toBeImplemented} from '../implementations';
+import {_false, _equals, _includes, _includesAll, _addMixed, _toBeImplemented}
+  from '../implementations';
 
 import Chunk, {StarChunk} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
@@ -14,7 +14,6 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 add(StarChunk, Chunk, _addMixed);
 remove(StarChunk, Chunk, _toBeImplemented);
 equals(StarChunk, Chunk, _false);
-isDistinct(StarChunk, Chunk, _includesNot);
 includes(StarChunk, Chunk, _includes);
 overlaps(StarChunk, Chunk, _includes);
 
@@ -28,7 +27,6 @@ add(StarChunk, StarChunk, function (obj) {
 });
 remove(StarChunk, StarChunk, _toBeImplemented);
 equals(StarChunk, StarChunk, _equals);
-isDistinct(StarChunk, StarChunk, _isDistinct);
 includes(StarChunk, StarChunk, function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
