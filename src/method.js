@@ -212,27 +212,38 @@ const getMethodSymbols = ({_reciprocal, _strict, _negate}, {
         : baseMethodSymbols;
 };
 
-const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
-  _type}, name) => {
+const optimizeNegateImplementation = (implementation, {p1, p2, _name,
+  _type}) => {
   switch (p2[_type][_name]) {
   case _false:
-    // console.log(name, p1.constructor.name, p2.constructor.name, 'FALSE');
+    return _true;
+
+  case _true:
+    return _false;
+
+  default:
+    // console.log(_name, p1.constructor.name, p2.constructor.name, '!OTHER');
+    return implementation;
+  }
+};
+
+const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
+  _type}) => {
+  switch (p2[_type][_name]) {
+  case _false:
     return _false;
 
   case _true:
-    // console.log(name, p1.constructor.name, p2.constructor.name, 'TRUE');
     return _true;
 
   case _this:
-    // console.log(name, p1.constructor.name, p2.constructor.name, 'THIS');
     return _identity;
 
   case _identity:
-    // console.log(name, p1.constructor.name, p2.constructor.name, 'IDENTITY');
     return _this;
 
   default:
-    console.log(name, p1.constructor.name, p2.constructor.name, 'OTHER');
+    // console.log(_name, p1.constructor.name, p2.constructor.name, 'OTHER');
     return implementation;
   }
 };
@@ -240,29 +251,17 @@ const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
 const optimizeImplementation = ({Type1, Type2, implementation, methodName,
   overrideName, commutative, _reciprocal, _strict, _negate, typeSymbols,
   _commuteImplementation, symbolMaps, calledAlready}) => {
-  // const methodSymbols1 = symbolMaps.baseMethodSymbols;
-  const methodSymbols2 = getMethodSymbols({_reciprocal, _strict, _negate},
-    symbolMaps);
-
-  // let variables = getVariables(Type1, Type2, methodName, methodSymbols1);
-  //
-  // const p11 = variables.p1;
-  // const p21 = variables.p2;
-  // const _type1 = variables._type;
-  // const _name1 = variables._name;
-  // const nNewlySet1 = variables.nNewlySet;
-  //
-  // variables = getVariables(Type2, Type1, overrideName, methodSymbols2);
-  //
-  // const p12 = variables.p1;
-  // const p22 = variables.p2;
-  // const _type2 = variables._type;
-  // const _name2 = variables._name;
-  // const nNewlySet2 = variables.nNewlySet;
+  if (_negate) {
+    return optimizeNegateImplementation(implementation,
+      getVariables(Type1, Type2, methodName, symbolMaps.baseMethodSymbols));
+  }
 
   if (_commuteImplementation === implementation) {
+    const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate},
+      symbolMaps);
+
     return optimizeCommuteImplementation(implementation,
-      getVariables(Type2, Type1, overrideName, methodSymbols2), overrideName);
+      getVariables(Type2, Type1, overrideName, methodSymbols));
   }
 
   return implementation;
