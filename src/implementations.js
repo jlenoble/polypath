@@ -8,6 +8,10 @@ export const _true = function () {
   return true;
 };
 
+export const _strictTrue = function () {
+  return true;
+};
+
 export const _false = function () {
   return false;
 };
@@ -26,6 +30,10 @@ export const _this = function () {
 
 export const _equals = function (obj) {
   return this.chunk === obj.chunk;
+};
+
+export const _unequals = function (obj) {
+  return this.chunk !== obj.chunk;
 };
 
 export const _includes = function (obj) {
@@ -67,10 +75,6 @@ export const _filterChunks = function (obj) {
   const chunks = this.chunks.filter(chunk => !obj.includes(chunk));
   return chunks.length === this.chunks.length ? this : new Chunks(
     chunks.map(chunk => chunk.chunk).join(','));
-};
-
-export const _commute = name => function (a) {
-  return a[name](this);
 };
 
 export const _toBeImplemented = function () {

@@ -1,5 +1,7 @@
 import {error} from 'explanation';
-import {_commute, _false, _true, _this, _identity} from './implementations';
+import {_false, _true, _strictTrue, _this, _identity, _empty, _equals,
+  _includes, _includesAll, _includesSome, _overlaps, _overlapsSingle}
+  from './implementations';
 
 const typeSymbols = new WeakMap();
 
@@ -143,6 +145,10 @@ const checkName = name => {
   }
 };
 
+const makeCommuteImplementation = methodName => function (a) {
+  return a[methodName](this); // eslint-disable-line no-invalid-this
+};
+
 const makeStrictImplementation = (methodName, strict) => function (obj) {
   // eslint-disable-next-line no-invalid-this
   return strict.call(this, obj) && this[methodName](obj);
@@ -167,8 +173,8 @@ const makeWrapper = ({
     ];
 
     if (reciprocal) {
-      args.push([makeReciprocalImplementation(methodName), reciprocal,
-        {_reciprocal: reciprocal}]);
+      args.push([makeReciprocalImplementation(methodName), reciprocal, {
+        _reciprocal: reciprocal}]);
     }
 
     if (strict) {
@@ -184,8 +190,13 @@ const makeWrapper = ({
     }
 
     args.forEach(([impl, methodName, opts]) => {
-      methods[methodName] = method(Type1, Type2, impl, Object.assign({
-        overrideName: methodName}, opts));
+      if (opts._reciprocal) {
+        methods[methodName] = method(Type2, Type1, impl, Object.assign({
+          overrideName: methodName}, opts));
+      } else {
+        methods[methodName] = method(Type1, Type2, impl, Object.assign({
+          overrideName: methodName}, opts));
+      }
     });
   };
 
@@ -212,6 +223,39 @@ const getMethodSymbols = ({_reciprocal, _strict, _negate}, {
         : baseMethodSymbols;
 };
 
+const optimizeStrictImplementation = (implementation, {p1, p2, _name,
+  _type}) => {
+  switch (p2[_type][_name]) {
+  case _false: case _equals:
+    return _false;
+
+  case _strictTrue:
+    return _false;
+
+  default:
+    console.log('>', p2[_type][_name]);
+    // return implementation;
+  }
+};
+
+const optimizeReciprocalImplementation = (implementation, {p1, p2, _name,
+  _type}) => {
+  switch (p2[_type][_name]) {
+  case _false:
+    return _false;
+
+  case _true:
+    return _true;
+
+  case _equals:
+    return _equals;
+
+  default:
+    console.log('~', p2[_type][_name]);
+    // return implementation;
+  }
+};
+
 const optimizeNegateImplementation = (implementation, {p1, p2, _name,
   _type}) => {
   switch (p2[_type][_name]) {
@@ -222,11 +266,12 @@ const optimizeNegateImplementation = (implementation, {p1, p2, _name,
     return _false;
 
   default:
-    // console.log(_name, p1.constructor.name, p2.constructor.name, '!OTHER');
-    return implementation;
+    console.log('-', p2[_type][_name]);
+    // return implementation;
   }
 };
 
+let counter = 0;
 const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
   _type}) => {
   switch (p2[_type][_name]) {
@@ -243,28 +288,60 @@ const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
     return _this;
 
   default:
-    // console.log(_name, p1.constructor.name, p2.constructor.name, 'OTHER');
+    console.log(++counter + ')', _name, p1.constructor.name,
+      p2.constructor.name, 'OTHER');
     return implementation;
   }
 };
 
 const optimizeImplementation = ({Type1, Type2, implementation, methodName,
-  overrideName, commutative, _reciprocal, _strict, _negate, typeSymbols,
-  _commuteImplementation, symbolMaps, calledAlready}) => {
-  if (_negate) {
-    return optimizeNegateImplementation(implementation,
-      getVariables(Type1, Type2, methodName, symbolMaps.baseMethodSymbols));
+  overrideName, methodSymbols, baseMethodSymbols,
+  _commuteImplementation, _reciprocal, _strict, _negate}) => {
+  if (_strict) {
+    const impl = _reciprocal ?
+      optimizeStrictImplementation(implementation,
+        getVariables(Type2, Type1, methodName, baseMethodSymbols)) :
+      optimizeStrictImplementation(implementation,
+        getVariables(Type1, Type2, methodName, baseMethodSymbols));
+
+    if (impl) {
+      return impl;
+    }
   }
 
-  if (_commuteImplementation === implementation) {
-    const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate},
-      symbolMaps);
+  if (_reciprocal) {
+    const impl = optimizeReciprocalImplementation(implementation,
+      getVariables(Type2, Type1, methodName, baseMethodSymbols));
 
+    if (impl) {
+      return impl;
+    }
+  }
+
+  if (_negate) {
+    const impl = optimizeNegateImplementation(implementation,
+      getVariables(Type1, Type2, methodName, baseMethodSymbols));
+
+    if (impl) {
+      return impl;
+    }
+  }
+
+  switch (implementation) {
+  case _commuteImplementation:
     return optimizeCommuteImplementation(implementation,
       getVariables(Type2, Type1, overrideName, methodSymbols));
-  }
 
-  return implementation;
+  case _false: case _true: case _this: case _identity: case _empty:
+  case _equals: case _includes: case _includesAll: case _includesSome:
+  case _overlaps: case _overlapsSingle:
+    return implementation;
+
+  default:
+    console.log(++counter + ')', overrideName, Type1.name, Type2.name,
+      'MAIN');
+    return implementation;
+  }
 };
 
 export default function method (methodName, {
@@ -289,7 +366,7 @@ export default function method (methodName, {
     const methodSymbols = getMethodSymbols({_reciprocal, _strict, _negate},
       symbolMaps);
     const _commuteImplementation = commutative ? !calledAlready ?
-      _commute(name) : implementation : undefined;
+      makeCommuteImplementation(name) : implementation : undefined;
 
     checkType(Type1, name, 'Type1');
     checkType(Type2, name, 'Type2');
@@ -303,9 +380,9 @@ export default function method (methodName, {
 
     // eslint-disable-next-line no-param-reassign
     Type1[_name] = optimizeImplementation({Type1, Type2, implementation,
-      _commuteImplementation,
-      methodName, overrideName, commutative, _reciprocal, _strict, _negate,
-      typeSymbols, symbolMaps, calledAlready});
+      _commuteImplementation, _reciprocal, _strict, _negate, methodName,
+      overrideName, methodSymbols,
+      baseMethodSymbols: symbolMaps.baseMethodSymbols});
 
     if (!p1.hasOwnProperty(name)) {
       p1[name] = function (a) {
