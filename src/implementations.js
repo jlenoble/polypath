@@ -8,11 +8,11 @@ export const _true = function () {
   return true;
 };
 
-export const _sameTrue = function () {
+export const _trueButStrict = function () {
   return true;
 };
 
-export const _strictTrue = function () {
+export const _trueOnStrict = function () {
   return true;
 };
 

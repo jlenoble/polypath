@@ -1,5 +1,5 @@
 import {error} from 'explanation';
-import {_false, _true, _sameTrue, _strictTrue, _this, _identity, _empty,
+import {_false, _true, _trueButStrict, _trueOnStrict, _this, _identity, _empty,
   _equals, _includes, _includesAll, _includesSome, _overlaps, _overlapsSingle}
   from './implementations';
 
@@ -223,11 +223,14 @@ const getMethodSymbols = ({_reciprocal, _strict, _negate}, {
         : baseMethodSymbols;
 };
 
-const optimizeStrictImplementation = (implementation, {p1, p2, _name,
+const optimizeStrictImplementation = (implementation, {p2, _name,
   _type}) => {
   switch (p2[_type][_name]) {
-  case _false: case _sameTrue: case _equals:
+  case _false: case _trueButStrict: case _equals:
     return _false;
+
+  case _trueOnStrict:
+    return _true;
 
   default:
     console.log('>', p2[_type][_name]);
@@ -240,7 +243,8 @@ const optimizeReciprocalImplementation = (implementation, {p2, _name,
   const impl = p2[_type][_name];
 
   switch (impl) {
-  case _false: case _true: case _sameTrue: case _equals:
+  case _false: case _true: case _trueButStrict: case _trueOnStrict:
+  case _equals:
     return impl;
 
   default:
@@ -249,13 +253,13 @@ const optimizeReciprocalImplementation = (implementation, {p2, _name,
   }
 };
 
-const optimizeNegateImplementation = (implementation, {p1, p2, _name,
+const optimizeNegateImplementation = (implementation, {p2, _name,
   _type}) => {
   switch (p2[_type][_name]) {
   case _false:
     return _true;
 
-  case _true:
+  case _true: case _trueButStrict: case _trueOnStrict:
     return _false;
 
   default:
@@ -273,6 +277,12 @@ const optimizeCommuteImplementation = (implementation, {p1, p2, _name,
 
   case _true:
     return _true;
+
+  case _trueButStrict:
+    return _trueButStrict;
+
+  case _trueOnStrict:
+    return _trueOnStrict;
 
   case _this:
     return _identity;
@@ -325,9 +335,9 @@ const optimizeImplementation = ({Type1, Type2, implementation, methodName,
     return optimizeCommuteImplementation(implementation,
       getVariables(Type2, Type1, overrideName, methodSymbols));
 
-  case _false: case _true: case _this: case _identity: case _empty:
-  case _equals: case _includes: case _includesAll: case _includesSome:
-  case _overlaps: case _overlapsSingle:
+  case _false: case _true: case _trueButStrict: case _trueOnStrict: case _this:
+  case _identity: case _empty: case _equals: case _includes: case _includesAll:
+  case _includesSome: case _overlaps: case _overlapsSingle:
     return implementation;
 
   default:
