@@ -1,6 +1,6 @@
 import {error} from 'explanation';
-import {_false, _true, _strictTrue, _this, _identity, _empty, _equals,
-  _includes, _includesAll, _includesSome, _overlaps, _overlapsSingle}
+import {_false, _true, _sameTrue, _strictTrue, _this, _identity, _empty,
+  _equals, _includes, _includesAll, _includesSome, _overlaps, _overlapsSingle}
   from './implementations';
 
 const typeSymbols = new WeakMap();
@@ -226,10 +226,7 @@ const getMethodSymbols = ({_reciprocal, _strict, _negate}, {
 const optimizeStrictImplementation = (implementation, {p1, p2, _name,
   _type}) => {
   switch (p2[_type][_name]) {
-  case _false: case _equals:
-    return _false;
-
-  case _strictTrue:
+  case _false: case _sameTrue: case _equals:
     return _false;
 
   default:
@@ -238,20 +235,16 @@ const optimizeStrictImplementation = (implementation, {p1, p2, _name,
   }
 };
 
-const optimizeReciprocalImplementation = (implementation, {p1, p2, _name,
+const optimizeReciprocalImplementation = (implementation, {p2, _name,
   _type}) => {
-  switch (p2[_type][_name]) {
-  case _false:
-    return _false;
+  const impl = p2[_type][_name];
 
-  case _true:
-    return _true;
-
-  case _equals:
-    return _equals;
+  switch (impl) {
+  case _false: case _true: case _sameTrue: case _equals:
+    return impl;
 
   default:
-    console.log('~', p2[_type][_name]);
+    console.log('~', impl);
     // return implementation;
   }
 };

@@ -8,6 +8,10 @@ export const _true = function () {
   return true;
 };
 
+export const _sameTrue = function () {
+  return true;
+};
+
 export const _strictTrue = function () {
   return true;
 };

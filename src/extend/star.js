@@ -1,7 +1,7 @@
 /* eslint-disable no-invalid-this */
 import {add, remove, equals, includes, overlaps} from '../methods';
 
-import {_true, _false, _empty, _this, _toBeImplemented}
+import {_true, _sameTrue, _false, _empty, _this, _toBeImplemented}
   from '../implementations';
 
 import Chunk, {StarChunk, Star} from '../chunk';
@@ -14,7 +14,7 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 add(Star, Star, _this);
 remove(Star, Star, _empty);
 equals(Star, Star, _true);
-includes(Star, Star, _true);
+includes(Star, Star, _sameTrue);
 overlaps(Star, Star, _true);
 
 
