@@ -4,6 +4,8 @@ export const add = method('add', {
   symmetric: true,
 });
 
+export const remove = method('remove');
+
 export const equals = method('equals', {
   equal: true,
   negate: 'unequals',

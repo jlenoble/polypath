@@ -1,8 +1,13 @@
 /* eslint-disable no-invalid-this */
+import {Empty} from './chunk';
 import {MixedChunks} from './chunks';
 
 export const _this = function () {
   return this;
+};
+
+export const _empty = function () {
+  return new Empty();
 };
 
 export const _equals = function (obj) {
