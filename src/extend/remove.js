@@ -2,7 +2,7 @@
 import {remove} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import {_this, _empty} from '../implementations';
+import {_this, _empty, _toBeImplemented} from '../implementations';
 
 
 // ***************************************************************************
@@ -24,6 +24,7 @@ remove(_empty, Star);
 
 [Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
   remove(_empty, Type, Star);
+  remove(_toBeImplemented, Star, Type);
 });
 
 
@@ -41,7 +42,7 @@ remove(function (obj) {
 });
 
 remove(function (obj) {
-  const chunks = this.chunks.filter(chunk => obj.chunk !== this.chunk);
+  const chunks = this.chunks.filter(chunk => obj.chunk !== chunk.chunk);
 
   if (chunks.length === this.chunks.length) {
     return this;
@@ -54,16 +55,27 @@ remove(function (obj) {
   }
 }, Chunks, Chunk);
 
+[StarChunk, StarChunks, MixedChunks].forEach(Type => {
+  remove(_toBeImplemented, Type, Chunk);
+});
+
 
 // ***************************************************************************
 // StarChunk
 // ***************************************************************************
+remove(_toBeImplemented, StarChunk);
+remove(_toBeImplemented, StarChunk, Chunks);
+// Chunks/StarChunk: see Chunks below
 
+[StarChunks, MixedChunks].forEach(Type => {
+  remove(_toBeImplemented, StarChunk, Type);
+  remove(_toBeImplemented, Type, StarChunk);
+});
 
 // ***************************************************************************
 // Chunks
 // ***************************************************************************
-[Chunks, StarChunks, MixedChunks].forEach(Type => {
+[StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
   remove(function (obj) {
     const chunks = this.chunks.filter(chunk => !obj.includes(chunk));
 
@@ -79,12 +91,20 @@ remove(function (obj) {
   }, Chunks, Type);
 });
 
+[StarChunks, MixedChunks].forEach(Type => {
+  remove(_toBeImplemented, Type, Chunks);
+});
+
 
 // ***************************************************************************
 // StarChunks
 // ***************************************************************************
+remove(_toBeImplemented, StarChunks);
+remove(_toBeImplemented, StarChunks, MixedChunks);
+remove(_toBeImplemented, MixedChunks, StarChunks);
 
 
 // ***************************************************************************
 // MixedChunks
 // ***************************************************************************
+remove(_toBeImplemented, MixedChunks);
