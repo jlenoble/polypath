@@ -2,7 +2,9 @@
 import {add} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import {_this, _addMixed, _addReduce} from '../implementations';
+import AntiChunk from '../antichunk';
+import {_this, _addMixed, _addReduce, _toBeImplemented}
+  from '../implementations';
 
 
 // ***************************************************************************
@@ -99,4 +101,15 @@ add(function (obj) {
 
 [Chunks, StarChunks, MixedChunks].forEach(Type => {
   add(_addReduce, MixedChunks, Type);
+});
+
+
+// ***************************************************************************
+// AntiChunk
+// ***************************************************************************
+add(_toBeImplemented, AntiChunk);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
+  MixedChunks].forEach(Type => {
+  add(_toBeImplemented, Type, AntiChunk);
 });

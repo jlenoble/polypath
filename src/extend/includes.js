@@ -2,6 +2,7 @@
 import {includes} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
+import AntiChunk from '../antichunk';
 import {succeed, fail} from 'typed-method';
 import {_equals, _includes, _includesAll} from '../implementations';
 
@@ -11,7 +12,8 @@ import {_equals, _includes, _includesAll} from '../implementations';
 // ***************************************************************************
 includes(succeed, Empty);
 
-[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(Type => {
+[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
+  AntiChunk].forEach(Type => {
   includes(fail, Empty, Type);
   includes(succeed, Type, Empty);
 });
@@ -143,4 +145,15 @@ includes(_includes, Chunks, Chunk);
 
 [Chunks, StarChunks, MixedChunks].forEach(Type => {
   includes(_includesAll, MixedChunks, Type);
+});
+
+
+// ***************************************************************************
+// AntiChunk
+// ***************************************************************************
+includes(_equals, AntiChunk);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, AntiChunk, Type);
+  includes(fail, Type, AntiChunk);
 });

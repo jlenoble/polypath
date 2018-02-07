@@ -2,7 +2,8 @@
 import {overlaps} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import {succeed} from 'typed-method';
+import AntiChunk from '../antichunk';
+import {succeed, fail} from 'typed-method';
 import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle}
   from '../implementations';
 
@@ -10,7 +11,8 @@ import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle}
 // ***************************************************************************
 // Empty
 // ***************************************************************************
-[Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(
+[Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
+  AntiChunk].forEach(
   Type => {
     overlaps(succeed, Type, Empty);
   });
@@ -91,3 +93,13 @@ overlaps(function (obj) {
 // MixedChunks
 // ***************************************************************************
 overlaps(_overlaps, MixedChunks);
+
+
+// ***************************************************************************
+// AntiChunk
+// ***************************************************************************
+overlaps(_equals, AntiChunk);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  overlaps(fail, Type, AntiChunk);
+});

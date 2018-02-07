@@ -31,6 +31,7 @@ const validArguments = {
   Chunks: ['a,z', 'a,b,c'],
   StarChunks: ['a*,*z', 'a*,b*,*c'],
   MixedChunks: ['a,*b', 'a*,b', '*x*,y,z'],
+  AntiChunk: ['!a', '!abc'],
 };
 
 methods.forEach(methodKey => {
