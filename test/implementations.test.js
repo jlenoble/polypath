@@ -34,6 +34,9 @@ const validArguments = {
   AntiChunk: ['!a', '!abc'],
   AntiStarChunk: ['!a*', '!a*bc*'],
   AntiStar: ['!*', '!**'],
+  AntiChunks: ['!a,!z', '!a,!b,!c'],
+  AntiStarChunks: ['!a*,!*z', '!a*,!b*,!*c'],
+  AntiMixedChunks: ['!a,!*b', '!a*,!b', '!*x*,!y,!z'],
 };
 
 methods.forEach(methodKey => {

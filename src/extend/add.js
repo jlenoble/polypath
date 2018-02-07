@@ -3,6 +3,7 @@ import {add} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
+import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
 import {_this, _addMixed, _addReduce, _toBeImplemented}
   from '../implementations';
 
@@ -109,8 +110,8 @@ add(function (obj) {
 // ***************************************************************************
 add(_toBeImplemented, AntiChunk);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
-  AntiStarChunk, AntiStar].forEach(Type => {
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunk,
+  AntiStar, AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiChunk);
 });
 
@@ -120,8 +121,8 @@ add(_toBeImplemented, AntiChunk);
 // ***************************************************************************
 add(_toBeImplemented, AntiStarChunk);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
-  MixedChunks, AntiStar].forEach(Type => {
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStar,
+  AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiStarChunk);
 });
 
@@ -131,7 +132,40 @@ add(_toBeImplemented, AntiStarChunk);
 // ***************************************************************************
 add(_toBeImplemented, AntiStar);
 
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunks,
+  AntiStarChunks, AntiMixedChunks].forEach(Type => {
+  add(_toBeImplemented, Type, AntiStar);
+});
+
+
+// ***************************************************************************
+// AntiChunks
+// ***************************************************************************
+add(_toBeImplemented, AntiChunks);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunks,
+  AntiMixedChunks].forEach(Type => {
+  add(_toBeImplemented, Type, AntiChunks);
+});
+
+
+// ***************************************************************************
+// AntiStarChunks
+// ***************************************************************************
+add(_toBeImplemented, AntiStarChunks);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
+  AntiMixedChunks].forEach(Type => {
+  add(_toBeImplemented, Type, AntiStarChunks);
+});
+
+
+// ***************************************************************************
+// AntiMixedChunks
+// ***************************************************************************
+add(_toBeImplemented, AntiMixedChunks);
+
 [Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
   MixedChunks].forEach(Type => {
-  add(_toBeImplemented, Type, AntiStar);
+  add(_toBeImplemented, Type, AntiMixedChunks);
 });
