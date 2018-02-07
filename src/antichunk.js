@@ -1,5 +1,5 @@
 import {error} from 'explanation';
-import Chunk, {StarChunk, Star} from './chunk';
+import Chunk, {StarChunk} from './chunk';
 
 export default class AntiChunk extends Chunk {
   constructor (chunk) {
@@ -35,19 +35,33 @@ export class AntiStarChunk extends StarChunk {
   }
 }
 
-export class AntiStar extends Star {
+export class AntiStar {
   constructor (chunk) {
-    if (!/^!/.test(chunk)) {
+    if (!/^!(!!)*\*+$/.test(chunk)) {
       error({
-        message: 'Not an antistar string',
+        message: 'Not an antistar',
         explain: [
-          ['You attempted to initialize an AntiStar object with:', chunk],
-          'But the initialization argument must be stars only (*)',
-          'preceded by an exclamation mark',
+          ['You attempted to initialize a Star object with:', chunk],
+          'But the initialization argument must be negated stars (*) only',
         ],
       });
     }
 
-    super(chunk.substring(1));
+    if (AntiStar.antistar) {
+      return AntiStar.antistar;
+    } else {
+      AntiStar.antistar = this;
+    }
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: '*',
+        enumerable: true,
+      },
+    });
+  }
+
+  test () {
+    return true;
   }
 }
