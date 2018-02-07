@@ -217,7 +217,7 @@ describe(`Testing initializations:`, function () {
       const c3 = new Chunk(chunk3);
 
       if (tests[chunk1][chunk2] !== undefined) {
-        it(`new Chunk('${chunk1}', '${chunk2}') is the same as new Chunk('${
+        it(`new Chunk('${chunk1},${chunk2}') is the same as new Chunk('${
           chunk3}')`, function () {
           expect(new Chunk(c1.chunk + ',' + c2.chunk).chunk).to.equal(c3.chunk);
         });

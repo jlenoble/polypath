@@ -1,21 +1,22 @@
-import method from './method';
-import {_unequals} from './implementations';
+import method from 'typed-method';
 
-export const add = method('add', {commutative: true});
-export const remove = method('remove');
+export const add = method('add', {
+  symmetric: true,
+});
 
-export const equals = method('equals', {commutative: true});
+export const equals = method('equals', {
+  equal: true,
+  negate: 'unequals',
+});
 
 export const includes = method('includes', {
   reciprocal: 'isIncluded',
-  strict: _unequals,
+  strict: 'includesStrictly',
+  condition: 'unequals',
+  strictReciprocal: 'isIncludedStrictly',
 });
 
 export const overlaps = method('overlaps', {
-  commutative: true,
+  symmetric: true,
   negate: 'isDistinct',
-
-  strict: function (obj) {
-    return !this.includes(obj) && !obj.includes(this);
-  },
 });

@@ -66,18 +66,22 @@ export class StarChunk {
 
 export class Empty {
   constructor () {
+    if (Empty.empty) {
+      return Empty.empty;
+    } else {
+      Empty.empty = this;
+    }
+
     Object.defineProperties(this, {
       chunk: {
         value: '',
         enumerable: true,
       },
     });
+  }
 
-    if (Empty.empty) {
-      return Empty.empty;
-    } else {
-      Empty.empty = this;
-    }
+  test (obj) {
+    return this === obj;
   }
 }
 
@@ -105,5 +109,9 @@ export class Star {
         enumerable: true,
       },
     });
+  }
+
+  test () {
+    return true;
   }
 }

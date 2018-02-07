@@ -6,6 +6,10 @@ import * as _classes from '../src/index';
 const methods = [];
 
 Object.keys(_methods).forEach(methodKey => {
+  if (methodKey === 'default') {
+    return;
+  }
+
   if (_methods[methodKey].methods) {
     methods.push(...Object.keys(_methods[methodKey].methods));
   } else {

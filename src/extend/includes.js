@@ -1,33 +1,53 @@
 /* eslint-disable no-invalid-this */
-import {add, remove, equals, includes, overlaps} from '../methods';
-
-import {_false, _equals, _includes, _includesAll, _addMixed, _toBeImplemented}
-  from '../implementations';
-
-import Chunk, {StarChunk} from '../chunk';
+import {includes} from '../methods';
+import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
+import {succeed, fail} from 'typed-method';
+import {_equals, _includes, _includesAll} from '../implementations';
 
 
 // ***************************************************************************
-// StarChunk/Chunk API
+// Empty
 // ***************************************************************************
-add(StarChunk, Chunk, _addMixed);
-remove(StarChunk, Chunk, _toBeImplemented);
-equals(StarChunk, Chunk, _false);
-includes(StarChunk, Chunk, _includes);
-overlaps(StarChunk, Chunk, _includes);
+includes(succeed, Empty);
 
-
-// ***************************************************************************
-// StarChunk/StarChunk API
-// ***************************************************************************
-add(StarChunk, StarChunk, function (obj) {
-  return this.includes(obj) ? this : obj.includes(this) ? obj :
-    new StarChunks(this.chunk + ',' + obj.chunk);
+[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, Empty, Type);
+  includes(succeed, Type, Empty);
 });
-remove(StarChunk, StarChunk, _toBeImplemented);
-equals(StarChunk, StarChunk, _equals);
-includes(StarChunk, StarChunk, function (obj) {
+
+
+// ***************************************************************************
+// Star
+// ***************************************************************************
+includes(succeed, Star);
+
+[Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(succeed, Star, Type);
+  includes(fail, Type, Star);
+});
+
+
+// ***************************************************************************
+// Chunk
+// ***************************************************************************
+includes(_equals, Chunk);
+
+[StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, Chunk, Type);
+});
+
+
+// ***************************************************************************
+// StarChunk
+// ***************************************************************************
+includes(_includes, StarChunk, Chunk);
+
+[Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(_includesAll, StarChunk, Type);
+});
+
+includes(function (obj) {
   const chunks1 = this.chunk.split('*');
   const chunks2 = obj.chunk.split('*');
 
@@ -88,54 +108,39 @@ includes(StarChunk, StarChunk, function (obj) {
   }
 
   return b2.value.substring(b2.value.length - b1.value.length) === b1.value;
-});
-overlaps(StarChunk, StarChunk, function (obj) {
-  const chunks1 = this.chunk.split('*');
-  const chunks2 = obj.chunk.split('*');
+}, StarChunk);
 
-  const a1 = chunks1[0];
-  const b1 = chunks1[chunks1.length - 1];
-  const a2 = chunks2[0];
-  const b2 = chunks2[chunks2.length - 1];
 
-  if (!a1.includes(a2)) {
-    if (!a2.includes(a1) || a2.substring(0, a1.length) !== a1) {
-      return false;
-    }
-  } else {
-    if (a1.substring(0, a2.length) !== a2) {
-      return false;
-    }
-  }
+// ***************************************************************************
+// Chunks
+// ***************************************************************************
+includes(_includesAll, Chunks);
+includes(_includes, Chunks, Chunk);
 
-  if (!b1.includes(b2)) {
-    if (!b2.includes(b1)) {
-      return false;
-    }
-
-    return b2.substring(b2.length - b1.length) === b1;
-  }
-
-  return b1.substring(b1.length - b2.length) === b2;
+[StarChunk, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, Chunks, Type);
 });
 
 
 // ***************************************************************************
-// StarChunk/Chunks API
+// StarChunks
 // ***************************************************************************
-remove(StarChunk, Chunks, _toBeImplemented);
-includes(StarChunk, Chunks, _includesAll);
+[Chunk, StarChunk].forEach(Type => {
+  includes(_includes, StarChunks, Type);
+});
+
+[Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(_includesAll, StarChunks, Type);
+});
 
 
 // ***************************************************************************
-// StarChunk/StarChunks API
+// MixedChunks
 // ***************************************************************************
-remove(StarChunk, StarChunks, _toBeImplemented);
-includes(StarChunk, StarChunks, _includesAll);
+[Chunk, StarChunk].forEach(Type => {
+  includes(_includes, MixedChunks, Type);
+});
 
-
-// ***************************************************************************
-// StarChunk/MixedChunks API
-// ***************************************************************************
-remove(StarChunk, MixedChunks, _toBeImplemented);
-includes(StarChunk, MixedChunks, _includesAll);
+[Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(_includesAll, MixedChunks, Type);
+});
