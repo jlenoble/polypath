@@ -2,17 +2,17 @@
 import {overlaps} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk from '../antichunk';
+import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import {succeed, fail} from 'typed-method';
-import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle}
-  from '../implementations';
+import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle,
+  _toBeImplemented} from '../implementations';
 
 
 // ***************************************************************************
 // Empty
 // ***************************************************************************
 [Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk].forEach(
+  AntiChunk, AntiStarChunk, AntiStar].forEach(
   Type => {
     overlaps(succeed, Type, Empty);
   });
@@ -102,4 +102,32 @@ overlaps(_equals, AntiChunk);
 
 [Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
   overlaps(fail, Type, AntiChunk);
+});
+
+[AntiStar, AntiStarChunk].forEach(Type => {
+  overlaps(_toBeImplemented, Type, AntiChunk);
+});
+
+
+// ***************************************************************************
+// AntiStarChunk
+// ***************************************************************************
+overlaps(_toBeImplemented, AntiStarChunk);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  overlaps(fail, Type, AntiStarChunk);
+});
+
+[AntiStar].forEach(Type => {
+  overlaps(_toBeImplemented, Type, AntiStarChunk);
+});
+
+
+// ***************************************************************************
+// AntiStar
+// ***************************************************************************
+overlaps(succeed, AntiStar);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  overlaps(fail, Type, AntiStar);
 });

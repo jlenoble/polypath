@@ -2,9 +2,10 @@
 import {includes} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk from '../antichunk';
+import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import {succeed, fail} from 'typed-method';
-import {_equals, _includes, _includesAll} from '../implementations';
+import {_equals, _includes, _includesAll, _toBeImplemented}
+  from '../implementations';
 
 
 // ***************************************************************************
@@ -13,7 +14,7 @@ import {_equals, _includes, _includesAll} from '../implementations';
 includes(succeed, Empty);
 
 [Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk].forEach(Type => {
+  AntiChunk, AntiStarChunk, AntiStar].forEach(Type => {
   includes(fail, Empty, Type);
   includes(succeed, Type, Empty);
 });
@@ -156,4 +157,36 @@ includes(_equals, AntiChunk);
 [Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
   includes(fail, AntiChunk, Type);
   includes(fail, Type, AntiChunk);
+});
+
+[AntiStar, AntiStarChunk].forEach(Type => {
+  includes(_toBeImplemented, AntiChunk, Type);
+  includes(_toBeImplemented, Type, AntiChunk);
+});
+
+
+// ***************************************************************************
+// AntiStarChunk
+// ***************************************************************************
+includes(_toBeImplemented, AntiStarChunk);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, AntiStarChunk, Type);
+  includes(fail, Type, AntiStarChunk);
+});
+
+[AntiStar].forEach(Type => {
+  includes(_toBeImplemented, AntiStarChunk, Type);
+  includes(_toBeImplemented, Type, AntiStarChunk);
+});
+
+
+// ***************************************************************************
+// AntiStar
+// ***************************************************************************
+includes(_toBeImplemented, AntiStar);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(fail, AntiStar, Type);
+  includes(fail, Type, AntiStar);
 });

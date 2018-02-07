@@ -2,7 +2,7 @@
 import {remove} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk from '../antichunk';
+import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import {_this, _empty, _toBeImplemented} from '../implementations';
 
 
@@ -117,7 +117,31 @@ remove(_toBeImplemented, MixedChunks);
 remove(_toBeImplemented, AntiChunk);
 
 [Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
-  MixedChunks].forEach(Type => {
+  MixedChunks, AntiStarChunk, AntiStar].forEach(Type => {
   remove(_toBeImplemented, Type, AntiChunk);
   remove(_toBeImplemented, AntiChunk, Type);
+});
+
+
+// ***************************************************************************
+// AntiStarChunk
+// ***************************************************************************
+remove(_toBeImplemented, AntiStarChunk);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
+  MixedChunks, AntiStar].forEach(Type => {
+  remove(_toBeImplemented, Type, AntiStarChunk);
+  remove(_toBeImplemented, AntiStarChunk, Type);
+});
+
+
+// ***************************************************************************
+// AntiStar
+// ***************************************************************************
+remove(_toBeImplemented, AntiStar);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
+  MixedChunks].forEach(Type => {
+  remove(_toBeImplemented, Type, AntiStar);
+  remove(_toBeImplemented, AntiStar, Type);
 });
