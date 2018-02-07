@@ -5,8 +5,8 @@ import Chunks, {StarChunks, MixedChunks} from '../chunks';
 import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
 import {succeed, fail} from 'typed-method';
-import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle,
-  _toBeImplemented} from '../implementations';
+import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle}
+  from '../implementations';
 
 
 // ***************************************************************************
@@ -98,35 +98,6 @@ overlaps(_overlaps, MixedChunks);
 
 
 // ***************************************************************************
-// AntiChunk
-// ***************************************************************************
-overlaps(_equals, AntiChunk);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiChunk);
-});
-
-[AntiStar, AntiStarChunk, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
-  overlaps(_toBeImplemented, Type, AntiChunk);
-});
-
-
-// ***************************************************************************
-// AntiStarChunk
-// ***************************************************************************
-overlaps(_toBeImplemented, AntiStarChunk);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiStarChunk);
-});
-
-[AntiStar, AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  overlaps(_toBeImplemented, Type, AntiStarChunk);
-});
-
-
-// ***************************************************************************
 // AntiStar
 // ***************************************************************************
 overlaps(succeed, AntiStar);
@@ -135,44 +106,28 @@ overlaps(succeed, AntiStar);
   overlaps(fail, Type, AntiStar);
 });
 
-[AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  overlaps(_toBeImplemented, Type, AntiStar);
+const antitypes = [AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
+  AntiMixedChunks];
+
+antitypes.forEach(Type => {
+  overlaps(succeed, Type, AntiStar);
 });
 
 
 // ***************************************************************************
-// AntiChunks
+// AntiClasses
 // ***************************************************************************
-overlaps(succeed, AntiChunks);
+antitypes.forEach((AntiType, i) => {
+  [Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+    overlaps(fail, AntiType, Type);
+  });
 
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiChunks);
-});
-
-[AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  overlaps(_toBeImplemented, Type, AntiChunks);
-});
-
-
-// ***************************************************************************
-// AntiStarChunks
-// ***************************************************************************
-overlaps(succeed, AntiStarChunks);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiStarChunks);
-});
-
-[AntiMixedChunks].forEach(Type => {
-  overlaps(_toBeImplemented, Type, AntiStarChunks);
-});
-
-
-// ***************************************************************************
-// AntiMixedChunks
-// ***************************************************************************
-overlaps(succeed, AntiMixedChunks);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiMixedChunks);
+  for (let j = i, l = antitypes.length; j < l; j++) {
+    const AntiType2 = antitypes[j];
+    overlaps(function (obj) {
+      const Type = Object.getPrototypeOf(AntiType);
+      const Type2 = Object.getPrototypeOf(AntiType2);
+      return new Type(this.chunk).overlaps(new Type2(obj.chunk));
+    }, AntiType, AntiType2);
+  }
 });
