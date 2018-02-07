@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import Chunk from '../../src/index';
 
-const tests = {
+const tests1 = {
   '': {
     '': true,
     '*': false,
@@ -172,22 +172,71 @@ const tests = {
   },
 };
 
-Object.keys(tests).forEach(chunk1 => {
-  const c1 = new Chunk(chunk1);
+const tests2 = {};
 
-  describe(`'${chunk1}' of type ${c1.constructor.name}`, function () {
-    Object.keys(tests[chunk1]).forEach(chunk2 => {
-      const c2 = new Chunk(chunk2);
+Object.keys(tests1).forEach(chunk1 => {
+  const _chunk1 = chunk1.split(',').map(ch => '!' + ch).join(',');
 
-      if (tests[chunk1][chunk2]) {
-        it(`includes '${chunk2}'`, function () {
-          expect(c1.includes(c2)).to.be.true;
-        });
-      } else {
-        it(`doesn't include '${chunk2}'`, function () {
-          expect(c1.includes(c2)).to.be.false;
-        });
-      }
-    });
+  tests2[_chunk1] = {};
+
+  Object.keys(tests1[chunk1]).forEach(chunk2 => {
+    const _chunk2 = chunk2.split(',').map(ch => '!' + ch).join(',');
+
+    if (_chunk1 !== '!' && _chunk2 !== '!') {
+      tests2[_chunk1][_chunk2] = tests1[chunk1][chunk2];
+    }
   });
 });
+
+const tests3 = {};
+
+Object.keys(tests1).forEach(chunk1 => {
+  tests3[chunk1] = {};
+
+  Object.keys(tests1[chunk1]).forEach(chunk2 => {
+    const _chunk2 = chunk2.split(',').map(ch => '!' + ch).join(',');
+
+    if (_chunk2 !== '!') {
+      tests3[chunk1][_chunk2] = false;
+    }
+  });
+});
+
+const tests4 = {};
+
+Object.keys(tests1).forEach(chunk1 => {
+  const _chunk1 = chunk1.split(',').map(ch => '!' + ch).join(',');
+
+  tests4[_chunk1] = {};
+
+  Object.keys(tests1[chunk1]).forEach(chunk2 => {
+    if (_chunk1 !== '!') {
+      tests4[_chunk1][chunk2] = chunk2 === '';
+    }
+  });
+});
+
+function defineTests (tests) {
+  Object.keys(tests).forEach(chunk1 => {
+    const c1 = new Chunk(chunk1);
+
+    describe(`'${chunk1}' of type ${c1.constructor.name}`, function () {
+      Object.keys(tests[chunk1]).forEach(chunk2 => {
+        const c2 = new Chunk(chunk2);
+
+        if (tests[chunk1][chunk2]) {
+          it(`includes '${chunk2}'`, function () {
+            expect(c1.includes(c2)).to.be.true;
+          });
+        } else {
+          it(`doesn't include '${chunk2}'`, function () {
+            expect(c1.includes(c2)).to.be.false;
+          });
+        }
+      });
+    });
+  });
+}
+
+defineTests(Object.assign({}, tests1, tests2));
+defineTests(Object.assign({}, tests3, tests4));
