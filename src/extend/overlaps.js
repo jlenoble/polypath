@@ -16,7 +16,7 @@ import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle}
   AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
   AntiMixedChunks].forEach(
   Type => {
-    overlaps(succeed, Type, Empty);
+    overlaps(fail, Type, Empty);
   });
 
 

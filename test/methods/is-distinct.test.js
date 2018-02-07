@@ -3,22 +3,22 @@ import Chunk from '../../src/index';
 
 const tests1 = {
   '': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
+    '': true,
+    '*': true,
+    'a': true,
+    'b': true,
+    'a*': true,
+    'b*': true,
+    'a,b': true,
+    'b,c': true,
+    'a*,b*': true,
+    'b*,c*': true,
+    'a*,b': true,
+    'a,b*': true,
+    'b*,c': true,
   },
   '*': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': false,
@@ -33,7 +33,7 @@ const tests1 = {
     'b*,c': false,
   },
   'a': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': true,
@@ -48,7 +48,7 @@ const tests1 = {
     'b*,c': true,
   },
   'a*': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': true,
@@ -65,7 +65,7 @@ const tests1 = {
     '*b,c': false,
   },
   'a,b': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': false,
@@ -84,7 +84,7 @@ const tests1 = {
     'c,d': true,
   },
   'a*,b*': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': false,
@@ -104,7 +104,7 @@ const tests1 = {
     'c,d': true,
   },
   'a*,b': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': false,
@@ -124,7 +124,7 @@ const tests1 = {
     'c,d': true,
   },
   'a,b*': {
-    '': false,
+    '': true,
     '*': false,
     'a': false,
     'b': false,
@@ -214,7 +214,7 @@ Object.keys(tests1).forEach(chunk1 => {
     const _chunk2 = chunk2.split(',').map(ch => '!' + ch).join(',');
 
     if (_chunk2 !== '!') {
-      tests3[chunk1][_chunk2] = chunk1 !== '';
+      tests3[chunk1][_chunk2] = true;
     }
   });
 });
@@ -228,7 +228,7 @@ Object.keys(tests1).forEach(chunk1 => {
 
   Object.keys(tests1[chunk1]).forEach(chunk2 => {
     if (_chunk1 !== '!') {
-      tests4[_chunk1][chunk2] = chunk2 !== '';
+      tests4[_chunk1][chunk2] = true;
     }
   });
 });
