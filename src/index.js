@@ -13,3 +13,4 @@ export {StarChunk, Empty, Star} from './chunk';
 export {StarChunks, MixedChunks} from './chunks';
 export {AntiStarChunk, AntiStar} from './antichunk';
 export {AntiStarChunks, AntiMixedChunks} from './antichunks';
+export {FilteredChunks} from './factory';

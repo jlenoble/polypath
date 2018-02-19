@@ -4,6 +4,7 @@ import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
+import {FilteredChunks} from '../factory';
 import {_this, _addMixed, _addReduce, _toBeImplemented}
   from '../implementations';
 
@@ -11,7 +12,9 @@ import {_this, _addMixed, _addReduce, _toBeImplemented}
 // ***************************************************************************
 // Empty
 // ***************************************************************************
-[Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(
+[Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
+  AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
+  AntiMixedChunks, FilteredChunks].forEach(
   Type => {
     add(_this, Type, Empty);
   });
@@ -108,9 +111,12 @@ add(function (obj) {
 // ***************************************************************************
 // AntiChunk
 // ***************************************************************************
-add(_toBeImplemented, AntiChunk);
+add(function (obj) {
+  return this.chunk === obj.chunk ? this : new AntiChunks(
+    '!' + this.chunk + ',!' + obj.chunk);
+}, AntiChunk);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunk,
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunk,
   AntiStar, AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiChunk);
 });
@@ -121,7 +127,7 @@ add(_toBeImplemented, AntiChunk);
 // ***************************************************************************
 add(_toBeImplemented, AntiStarChunk);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStar,
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStar,
   AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiStarChunk);
 });
@@ -132,7 +138,7 @@ add(_toBeImplemented, AntiStarChunk);
 // ***************************************************************************
 add(_toBeImplemented, AntiStar);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunks,
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunks,
   AntiStarChunks, AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiStar);
 });
@@ -143,7 +149,7 @@ add(_toBeImplemented, AntiStar);
 // ***************************************************************************
 add(_toBeImplemented, AntiChunks);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunks,
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunks,
   AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiChunks);
 });
@@ -154,7 +160,7 @@ add(_toBeImplemented, AntiChunks);
 // ***************************************************************************
 add(_toBeImplemented, AntiStarChunks);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
   AntiMixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiStarChunks);
 });
@@ -165,7 +171,19 @@ add(_toBeImplemented, AntiStarChunks);
 // ***************************************************************************
 add(_toBeImplemented, AntiMixedChunks);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
+[Star, Chunk, StarChunk, Chunks, StarChunks,
   MixedChunks].forEach(Type => {
   add(_toBeImplemented, Type, AntiMixedChunks);
+});
+
+
+// ***************************************************************************
+// FilteredChunks
+// ***************************************************************************
+add(_toBeImplemented, FilteredChunks);
+
+[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunk,
+  AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
+  AntiMixedChunks].forEach(Type => {
+  add(_toBeImplemented, Type, FilteredChunks);
 });

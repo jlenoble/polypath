@@ -85,6 +85,59 @@ export class AntiChunksFactory {
       return new AntiMixedChunks(chunk);
     }
 
+    if (/^!?(\w|\*)+(,!?(\w|\*)+)*$/.test(chunk)) {
+      return new FilteredChunks(chunk);
+    }
+
     return new Empty();
+  }
+}
+
+export class FilteredChunks {
+  constructor (chunk) {
+    if (typeof chunk !== 'string' ||
+      !/^!?(\w|\*)+(,!?(\w|\*)+)+$/.test(chunk)) {
+      error({
+        message: 'Not filtered chunks',
+        explain: [
+          ['You attempted to initialize a FilteredChunks object with:', chunk],
+          'But expected \'!?(chunk|starchunk)(,!?(chunk|starchunk))+`\'',
+        ],
+      });
+    }
+
+    const _chunks = chunk.split(',');
+    let array = [];
+    let chunks = [array];
+    let ch = _chunks.shift();
+    let pos = true;
+
+    while (ch !== undefined) {
+      const neg = /^!/.test(ch);
+
+      if (neg !== pos) {
+        array.push(ch);
+      } else {
+        array = [ch];
+        chunks.push(array);
+        pos = !pos;
+      }
+
+      ch = _chunks.shift();
+    }
+
+    chunks = chunks.map(chs => new ChunkFactory(chs.join(',')));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: chunks.map(ch => ch.chunk).join(',').replace(/,+/g, ',')
+          .replace(/(^,|,$)/g, ''),
+        enumerable: true,
+      },
+
+      chunks: {
+        value: chunks,
+      },
+    });
   }
 }

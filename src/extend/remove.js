@@ -4,6 +4,7 @@ import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
 import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
 import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
+import {FilteredChunks} from '../factory';
 import {_this, _empty, _toBeImplemented} from '../implementations';
 
 
@@ -181,4 +182,17 @@ remove(_toBeImplemented, AntiMixedChunks);
   MixedChunks].forEach(Type => {
   remove(_toBeImplemented, Type, AntiMixedChunks);
   remove(_toBeImplemented, AntiMixedChunks, Type);
+});
+
+
+// ***************************************************************************
+// FilteredChunks
+// ***************************************************************************
+remove(_toBeImplemented, FilteredChunks);
+
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunk,
+  AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
+  AntiMixedChunks].forEach(Type => {
+  remove(_toBeImplemented, Type, FilteredChunks);
+  remove(_toBeImplemented, FilteredChunks, Type);
 });
