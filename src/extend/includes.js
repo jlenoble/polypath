@@ -182,9 +182,7 @@ includes(succeed, AntiStar);
   [AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
     AntiMixedChunks].forEach(AntiType2 => {
     includes(function (obj) {
-      const Type = Object.getPrototypeOf(AntiType);
-      const Type2 = Object.getPrototypeOf(AntiType2);
-      return new Type(this.chunk).includes(new Type2(obj.chunk));
+      return this._chunk.includes(obj._chunk);
     }, AntiType, AntiType2);
   });
 });

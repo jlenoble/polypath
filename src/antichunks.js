@@ -1,7 +1,7 @@
 import {error} from 'explanation';
 import Chunks, {StarChunks, MixedChunks} from './chunks';
 
-export default class AntiChunks extends Chunks {
+export default class AntiChunks {
   constructor (chunk) {
     if (!/^!/.test(chunk)) {
       error({
@@ -13,11 +13,22 @@ export default class AntiChunks extends Chunks {
       });
     }
 
-    super(chunk.replace(/!/g, ''));
+    const _chunk = new Chunks(chunk.replace(/!/g, ''));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: _chunk.chunk.split(',').map(ch => '!' + ch).join(','),
+        enumerable: true,
+      },
+
+      _chunk: {
+        value: _chunk,
+      },
+    });
   }
 }
 
-export class AntiStarChunks extends StarChunks {
+export class AntiStarChunks {
   constructor (chunk) {
     if (!/^!/.test(chunk)) {
       error({
@@ -29,11 +40,22 @@ export class AntiStarChunks extends StarChunks {
       });
     }
 
-    super(chunk.replace(/!/g, ''));
+    const _chunk = new StarChunks(chunk.replace(/!/g, ''));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: _chunk.chunk.split(',').map(ch => '!' + ch).join(','),
+        enumerable: true,
+      },
+
+      _chunk: {
+        value: _chunk,
+      },
+    });
   }
 }
 
-export class AntiMixedChunks extends MixedChunks {
+export class AntiMixedChunks {
   constructor (chunk) {
     if (!/^!/.test(chunk)) {
       error({
@@ -45,6 +67,17 @@ export class AntiMixedChunks extends MixedChunks {
       });
     }
 
-    super(chunk.replace(/!/g, ''));
+    const _chunk = new MixedChunks(chunk.replace(/!/g, ''));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: _chunk.chunk.split(',').map(ch => '!' + ch).join(','),
+        enumerable: true,
+      },
+
+      _chunk: {
+        value: _chunk,
+      },
+    });
   }
 }

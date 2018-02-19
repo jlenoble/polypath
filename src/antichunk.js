@@ -1,7 +1,7 @@
 import {error} from 'explanation';
 import Chunk, {StarChunk} from './chunk';
 
-export default class AntiChunk extends Chunk {
+export default class AntiChunk {
   constructor (chunk) {
     if (!/^!/.test(chunk)) {
       error({
@@ -14,11 +14,22 @@ export default class AntiChunk extends Chunk {
       });
     }
 
-    super(chunk.substring(1));
+    const _chunk = new Chunk(chunk.substring(1));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: '!' + _chunk.chunk,
+        enumerable: true,
+      },
+
+      _chunk: {
+        value: _chunk,
+      },
+    });
   }
 }
 
-export class AntiStarChunk extends StarChunk {
+export class AntiStarChunk {
   constructor (chunk) {
     if (!/^!/.test(chunk)) {
       error({
@@ -31,7 +42,18 @@ export class AntiStarChunk extends StarChunk {
       });
     }
 
-    super(chunk.substring(1));
+    const _chunk = new StarChunk(chunk.substring(1));
+
+    Object.defineProperties(this, {
+      chunk: {
+        value: '!' + _chunk.chunk,
+        enumerable: true,
+      },
+
+      _chunk: {
+        value: _chunk,
+      },
+    });
   }
 }
 
@@ -55,7 +77,7 @@ export class AntiStar {
 
     Object.defineProperties(this, {
       chunk: {
-        value: '*',
+        value: '!*',
         enumerable: true,
       },
     });

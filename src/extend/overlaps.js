@@ -126,9 +126,7 @@ antitypes.forEach((AntiType, i) => {
   for (let j = i, l = antitypes.length; j < l; j++) {
     const AntiType2 = antitypes[j];
     overlaps(function (obj) {
-      const Type = Object.getPrototypeOf(AntiType);
-      const Type2 = Object.getPrototypeOf(AntiType2);
-      return new Type(this.chunk).overlaps(new Type2(obj.chunk));
+      return this._chunk.overlaps(obj._chunk);
     }, AntiType, AntiType2);
   }
 });
