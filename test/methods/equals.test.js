@@ -137,18 +137,16 @@ function negate (chunk) {
 }
 
 function getTestParams (tests, tfm1, tfm2) {
-  const _tests = {};
+  const _tests = [];
 
   Object.keys(tests).forEach(chunk1 => {
     const _chunk1 = tfm1(chunk1);
-
-    _tests[_chunk1] = {};
 
     Object.keys(tests[chunk1]).forEach(chunk2 => {
       const _chunk2 = tfm2(chunk2);
 
       if (_chunk1 !== '!' && _chunk2 !== '!') {
-        _tests[_chunk1][_chunk2] = tfm1 === tfm2 && tests[chunk1][chunk2];
+        _tests.push([_chunk1, _chunk2, tfm1 === tfm2 && tests[chunk1][chunk2]]);
       }
     });
   });
@@ -157,29 +155,27 @@ function getTestParams (tests, tfm1, tfm2) {
 }
 
 function makeTests (tests) {
-  Object.keys(tests).forEach(chunk1 => {
+  tests.forEach(([chunk1, chunk2, isEqual]) => {
     const c1 = new Chunk(chunk1);
 
     describe(`'${chunk1}' of type ${c1.constructor.name}`, function () {
-      Object.keys(tests[chunk1]).forEach(chunk2 => {
-        const c2 = new Chunk(chunk2);
+      const c2 = new Chunk(chunk2);
 
-        if (tests[chunk1][chunk2]) {
-          it(`is equal to '${chunk2}'`, function () {
-            if (chunk1.includes('!') * chunk2.includes('!') === 1) {
-              expect(c1.chunk).to.equal(c2.chunk);
-            }
-            expect(c1.equals(c2)).to.be.true;
-          });
-        } else {
-          it(`is not equal to '${chunk2}'`, function () {
-            if (chunk1.includes('!') * chunk2.includes('!') === 1) {
-              expect(c1.chunk).not.to.equal(c2.chunk);
-            }
-            expect(c1.equals(c2)).to.be.false;
-          });
-        }
-      });
+      if (isEqual) {
+        it(`is equal to '${chunk2}'`, function () {
+          if (chunk1.includes('!') * chunk2.includes('!') === 1) {
+            expect(c1.chunk).to.equal(c2.chunk);
+          }
+          expect(c1.equals(c2)).to.be.true;
+        });
+      } else {
+        it(`is not equal to '${chunk2}'`, function () {
+          if (chunk1.includes('!') * chunk2.includes('!') === 1) {
+            expect(c1.chunk).not.to.equal(c2.chunk);
+          }
+          expect(c1.equals(c2)).to.be.false;
+        });
+      }
     });
   });
 }
@@ -189,5 +185,4 @@ const tests2 = getTestParams(tests, negate, negate);
 const tests3 = getTestParams(tests, noop, negate);
 const tests4 = getTestParams(tests, negate, noop);
 
-makeTests(Object.assign({}, tests1, tests2));
-makeTests(Object.assign({}, tests3, tests4));
+makeTests(tests1.concat(tests2, tests3, tests4));
