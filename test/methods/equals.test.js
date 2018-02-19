@@ -1,200 +1,50 @@
 import {expect} from 'chai';
-import Chunk from '../../src/index';
+import {makeBoolTests, equalSet, equalList, toList} from './helpers';
 
-const tests = {
-  '': {
-    '': true,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  '*': {
-    '': false,
-    '*': true,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a': {
-    '': false,
-    '*': false,
-    'a': true,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a*': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': true,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a,b': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': true,
-    'b,a': true,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a*,b*': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': true,
-    'b*,a*': true,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a*,b': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': true,
-    'b,a*': true,
-    'a,b*': false,
-    'b*,c': false,
-  },
-  'a,b*': {
-    '': false,
-    '*': false,
-    'a': false,
-    'b': false,
-    'a*': false,
-    'b*': false,
-    'a,b': false,
-    'b,c': false,
-    'a*,b*': false,
-    'b*,c*': false,
-    'a*,b': false,
-    'a,b*': true,
-    'b*,a': true,
-    'b*,c': false,
-  },
-};
+function isEqual (ch1, ch2) {
+  if (!equalSet(ch1, ch2)) {
+    return false;
+  }
 
-function noop (chunk) {
-  return chunk;
+  const l1 = toList(ch1);
+
+  if (l1.every(ch => ch[0] !== '!')) { // all chunks
+    return true;
+  }
+
+  if (l1.every(ch => ch[0] === '!')) { // all antichunks
+    return true;
+  }
+
+  return equalList(ch1, ch2); // FilteredChunks can't swap their elements
 }
 
-function negate (chunk) {
-  return chunk.split(',').map(ch => '!' + ch).join(',');
-}
+makeBoolTests({
+  init: isEqual,
 
-function getTestParams (tests, tfm1, tfm2) {
-  const _tests = [];
+  describeTitle: `Testing 'equals' method`,
 
-  Object.keys(tests).forEach(chunk1 => {
-    const _chunk1 = tfm1(chunk1);
+  trueTitle (c1, c2) {
+    return `'${c1.chunk}' of type ${c1.constructor.name} is equal to '${
+      c2.chunk}'`;
+  },
 
-    Object.keys(tests[chunk1]).forEach(chunk2 => {
-      const _chunk2 = tfm2(chunk2);
+  falseTitle (c1, c2) {
+    return `'${c1.chunk}' of type ${c1.constructor.name} is not equal to '${
+      c2.chunk}'`;
+  },
 
-      if (_chunk1 !== '!' && _chunk2 !== '!') {
-        _tests.push(`${_chunk1}#${_chunk2}#${
-          tfm1 === tfm2 && tests[chunk1][chunk2]}`);
-      }
-    });
-  });
+  trueTest (c1, c2) {
+    return function () {
+      expect(c1.chunk).to.equal(c2.chunk);
+      expect(c1.equals(c2)).to.be.true;
+    };
+  },
 
-  return _tests;
-}
-
-function mergeTestParams (tests, funcs) {
-  let params = [];
-
-  funcs.forEach(func1 => {
-    funcs.forEach(func2 => {
-      params = params.concat(getTestParams(tests, func1, func2));
-    });
-  });
-
-  return params;
-}
-
-function makeTests (tests) {
-  describe(`Testing 'equals' method`, function () {
-    tests.forEach(str => {
-      const [chunk1, chunk2, res] = str.split('#');
-      const c1 = new Chunk(chunk1);
-      const c2 = new Chunk(chunk2);
-
-      if (res === 'true') {
-        it(`'${chunk1}' of type ${c1.constructor.name} is equal to '${
-          chunk2}'`, function () {
-          if (chunk1.includes('!') * chunk2.includes('!') === 1) {
-            expect(c1.chunk).to.equal(c2.chunk);
-          }
-          expect(c1.equals(c2)).to.be.true;
-        });
-      } else {
-        it(`'${chunk1}' of type ${c1.constructor.name} is not equal to '${
-          chunk2}'`, function () {
-          if (chunk1.includes('!') * chunk2.includes('!') === 1) {
-            expect(c1.chunk).not.to.equal(c2.chunk);
-          }
-          expect(c1.equals(c2)).to.be.false;
-        });
-      }
-    });
-  });
-}
-
-const funcs = [noop, negate];
-
-makeTests(mergeTestParams(tests, funcs));
+  falseTest (c1, c2) {
+    return function () {
+      expect(c1.chunk).not.to.equal(c2.chunk);
+      expect(c1.equals(c2)).to.be.false;
+    };
+  },
+});
