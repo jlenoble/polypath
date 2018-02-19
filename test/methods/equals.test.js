@@ -146,7 +146,8 @@ function getTestParams (tests, tfm1, tfm2) {
       const _chunk2 = tfm2(chunk2);
 
       if (_chunk1 !== '!' && _chunk2 !== '!') {
-        _tests.push([_chunk1, _chunk2, tfm1 === tfm2 && tests[chunk1][chunk2]]);
+        _tests.push(`${_chunk1}#${_chunk2}#${
+          tfm1 === tfm2 && tests[chunk1][chunk2]}`);
       }
     });
   });
@@ -154,22 +155,36 @@ function getTestParams (tests, tfm1, tfm2) {
   return _tests;
 }
 
-function makeTests (tests) {
-  tests.forEach(([chunk1, chunk2, isEqual]) => {
-    const c1 = new Chunk(chunk1);
+function mergeTestParams (tests, funcs) {
+  let params = [];
 
-    describe(`'${chunk1}' of type ${c1.constructor.name}`, function () {
+  funcs.forEach(func1 => {
+    funcs.forEach(func2 => {
+      params = params.concat(getTestParams(tests, func1, func2));
+    });
+  });
+
+  return params;
+}
+
+function makeTests (tests) {
+  describe(`Testing 'equals' method`, function () {
+    tests.forEach(str => {
+      const [chunk1, chunk2, res] = str.split('#');
+      const c1 = new Chunk(chunk1);
       const c2 = new Chunk(chunk2);
 
-      if (isEqual) {
-        it(`is equal to '${chunk2}'`, function () {
+      if (res === 'true') {
+        it(`'${chunk1}' of type ${c1.constructor.name} is equal to '${
+          chunk2}'`, function () {
           if (chunk1.includes('!') * chunk2.includes('!') === 1) {
             expect(c1.chunk).to.equal(c2.chunk);
           }
           expect(c1.equals(c2)).to.be.true;
         });
       } else {
-        it(`is not equal to '${chunk2}'`, function () {
+        it(`'${chunk1}' of type ${c1.constructor.name} is not equal to '${
+          chunk2}'`, function () {
           if (chunk1.includes('!') * chunk2.includes('!') === 1) {
             expect(c1.chunk).not.to.equal(c2.chunk);
           }
@@ -180,9 +195,6 @@ function makeTests (tests) {
   });
 }
 
-const tests1 = getTestParams(tests, noop, noop);
-const tests2 = getTestParams(tests, negate, negate);
-const tests3 = getTestParams(tests, noop, negate);
-const tests4 = getTestParams(tests, negate, noop);
+const funcs = [noop, negate];
 
-makeTests(tests1.concat(tests2, tests3, tests4));
+makeTests(mergeTestParams(tests, funcs));
