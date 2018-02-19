@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import Chunk from '../../src/index';
 
-const tests1 = {
+const tests = {
   '': {
     '': true,
     '*': false,
@@ -128,55 +128,35 @@ const tests1 = {
   },
 };
 
+function noop (chunk) {
+  return chunk;
+}
+
 function negate (chunk) {
   return chunk.split(',').map(ch => '!' + ch).join(',');
 }
 
-const tests2 = {};
+function getTestParams (tests, tfm1, tfm2) {
+  const _tests = {};
 
-Object.keys(tests1).forEach(chunk1 => {
-  const _chunk1 = negate(chunk1);
+  Object.keys(tests).forEach(chunk1 => {
+    const _chunk1 = tfm1(chunk1);
 
-  tests2[_chunk1] = {};
+    _tests[_chunk1] = {};
 
-  Object.keys(tests1[chunk1]).forEach(chunk2 => {
-    const _chunk2 = negate(chunk2);
+    Object.keys(tests[chunk1]).forEach(chunk2 => {
+      const _chunk2 = tfm2(chunk2);
 
-    if (_chunk1 !== '!' && _chunk2 !== '!') {
-      tests2[_chunk1][_chunk2] = tests1[chunk1][chunk2];
-    }
+      if (_chunk1 !== '!' && _chunk2 !== '!') {
+        _tests[_chunk1][_chunk2] = tfm1 === tfm2 && tests[chunk1][chunk2];
+      }
+    });
   });
-});
 
-const tests3 = {};
+  return _tests;
+}
 
-Object.keys(tests1).forEach(chunk1 => {
-  tests3[chunk1] = {};
-
-  Object.keys(tests1[chunk1]).forEach(chunk2 => {
-    const _chunk2 = negate(chunk2);
-
-    if (_chunk2 !== '!') {
-      tests3[chunk1][_chunk2] = false;
-    }
-  });
-});
-
-const tests4 = {};
-
-Object.keys(tests1).forEach(chunk1 => {
-  const _chunk1 = negate(chunk1);
-
-  tests4[_chunk1] = {};
-
-  Object.keys(tests1[chunk1]).forEach(chunk2 => {
-    if (_chunk1 !== '!') {
-      tests4[_chunk1][chunk2] = false;
-    }
-  });
-});
-
-function defineTests (tests) {
+function makeTests (tests) {
   Object.keys(tests).forEach(chunk1 => {
     const c1 = new Chunk(chunk1);
 
@@ -204,5 +184,10 @@ function defineTests (tests) {
   });
 }
 
-defineTests(Object.assign({}, tests1, tests2));
-defineTests(Object.assign({}, tests3, tests4));
+const tests1 = getTestParams(tests, noop, noop);
+const tests2 = getTestParams(tests, negate, negate);
+const tests3 = getTestParams(tests, noop, negate);
+const tests4 = getTestParams(tests, negate, noop);
+
+makeTests(Object.assign({}, tests1, tests2));
+makeTests(Object.assign({}, tests3, tests4));
