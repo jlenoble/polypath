@@ -128,15 +128,19 @@ const tests1 = {
   },
 };
 
+function negate (chunk) {
+  return chunk.split(',').map(ch => '!' + ch).join(',');
+}
+
 const tests2 = {};
 
 Object.keys(tests1).forEach(chunk1 => {
-  const _chunk1 = chunk1.split(',').map(ch => '!' + ch).join(',');
+  const _chunk1 = negate(chunk1);
 
   tests2[_chunk1] = {};
 
   Object.keys(tests1[chunk1]).forEach(chunk2 => {
-    const _chunk2 = chunk2.split(',').map(ch => '!' + ch).join(',');
+    const _chunk2 = negate(chunk2);
 
     if (_chunk1 !== '!' && _chunk2 !== '!') {
       tests2[_chunk1][_chunk2] = tests1[chunk1][chunk2];
@@ -150,7 +154,7 @@ Object.keys(tests1).forEach(chunk1 => {
   tests3[chunk1] = {};
 
   Object.keys(tests1[chunk1]).forEach(chunk2 => {
-    const _chunk2 = chunk2.split(',').map(ch => '!' + ch).join(',');
+    const _chunk2 = negate(chunk2);
 
     if (_chunk2 !== '!') {
       tests3[chunk1][_chunk2] = false;
@@ -161,7 +165,7 @@ Object.keys(tests1).forEach(chunk1 => {
 const tests4 = {};
 
 Object.keys(tests1).forEach(chunk1 => {
-  const _chunk1 = chunk1.split(',').map(ch => '!' + ch).join(',');
+  const _chunk1 = negate(chunk1);
 
   tests4[_chunk1] = {};
 
