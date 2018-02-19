@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import Chunk from '../../src/index';
 
 const chunks = [
@@ -104,20 +105,51 @@ export function flatten (tests, func) {
 }
 
 export function makeBoolTests ({
-  init, describeTitle, trueTitle, falseTitle, trueTest, falseTest,
+  init, verbIfTrue, verbIfFalse, method,
 }) {
   const tests = initBoolTests(init);
+  const describeTitle = `Testing '${method}' method`;
+
+  function title (c1, c2, verb) {
+    return `'${c1.chunk}' of type ${c1.constructor.name} ${verb} '${
+      c2.chunk}'`;
+  }
+
+  const test = function (c1, c2, truth) {
+    return function () {
+      let exp;
+
+      switch (method) {
+      case 'equals':
+        exp = expect(c1.chunk);
+        if (!truth) {
+          exp = exp['not'];
+        }
+        break;
+
+      case 'unequals':
+        exp = expect(c1.chunk);
+        if (truth) {
+          exp = exp['not'];
+        }
+      }
+
+      if (exp) {
+        exp.to.equal(c2.chunk);
+      }
+
+      expect(c1[method](c2)).to.be[truth ? 'true' : 'false'];
+    };
+  };
 
   describe(describeTitle, function () {
     traverse(tests, (ch1, ch2, tests) => {
       const c1 = new Chunk(ch1);
       const c2 = new Chunk(ch2);
+      const truth = tests[ch1][ch2];
+      const verb = truth ? verbIfTrue : verbIfFalse;
 
-      if (tests[ch1][ch2]) {
-        it(trueTitle(c1, c2), trueTest(c1, c2));
-      } else {
-        it(falseTitle(c1, c2), falseTest(c1, c2));
-      }
+      it(title(c1, c2, verb), test(c1, c2, truth));
     });
   });
 }
