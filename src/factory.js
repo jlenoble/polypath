@@ -1,3 +1,4 @@
+import {error} from 'explanation';
 import Chunk, {StarChunk, Empty, Star} from './chunk';
 import Chunks, {StarChunks, MixedChunks} from './chunks';
 import AntiChunk, {AntiStarChunk, AntiStar} from './antichunk';
@@ -85,7 +86,7 @@ export class AntiChunksFactory {
       return new AntiMixedChunks(chunk);
     }
 
-    if (/^!?(\w|\*)+(,!?(\w|\*)+)*$/.test(chunk)) {
+    if (/^(\w|\*)+(,!?(\w|\*)+)+$/.test(chunk)) {
       return new FilteredChunks(chunk);
     }
 
@@ -96,12 +97,12 @@ export class AntiChunksFactory {
 export class FilteredChunks {
   constructor (chunk) {
     if (typeof chunk !== 'string' ||
-      !/^!?(\w|\*)+(,!?(\w|\*)+)+$/.test(chunk)) {
+      !/^(\w|\*)+(,!?(\w|\*)+)+$/.test(chunk)) {
       error({
         message: 'Not filtered chunks',
         explain: [
           ['You attempted to initialize a FilteredChunks object with:', chunk],
-          'But expected \'!?(chunk|starchunk)(,!?(chunk|starchunk))+`\'',
+          'But expected \'(chunk|starchunk)(,!?(chunk|starchunk))+`\'',
         ],
       });
     }

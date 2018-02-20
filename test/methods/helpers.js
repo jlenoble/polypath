@@ -11,8 +11,15 @@ const chunks = [
   'b,!a', 'c,!b', 'b*,!a*', 'c*,!b*', 'b,!a*', 'b*,!a', 'c,!b*',
 ];
 
+export function isEmpty (ch) {
+  return ch === '' || /^!(\*|\w)+(,!(\*|\w)+)*,(\*|\w)+(,!?(\*|\w)+)*$/
+    .test(ch.replace(/!!/g, ''));
+}
+
 export function negate (chunk) {
-  return chunk.split(',').map(ch => '!' + ch).join(',');
+  return chunk.split(',').map(ch => {
+    return isEmpty(ch) ? '' : '!' + ch;
+  }).join(',');
 }
 
 export function toList (chunk) {
@@ -53,15 +60,15 @@ export function initBoolTests (init) {
 
       tests[ch1][ch2] = init(ch1, ch2);
 
-      if (neg1 !== '!') {
+      if (neg1 !== '') {
         tests[neg1][ch2] = init(neg1, ch2);
 
-        if (neg2 !== '!') {
+        if (neg2 !== '') {
           tests[neg1][neg2] = init(neg1, neg2);
         }
       }
 
-      if (neg2 !== '!') {
+      if (neg2 !== '') {
         tests[ch1][neg2] = init(ch1, neg2);
       }
     });
@@ -110,9 +117,9 @@ export function makeBoolTests ({
   const tests = initBoolTests(init);
   const describeTitle = `Testing '${method}' method`;
 
-  function title (c1, c2, verb) {
-    return `'${c1.chunk}' of type ${c1.constructor.name} ${verb} '${
-      c2.chunk}'`;
+  function title (c1, ch1, ch2, verb) {
+    return `'${ch1}' of type ${c1.constructor.name} ${verb} '${
+      ch2}'`;
   }
 
   const test = function (c1, c2, truth) {
@@ -149,7 +156,7 @@ export function makeBoolTests ({
       const truth = tests[ch1][ch2];
       const verb = truth ? verbIfTrue : verbIfFalse;
 
-      it(title(c1, c2, verb), test(c1, c2, truth));
+      it(title(c1, ch1, ch2, verb), test(c1, c2, truth));
     });
   });
 }

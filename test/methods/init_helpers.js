@@ -1,6 +1,10 @@
-import {equalSet, equalList, toList} from './helpers';
+import {equalSet, equalList, toList, isEmpty} from './helpers';
 
 export function isEqual (ch1, ch2) {
+  if (isEmpty(ch1) && isEmpty(ch2)) {
+    return true;
+  }
+
   if (!equalSet(ch1, ch2)) {
     return false;
   }
