@@ -2,8 +2,6 @@
 import {overlaps} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
-import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
 import {FilteredChunks} from '../factory';
 import {succeed, fail} from 'typed-method';
 import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle,
@@ -14,8 +12,7 @@ import {_equals, _includes, _includesSome, _overlaps, _overlapsSingle,
 // Empty
 // ***************************************************************************
 [Empty, Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
-  AntiMixedChunks, FilteredChunks].forEach(
+  FilteredChunks].forEach(
   Type => {
     overlaps(fail, Type, Empty);
   });
@@ -99,46 +96,10 @@ overlaps(_overlaps, MixedChunks);
 
 
 // ***************************************************************************
-// AntiStar
-// ***************************************************************************
-overlaps(succeed, AntiStar);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  overlaps(fail, Type, AntiStar);
-});
-
-const antitypes = [AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
-  AntiMixedChunks];
-
-antitypes.forEach(Type => {
-  overlaps(succeed, Type, AntiStar);
-});
-
-
-// ***************************************************************************
-// AntiClasses
-// ***************************************************************************
-antitypes.forEach((AntiType, i) => {
-  [Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-    overlaps(fail, AntiType, Type);
-  });
-
-  for (let j = i, l = antitypes.length; j < l; j++) {
-    const AntiType2 = antitypes[j];
-    overlaps(function (obj) {
-      return this._chunk.overlaps(obj._chunk);
-    }, AntiType, AntiType2);
-  }
-});
-
-
-// ***************************************************************************
 // FilteredChunks
 // ***************************************************************************
 overlaps(_toBeImplemented, FilteredChunks);
 
-[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
+[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks].forEach(Type => {
   overlaps(_toBeImplemented, Type, FilteredChunks);
 });

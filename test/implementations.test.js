@@ -31,12 +31,6 @@ const validArguments = {
   Chunks: ['a,z', 'a,b,c'],
   StarChunks: ['a*,*z', 'a*,b*,*c'],
   MixedChunks: ['a,*b', 'a*,b', '*x*,y,z'],
-  AntiChunk: ['!a', '!abc'],
-  AntiStarChunk: ['!a*', '!a*bc*'],
-  AntiStar: ['!*', '!**'],
-  AntiChunks: ['!a,!z', '!a,!b,!c'],
-  AntiStarChunks: ['!a*,!*z', '!a*,!b*,!*c'],
-  AntiMixedChunks: ['!a,!*b', '!a*,!b', '!*x*,!y,!z'],
   FilteredChunks: ['a,!*b', 'a*,!b', '*x*,!y,z'],
 };
 

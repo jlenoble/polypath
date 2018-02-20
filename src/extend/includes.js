@@ -2,8 +2,6 @@
 import {includes} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
-import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
 import {FilteredChunks} from '../factory';
 import {succeed, fail} from 'typed-method';
 import {_equals, _includes, _includesAll, _toBeImplemented}
@@ -16,8 +14,7 @@ import {_equals, _includes, _includesAll, _toBeImplemented}
 includes(succeed, Empty);
 
 [Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
-  AntiMixedChunks, FilteredChunks].forEach(Type => {
+  FilteredChunks].forEach(Type => {
   includes(fail, Empty, Type);
   includes(succeed, Type, Empty);
 });
@@ -28,7 +25,8 @@ includes(succeed, Empty);
 // ***************************************************************************
 includes(succeed, Star);
 
-[Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+[Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
+  FilteredChunks].forEach(Type => {
   includes(succeed, Star, Type);
   includes(fail, Type, Star);
 });
@@ -153,49 +151,18 @@ includes(_includes, Chunks, Chunk);
 
 
 // ***************************************************************************
-// AntiStar
-// ***************************************************************************
-includes(succeed, AntiStar);
-
-[Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-  includes(fail, AntiStar, Type);
-  includes(fail, Type, AntiStar);
-});
-
-[AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
-  includes(succeed, AntiStar, Type);
-  includes(fail, Type, AntiStar);
-});
-
-
-// ***************************************************************************
-// AntiClasses
-// ***************************************************************************
-[AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(AntiType => {
-  [Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
-    includes(fail, AntiType, Type);
-    includes(fail, Type, AntiType);
-  });
-
-  [AntiChunk, AntiStarChunk, AntiChunks, AntiStarChunks,
-    AntiMixedChunks].forEach(AntiType2 => {
-    includes(function (obj) {
-      return this._chunk.includes(obj._chunk);
-    }, AntiType, AntiType2);
-  });
-});
-
-
-// ***************************************************************************
 // FilteredChunks
 // ***************************************************************************
-includes(_toBeImplemented, FilteredChunks);
+includes(function (obj) {
 
-[Chunk, StarChunk, Star, Chunks, StarChunks, MixedChunks,
-  AntiChunk, AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
-  includes(_toBeImplemented, FilteredChunks, Type);
+}, FilteredChunks);
+
+[Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
   includes(_toBeImplemented, Type, FilteredChunks);
+});
+
+[Chunk, StarChunk, Chunks, StarChunks, MixedChunks].forEach(Type => {
+  includes(function (obj) {
+    return this.chunks[0].includes(obj);
+  }, FilteredChunks, Type);
 });

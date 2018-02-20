@@ -1,8 +1,6 @@
 import {error} from 'explanation';
 import Chunk, {StarChunk, Empty, Star} from './chunk';
 import Chunks, {StarChunks, MixedChunks} from './chunks';
-import AntiChunk, {AntiStarChunk, AntiStar} from './antichunk';
-import AntiChunks, {AntiStarChunks, AntiMixedChunks} from './antichunks';
 
 export default class ChunkFactory {
   constructor (chunk) {
@@ -15,7 +13,7 @@ export default class ChunkFactory {
     }
 
     if (chunk.includes('!')) {
-      return new AntiChunkFactory(chunk);
+      return new Empty();
     }
 
     if (/^\*+$/.test(chunk)) {
@@ -30,28 +28,12 @@ export default class ChunkFactory {
   }
 }
 
-export class AntiChunkFactory {
-  constructor (_chunk) {
-    const chunk = _chunk.replace(/!!/g, '');
-
-    if (/^!\*+$/.test(chunk)) {
-      return new AntiStar('!*');
-    }
-
-    if (chunk.includes('*')) {
-      return new AntiStarChunk(chunk);
-    }
-
-    return new AntiChunk(chunk);
-  }
-}
-
 export class ChunksFactory {
   constructor (_chunk) {
     const chunk = _chunk.replace(/,+/g, ',').replace(/(^,|,$)/g, '');
 
     if (chunk.includes('!')) {
-      return new AntiChunksFactory(chunk);
+      return new FilteredChunks(chunk);
     }
 
     if (/^\w+(,\w+)*$/.test(chunk)) {
@@ -70,28 +52,15 @@ export class ChunksFactory {
   }
 }
 
-export class AntiChunksFactory {
-  constructor (_chunk) {
-    const chunk = _chunk.replace(/!!/g, '');
+function isEmpty (ch) {
+  return ch === '' || /^!(\*|\w)+(,!(\*|\w)+)*,(\*|\w)+(,!?(\*|\w)+)*$/
+    .test(ch.replace(/!!/g, ''));
+}
 
-    if (/^!\w+(,!\w+)*$/.test(chunk)) {
-      return new AntiChunks(chunk);
-    }
-
-    if (/^!\w*(\*\w*)+(,!\w*(\*\w*)+)*$/.test(chunk)) {
-      return new AntiStarChunks(chunk);
-    }
-
-    if (/^!(\w|\*)+(,!(\w|\*)+)*$/.test(chunk)) {
-      return new AntiMixedChunks(chunk);
-    }
-
-    if (/^(\w|\*)+(,!?(\w|\*)+)+$/.test(chunk)) {
-      return new FilteredChunks(chunk);
-    }
-
-    return new Empty();
-  }
+function negate (chunk) {
+  return chunk.split(',').map(ch => {
+    return isEmpty(ch) ? '' : '!' + ch;
+  }).join(',');
 }
 
 export class FilteredChunks {
@@ -116,6 +85,10 @@ export class FilteredChunks {
     while (ch !== undefined) {
       const neg = /^!/.test(ch);
 
+      if (neg) {
+        ch = ch.substring(1);
+      }
+
       if (neg !== pos) {
         array.push(ch);
       } else {
@@ -127,12 +100,19 @@ export class FilteredChunks {
       ch = _chunks.shift();
     }
 
-    chunks = chunks.map(chs => new ChunkFactory(chs.join(',')));
+    ch = chunks.shift();
+
+    chunks = [
+      new ChunkFactory(ch.join(',')),
+      new ChunkFactory(chunks.map((chs, i) => {
+        const ch = chs.join(',');
+        return i%2 ? negate(ch) : ch;
+      }).join(',').replace(/,+/g, ',').replace(/(^,|,$)/g, '')),
+    ];
 
     Object.defineProperties(this, {
       chunk: {
-        value: chunks.map(ch => ch.chunk).join(',').replace(/,+/g, ',')
-          .replace(/(^,|,$)/g, ''),
+        value: chunks[0].chunk + ',' + negate(chunks[1].chunk),
         enumerable: true,
       },
 

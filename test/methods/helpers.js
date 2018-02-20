@@ -2,13 +2,11 @@ import {expect} from 'chai';
 import Chunk from '../../src/index';
 
 const chunks = [
-  '', '*', 'a', 'b', 'a*', 'b*',
-  'a,b', 'b,c', 'a*,b*', 'b*,c*', 'a*,b', 'a,b*', 'b*,c',
-  'b,a', 'c,b', 'b*,a*', 'c*,b*', 'b,a*', 'b*,a', 'c,b*',
-  '!a,b', '!b,c', '!a*,b*', '!b*,c*', '!a*,b', '!a,b*', '!b*,c',
-  '!b,a', '!c,b', '!b*,a*', '!c*,b*', '!b,a*', '!b*,a', '!c,b*',
-  'a,!b', 'b,!c', 'a*,!b*', 'b*,!c*', 'a*,!b', 'a,!b*', 'b*,!c',
-  'b,!a', 'c,!b', 'b*,!a*', 'c*,!b*', 'b,!a*', 'b*,!a', 'c,!b*',
+  '', '*', 'a', // 'b', 'a*', 'b*',
+  // 'a,b', 'b,c', 'a*,b*', 'b*,c*', 'a*,b', 'a,b*', 'b*,c',
+  // 'b,a', 'c,b', 'b*,a*', 'c*,b*', 'b,a*', 'b*,a', 'c,b*',
+  'a,!b', // 'b,!c', 'a*,!b*', 'b*,!c*', 'a*,!b', 'a,!b*', 'b*,!c',
+  // 'b,!a', 'c,!b', 'b*,!a*', 'c*,!b*', 'b,!a*', 'b*,!a', 'c,!b*',
 ];
 
 export function isEmpty (ch) {
@@ -60,15 +58,15 @@ export function initBoolTests (init) {
 
       tests[ch1][ch2] = init(ch1, ch2);
 
-      if (neg1 !== '') {
+      if (neg1 !== '' && neg1[0] !== '!') {
         tests[neg1][ch2] = init(neg1, ch2);
 
-        if (neg2 !== '') {
+        if (neg2 !== '' && neg2[0] !== '!') {
           tests[neg1][neg2] = init(neg1, neg2);
         }
       }
 
-      if (neg2 !== '') {
+      if (neg2 !== '' && neg2[0] !== '!') {
         tests[ch1][neg2] = init(ch1, neg2);
       }
     });

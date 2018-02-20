@@ -1,4 +1,6 @@
-import {equalSet, equalList, toList, isEmpty} from './helpers';
+import {error} from 'explanation';
+import {equalSet, equalList, toList, traverse, isEmpty, negate}
+  from './helpers';
 
 export function isEqual (ch1, ch2) {
   if (isEmpty(ch1) && isEmpty(ch2)) {
@@ -20,4 +22,18 @@ export function isEqual (ch1, ch2) {
   }
 
   return equalList(ch1, ch2); // FilteredChunks can't swap their elements
+}
+
+export function lookUp (tests) {
+  return (ch1, ch2) => {
+    if (tests[ch1] === undefined) {
+      error(new ReferenceError(`No field '${ch1}' in tests`));
+    }
+
+    if (tests[ch1][ch2] === undefined) {
+      error(new ReferenceError(`No field '${ch2}' in tests['${ch1}']`));
+    }
+
+    return tests[ch1][ch2];
+  };
 }

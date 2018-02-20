@@ -2,8 +2,6 @@
 import {remove} from '../methods';
 import Chunk, {StarChunk, Empty, Star} from '../chunk';
 import Chunks, {StarChunks, MixedChunks} from '../chunks';
-import AntiChunk, {AntiStarChunk, AntiStar} from '../antichunk';
-import AntiChunks, {AntiStarChunks, AntiMixedChunks} from '../antichunks';
 import {FilteredChunks} from '../factory';
 import {_this, _empty, _toBeImplemented} from '../implementations';
 
@@ -114,85 +112,12 @@ remove(_toBeImplemented, MixedChunks);
 
 
 // ***************************************************************************
-// AntiChunk
-// ***************************************************************************
-remove(_toBeImplemented, AntiChunk);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunk,
-  AntiStar, AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiChunk);
-  remove(_toBeImplemented, AntiChunk, Type);
-});
-
-
-// ***************************************************************************
-// AntiStarChunk
-// ***************************************************************************
-remove(_toBeImplemented, AntiStarChunk);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStar,
-  AntiChunks, AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiStarChunk);
-  remove(_toBeImplemented, AntiStarChunk, Type);
-});
-
-
-// ***************************************************************************
-// AntiStar
-// ***************************************************************************
-remove(_toBeImplemented, AntiStar);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunks,
-  AntiStarChunks, AntiMixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiStar);
-  remove(_toBeImplemented, AntiStar, Type);
-});
-
-
-// ***************************************************************************
-// AntiChunks
-// ***************************************************************************
-remove(_toBeImplemented, AntiChunks);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiChunks);
-  remove(_toBeImplemented, AntiChunks, Type);
-});
-
-
-// ***************************************************************************
-// AntiStarChunks
-// ***************************************************************************
-remove(_toBeImplemented, AntiStarChunks);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks,
-  AntiMixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiStarChunks);
-  remove(_toBeImplemented, AntiStarChunks, Type);
-});
-
-
-// ***************************************************************************
-// AntiMixedChunks
-// ***************************************************************************
-remove(_toBeImplemented, AntiMixedChunks);
-
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
-  MixedChunks].forEach(Type => {
-  remove(_toBeImplemented, Type, AntiMixedChunks);
-  remove(_toBeImplemented, AntiMixedChunks, Type);
-});
-
-
-// ***************************************************************************
 // FilteredChunks
 // ***************************************************************************
 remove(_toBeImplemented, FilteredChunks);
 
-[Empty, Star, Chunk, StarChunk, Chunks, StarChunks, MixedChunks, AntiChunk,
-  AntiStarChunk, AntiStar, AntiChunks, AntiStarChunks,
-  AntiMixedChunks].forEach(Type => {
+[Empty, Star, Chunk, StarChunk, Chunks, StarChunks,
+  MixedChunks].forEach(Type => {
   remove(_toBeImplemented, Type, FilteredChunks);
   remove(_toBeImplemented, FilteredChunks, Type);
 });
