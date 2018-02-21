@@ -1,14 +1,6 @@
 import {expect} from 'chai';
 import Chunk from '../../src/index';
 
-const chunks = [
-  '', '*', 'a', // 'b', 'a*', 'b*',
-  // 'a,b', 'b,c', 'a*,b*', 'b*,c*', 'a*,b', 'a,b*', 'b*,c',
-  // 'b,a', 'c,b', 'b*,a*', 'c*,b*', 'b,a*', 'b*,a', 'c,b*',
-  'a,!b', // 'b,!c', 'a*,!b*', 'b*,!c*', 'a*,!b', 'a,!b*', 'b*,!c',
-  // 'b,!a', 'c,!b', 'b*,!a*', 'c*,!b*', 'b,!a*', 'b*,!a', 'c,!b*',
-];
-
 export function isEmpty (ch) {
   return ch === '' || /^!(\*|\w)+(,!(\*|\w)+)*,(\*|\w)+(,!?(\*|\w)+)*$/
     .test(ch.replace(/!!/g, ''));
@@ -44,37 +36,6 @@ export function equalSet (chunk1, chunk2) {
   return [...c1].every(ch => c2.has(ch)) && [...c2].every(ch => c1.has(ch));
 }
 
-export function initBoolTests (init) {
-  const tests = {};
-
-  chunks.forEach(ch1 => {
-    tests[ch1] = {};
-
-    const neg1 = negate(ch1);
-    tests[neg1] = {};
-
-    chunks.forEach(ch2 => {
-      const neg2 = negate(ch2);
-
-      tests[ch1][ch2] = init(ch1, ch2);
-
-      if (neg1 !== '' && neg1[0] !== '!') {
-        tests[neg1][ch2] = init(neg1, ch2);
-
-        if (neg2 !== '' && neg2[0] !== '!') {
-          tests[neg1][neg2] = init(neg1, neg2);
-        }
-      }
-
-      if (neg2 !== '' && neg2[0] !== '!') {
-        tests[ch1][neg2] = init(ch1, neg2);
-      }
-    });
-  });
-
-  return tests;
-}
-
 export function traverse (tests, func) {
   Object.keys(tests).forEach(ch1 => {
     Object.keys(tests[ch1]).forEach(ch2 => {
@@ -97,6 +58,26 @@ export function map (tests, func) {
   return _tests;
 }
 
+export function filter (tests, func) {
+  const _tests = {};
+
+  Object.keys(tests).forEach(ch1 => {
+    _tests[ch1] = {};
+
+    Object.keys(tests[ch1]).forEach(ch2 => {
+      if (func(ch1, ch2, tests)) {
+        _tests[ch1][ch2] = tests[ch1][ch2];
+      }
+    });
+
+    if (!Object.keys(_tests[ch1]).length) {
+      delete _tests[ch1];
+    }
+  });
+
+  return _tests;
+}
+
 export function flatten (tests, func) {
   const _tests = [];
 
@@ -110,9 +91,8 @@ export function flatten (tests, func) {
 }
 
 export function makeBoolTests ({
-  init, verbIfTrue, verbIfFalse, method,
+  tests, verbIfTrue, verbIfFalse, method,
 }) {
-  const tests = initBoolTests(init);
   const describeTitle = `Testing '${method}' method`;
 
   function title (c1, ch1, ch2, verb) {

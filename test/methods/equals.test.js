@@ -1,11 +1,11 @@
+import {initBoolTests} from './init_helpers';
 import {makeBoolTests} from './helpers';
-import {isEqual} from './init_helpers';
+
+const tests = {};
 
 makeBoolTests({
-  init: isEqual,
-
+  tests: initBoolTests(tests),
   verbIfTrue: 'is equal to',
   verbIfFalse: 'is not equal to',
-
   method: 'equals',
 });
